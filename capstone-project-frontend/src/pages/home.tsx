@@ -1,3 +1,9 @@
+import { Gallery } from "../components/gallery";
+
 export const Home = () => {
-  return <h1>HOME PAGE</h1>
+  return (
+    <>
+      <Gallery />
+    </>
+  );
 };

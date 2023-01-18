@@ -5,6 +5,9 @@ import './styles/styles.css'
 import { HelmetProvider } from 'react-helmet-async';
 
 
+console.log(module.id); 
+console.log(module.path)
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

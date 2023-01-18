@@ -3,9 +3,11 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { Home } from './pages/home';
-import { SignIn } from './pages/singIn';
 import { Header } from './components/header';
 import { SignUp } from './pages/signUp';
+import { SignIn } from './pages/signin';
+import { Header } from './components/header';
+
 import { Reservation } from './pages/reservation';
 
 function App() {
@@ -22,12 +24,13 @@ function App() {
 						/>
 						<Route
 							key={2}
-							path='/signIn'
+
+							path='/SignIn'
 							element={<SignIn />}
 						/>
 						<Route
 							key={3}
-							path='/signUp'
+							path='/SignUp'
 							element={<SignUp />}
 						/>
 						<Route

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-export const LogIn = () => {
+export const SignIn = () => {
   return (
     <>
       <section className="h-screen">
@@ -20,7 +20,7 @@ export const LogIn = () => {
                 <div className="mb-6">
                   <h1>Sign In</h1>
                   <span>Don't have an account?</span>
-                  <Link to="/create-account">
+                  <Link to="/singup ">
                     <span className="text-green-900"> Sign up</span>
                   </Link>
                   {/* Email Input Div */}

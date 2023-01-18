@@ -3,9 +3,9 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { Home } from './pages/home';
-import { LogIn } from './pages/logIn';
+import { SignIn } from './pages/singIn';
 import { Header } from './components/header';
-import { SignUp } from './pages/create-account';
+import { SignUp } from './pages/signUp';
 import { Reservation } from './pages/reservation';
 
 function App() {
@@ -22,8 +22,8 @@ function App() {
 						/>
 						<Route
 							key={2}
-							path='/logIn'
-							element={<LogIn />}
+							path='/signIn'
+							element={<SignIn />}
 						/>
 						<Route
 							key={3}

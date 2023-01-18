@@ -3,21 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Header = () => {
 	return (
-		<header className='py-30 bg-red-300'>
-			<div className='w-full px-5 xl:px-0 max-w-screen-2xl mx-auto  items-center flex justify-between'>
-        <nav className=''>
-          <div className='text-xs'>
-            <FontAwesomeIcon
-              icon={faUser}
-              className='text-xl'
-            />
-          </div>
+		<header className='py-50 bg-red-500'>
+        <nav>
+          <div className='text-xs'><FontAwesomeIcon icon={faUser} className='text-xl' /></div>
           <div>about</div>
           <div>our work</div>
           <div>contact us</div>
           <div>sign in</div>
         </nav>
-			</div>
 		</header>
 	);
 };

@@ -20,7 +20,7 @@ export const SignIn = () => {
                 <div className="mb-6">
                   <h1>Sign In</h1>
                   <span>Don't have an account?</span>
-                  <Link to="/singup ">
+                  <Link to="/signup ">
                     <span className="text-green-900"> Sign up</span>
                   </Link>
                   {/* Email Input Div */}

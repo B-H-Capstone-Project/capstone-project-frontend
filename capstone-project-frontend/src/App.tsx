@@ -27,7 +27,7 @@ function App() {
 						/>
 						<Route
 							key={3}
-							path='/create-account'
+							path='/signUp'
 							element={<SignUp />}
 						/>
 						<Route

@@ -4,9 +4,8 @@ import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { Home } from './pages/home';
 import { Header } from './components/header';
-import { SignUp } from './pages/signUp';
+import { SignUp } from './pages/signup';
 import { SignIn } from './pages/signin';
-import { Header } from './components/header';
 
 import { Reservation } from './pages/reservation';
 

@@ -8,10 +8,10 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { NotFound } from '../pages/404';
-import { SignUp } from '../pages/signUp';
 import { SignIn } from '../pages/singIn';
 import { Header } from '../components/header';
 import { Home } from '../pages/home';
+import { SignUp } from '../pages/signUp';
 
 export const LoggedOutRouter = () => {
 	return (
@@ -23,7 +23,7 @@ export const LoggedOutRouter = () => {
 					element={<Home />}
 				/>
 				<Route
-					path='/singUp'
+					path='/singup'
 					element={<SignUp />}
 				/>
 				<Route

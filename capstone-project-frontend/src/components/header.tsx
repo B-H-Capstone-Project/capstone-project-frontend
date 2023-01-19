@@ -8,12 +8,9 @@ export const Header = () => {
 	return (
 		<header className='py-4'>
 			<nav className='w-full px-5 xl:px-0 max-w-screen-2xl mx-auto items-center flex justify-between'>
-				<div>
+				<div className='text-3xl font-bold ml-8'>
           <Link to={"/"}>
-					<FontAwesomeIcon
-						icon={faUser}
-						className='text-xl'
-					/>
+            B&H
           </Link>
 				</div>
         <div className='flex justify-between'>

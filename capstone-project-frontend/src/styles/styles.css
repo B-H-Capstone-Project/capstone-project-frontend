@@ -818,6 +818,7 @@ video {
 .bg-yellow-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(253 224 71 / var(--tw-bg-opacity));
+}
 
 .bg-red-300 {
   --tw-bg-opacity: 1;
@@ -856,7 +857,7 @@ video {
 
 .to-slate-100 {
   --tw-gradient-to: #f1f5f9;
-  
+}
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -960,7 +961,8 @@ video {
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
-  
+}
+
 .p-2\.5 {
   padding: 0.625rem;
 }

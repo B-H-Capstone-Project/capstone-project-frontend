@@ -23,7 +23,7 @@ const ClientRoutes = [
 
 export const LoggedInRouter = () => {
 	return (
-		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
+		<div className=''>
 			<Router>
 				<Header />
 				<Routes>

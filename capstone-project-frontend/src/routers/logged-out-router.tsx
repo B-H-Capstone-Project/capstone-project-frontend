@@ -8,10 +8,18 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { NotFound } from '../pages/404';
+<<<<<<< HEAD
 import { SignIn } from '../pages/signin';
 import { Header } from '../components/header';
 import { Home } from '../pages/home';
 import { SignUp } from '../pages/signup';
+=======
+import { Header } from '../components/header';
+import { Home } from '../pages/home';
+import { SignIn } from '../pages/signin';
+import { SignUp } from '../pages/signup';
+import { OurWork } from '../pages/our-work';
+>>>>>>> daae149 (Created OutWork page)
 
 export const LoggedOutRouter = () => {
 	return (
@@ -27,8 +35,12 @@ export const LoggedOutRouter = () => {
 					element={<SignUp />}
 				/>
 				<Route
-					path='/'
+					path='/singin'
 					element={<SignIn />}
+				/>
+        <Route
+					path='/our-work'
+					element={<OurWork />}
 				/>
 				<Route
 					path='*'

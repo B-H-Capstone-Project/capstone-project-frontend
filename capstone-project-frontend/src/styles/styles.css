@@ -889,6 +889,13 @@ video {
   padding: 0.5rem;
 }
 
+<<<<<<< HEAD
+=======
+.p-0 {
+  padding: 0px;
+}
+
+>>>>>>> f6cfa20cb12b5826333d984e33361d7a0848d09b
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;

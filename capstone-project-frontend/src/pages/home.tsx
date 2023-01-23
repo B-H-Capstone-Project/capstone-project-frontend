@@ -25,7 +25,7 @@ const item = {
 
 export const Home = () => {
 	return (
-		<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen'>
+		<div className='w-full max-w-screen-sm mx-auto flex bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
 			<div className='p-10 basis-1/2 flex items-center'>
 				<div>
 					<div className='mb-3'>
@@ -62,6 +62,7 @@ export const Home = () => {
 					</motion.div>
 				</div>
 			</div>
+      <div className='bg-black'></div>
 		</div>
 	);
 };

@@ -10,7 +10,7 @@ export const Table = () => {
                 <table className="min-w-full divide-y divide-white-200">
                     <tbody className="divide-y divide-white-200">
                                 <tr>
-                                    <td className="px-6 py-4 text-sm font-medium text-white-400/100 #27272a">
+                                    <td className="px-6 py-4 text-sm text-white-400/100 #27272a">
                                         Landscapers
                                     </td>
                                     <td className="px-6 py-4 text-sm text-white-400/100 #27272a">
@@ -21,7 +21,7 @@ export const Table = () => {
                                         </td>
                                     </tr>
                                 <tr>
-                                    <td className="px-6 py-4 text-sm font-medium text-white-400/100 #27272a">
+                                    <td className="px-6 py-4 text-sm text-white-400/100 #27272a">
                                         ASSINIBOINE
                                     </td>
                                     <td className="px-6 py-4 text-sm text-white-400/100 #27272a">
@@ -32,7 +32,7 @@ export const Table = () => {
                                         </td>
                                     </tr>
                                 <tr>
-                                    <td className="px-6 py-4 text-sm font-medium text-white-400/100 #27272a">
+                                    <td className="px-6 py-4 text-sm text-white-400/100 #27272a">
                                         Builders:
                                     </td>
                                     <td className="px-6 py-4 text-sm text-white-400/100 #27272a">
@@ -43,7 +43,7 @@ export const Table = () => {
                                         </td>
                                     </tr>
                                 <tr>
-                                    <td className="px-6 py-4 text-sm font-medium text-white-400/100 #27272a">
+                                    <td className="px-6 py-4 text-sm text-white-400/100 #27272a">
                                         LUCIDA
                                     </td>
                                     <td className="px-6 py-4 text-sm text-white-400/100 #27272a">

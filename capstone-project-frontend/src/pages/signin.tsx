@@ -1,8 +1,6 @@
-/** @format */
-
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FormError } from '../components/form-error';
 
 interface ISignInForm {
@@ -19,10 +17,11 @@ export const SignIn = () => {
 	} = useForm<ISignInForm>({
 		mode: 'onBlur',
 	});
+  const navigate = useNavigate();
 	const onSubmit = async () => {
 		console.log(getValues());
 		const { email, password } = getValues();
-		const response = await fetch('http://localhost:8080/api/v1/login', {
+		const response = await fetch('http://localhost:8080/api/v1/signin', {
 			method: 'post',
 			credentials: 'include',
       /**
@@ -44,6 +43,7 @@ export const SignIn = () => {
 		if (response.status !== 200) {
 			return alert('Something went wrong');
 		}
+    navigate("/");
 	};
 	return (
 		<>

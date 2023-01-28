@@ -27,10 +27,13 @@ import { OurWork } from '../pages/our-work';
 =======
 import VerifyEmail from '../components/verifyEmail';
 import CheckYourEmail from '../components/checkYourEmail';
+<<<<<<< HEAD
 >>>>>>> 2a4812a (Added CheckEmail and verifyEmail page)
+=======
+import { ContactUs } from '../pages/contactUs';
+>>>>>>> 43d65e4 (Routing Contact us)
 
 export const LoggedOutRouter = () => {
-  
 	return (
 		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
 			<Router>
@@ -58,6 +61,10 @@ export const LoggedOutRouter = () => {
 					<Route
 						path='/our-work'
 						element={<OurWork />}
+					/>
+					<Route
+						path='/contact-us'
+						element={<ContactUs />}
 					/>
 					<Route
 						path='*'

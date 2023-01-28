@@ -8,30 +8,14 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { NotFound } from '../pages/404';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { SignIn } from '../pages/signin';
 import { Header } from '../components/header';
 import { Home } from '../pages/home';
-import { SignUp } from '../pages/signup';
-=======
-import { Header } from '../components/header';
-=======
->>>>>>> 2a4812a (Added CheckEmail and verifyEmail page)
-import { Home } from '../pages/home';
-import { SignIn } from '../pages/signin';
 import { SignUp } from '../pages/signup';
 import { OurWork } from '../pages/our-work';
-<<<<<<< HEAD
->>>>>>> daae149 (Created OutWork page)
-=======
 import VerifyEmail from '../components/verifyEmail';
 import CheckYourEmail from '../components/checkYourEmail';
-<<<<<<< HEAD
->>>>>>> 2a4812a (Added CheckEmail and verifyEmail page)
-=======
 import { ContactUs } from '../pages/contactUs';
->>>>>>> 43d65e4 (Routing Contact us)
 
 export const LoggedOutRouter = () => {
 	return (

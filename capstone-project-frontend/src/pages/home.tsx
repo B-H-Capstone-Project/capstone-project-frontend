@@ -44,7 +44,7 @@ export const Home = () => {
 		<div>
 			<Header />
 			<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen'>
-				<div className='p-10 basis-1/2 flex items-center flex-1 h-full w-full'>
+				<div className='p-20 basis-1/2 flex items-center flex-1 h-full w-full'>
 					<div>
 						<div className='mb-3'>
 							<h1 className='text-7xl'>BOSS B&H HOSS</h1>
@@ -61,7 +61,7 @@ export const Home = () => {
 							variants={container}
 							initial='hidden'
 							animate='visible'
-							className='bg-black rounded-lg w-2/3 h-1/3 mr-2'></motion.div>
+							className='bg-black rounded-lg w-3/4 h-1/3 mr-10'></motion.div>
 					</div>
 					<motion.div
 						variants={container}
@@ -71,16 +71,16 @@ export const Home = () => {
 						<motion.div
 							key={1}
 							variants={item}
-							className='bg-black rounded-lg w-1/2 h-1/3 mb-2'></motion.div>
+							className='bg-black rounded-lg w-3/4 h-1/3 mb-10'></motion.div>
 						<motion.div
 							key={2}
 							variants={item}
-							className='bg-yellow-300 rounded-lg w-1/2 h-1/3'></motion.div>
+							className='bg-yellow-300 rounded-lg w-3/4 h-1/3'></motion.div>
 					</motion.div>
 				</div>
 			</div>
-			<div className='w-full xl:px-0 max-w-screen-2xl h-screen bg-black '>
-				<div className='flex w-'>
+			<div className='h-screen bg-black '>
+				<div className='flex p-20'>
 					<div>
 						<h2 className='text-lime-300'>Quality Work Since 2005</h2>
 						<p className='text-white'>
@@ -106,11 +106,11 @@ export const Home = () => {
 					</div>
 				</div>
 			</div>
-			<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen m-10 bg-black'>
-				<div className='flex-1'>
+			<div className='flex h-screen bg-black'>
+				<div className='flex-1 p-20'>
 					<div className='p-20 m-10 rounded bg-white'></div>
 				</div>
-				<div className='flex-1'>
+				<div className='flex-1 p-20'>
 					<div className='ml-10'>
 						<h2 className='text-lime-300'>
 							Our <br /> Service
@@ -136,9 +136,9 @@ export const Home = () => {
 					</div>
 				</div>
 			</div>
-			<div className='w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen m-10 bg-black'>
-				<h2 className='text-lime-300'>Our Clients</h2>
-				<div className='grid grid-rows-4 grid-flow-col gap-4'>
+			<div className='h-screen bg-black'>
+				<h2 className='text-lime-300 p-20'>Our Clients</h2>
+				<div className='grid grid-rows-4 grid-flow-col gap-4 p-20'>
 					{bossHossClients.map((client) => (
 						<div
 							key={client.id}

@@ -6,7 +6,7 @@ export const Header = () => {
 	return (
 		<header>
 			<nav className='flex justify-between px-10 sm:px-4 py-2.5'>
-				<div className='text-3xl font-bold ml-8'>
+				<div className='text-3xl font-bold'>
           <Link to={"/"}>
             B&H
           </Link>

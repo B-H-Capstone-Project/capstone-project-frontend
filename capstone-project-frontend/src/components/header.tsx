@@ -4,9 +4,9 @@ import { HashLink } from 'react-router-hash-link'
 
 export const Header = () => {
 	return (
-		<header className='py-4 px-5'>
-			<nav className='w-full xl:px-0 max-w-screen-2xl items-center flex justify-between'>
-				<div className='text-3xl font-bold ml-8'>
+		<header>
+			<nav className='flex justify-between px-10 sm:px-4 py-2.5'>
+				<div className='text-3xl font-bold'>
           <Link to={"/"}>
             B&H
           </Link>

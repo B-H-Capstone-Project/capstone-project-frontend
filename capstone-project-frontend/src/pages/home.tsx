@@ -3,6 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Header } from '../components/header';
+import { Services } from '../components/services';
+import { Table } from '../components/clientTable';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -28,7 +30,7 @@ export const Home = () => {
 	return (
 		<>
 			<Header />
-			<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen'>
+			<div className='flex w-	full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen'>
 				<div className='p-10 basis-1/2 flex items-center'>
 					<div>
 						<div className='mb-3'>
@@ -66,6 +68,9 @@ export const Home = () => {
 					</div>
 				</div>
 			</div>
+			<Services />
+
+			<Table />
 		</>
 	);
 };

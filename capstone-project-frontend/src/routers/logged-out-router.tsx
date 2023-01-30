@@ -52,5 +52,5 @@ export const LoggedOutRouter = () => {
 				</Routes>
 			</Router>
 		</div>
-	);
+ 	);
 };

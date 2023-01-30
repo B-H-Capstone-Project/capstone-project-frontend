@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormError } from '../components/form-error';
+import axios from 'axios';
 
 interface ISignInForm {
 	email: string;
@@ -19,18 +20,22 @@ export const SignIn = () => {
 	});
   const navigate = useNavigate();
 	const onSubmit = async () => {
-		console.log(getValues());
 		const { email, password } = getValues();
+    try {
+      const response = await axios.post('http://localhost:8080/api/v1/signin', {
+        // Data to be sent to the server
+        email: email,
+        password: password,
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+    /*
 		const response = await fetch('http://localhost:8080/api/v1/signin', {
 			method: 'post',
 			credentials: 'include',
-      /**
-       * Once again, fairly boiler plate. In the onSubmit function, 
-       * we are also passing along credentials: “include”.
-       * This is going to be useful for us to create authenticated sessions. Basically, 
-       * we will be retrieving a cookie from that api/v1/login endpoint and storing that in the browser.
-       * This parameter ensures we get it and don’t ignore it when the backend sends it over
-       */
+
 			headers: {
 				// needed so express parser says OK to read
 				'Content-Type': 'application/json',
@@ -43,7 +48,9 @@ export const SignIn = () => {
 		if (response.status !== 200) {
 			return alert('Something went wrong');
 		}
+    console.log(response);
     navigate("/");
+    */
 	};
 	return (
 		<>

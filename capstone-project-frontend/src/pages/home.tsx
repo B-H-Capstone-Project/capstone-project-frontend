@@ -79,31 +79,29 @@ export const Home = () => {
 					</motion.div>
 				</div>
 			</div>
-			<div className='h-screen bg-black '>
-				<div className='flex p-20'>
-					<div>
-						<h2 className='text-lime-300'>Quality Work Since 2005</h2>
-						<p className='text-white'>
-							WE TREAT EVERY PROPERTY AS IF IT IS OUR OWN PROPERTY.
-						</p>
-						<p className='text-white'>
-							Boss & Hoss Irrigation has been installing systems in Calgary for
-							16 years. Boss & Hoss Irrigation Calgary has been working with
-							many local builders and landscaping companies in and around the
-							Calgary area. In addition, we also cater to single-family homes
-							and have successfully installed and servicing hundreds of homes…
-							Continuing with builders and landscapers we have achieved quality
-							workmanship above all others and consistently striving and
-							maintaining excellence in all areas of our business ethics. ßWe
-							are professionals who focus on Irrigation and Outdoor lighting
-							which goes hand in hand. Please feel free to contact us for an
-							estimate for your property needs. Click Here to View Our Work
-							“Irrigation & Outdoor Lighting”
-						</p>
-					</div>
-					<div>
-						<div className='p-20 m-2 rounded bg-white'></div>
-					</div>
+			<div className='h-screen bg-black flex'>
+				<div>
+					<h2 className='text-lime-300'>Quality Work Since 2005</h2>
+					<p className='text-white'>
+						WE TREAT EVERY PROPERTY AS IF IT IS OUR OWN PROPERTY.
+					</p>
+					<p className='text-white'>
+						Boss & Hoss Irrigation has been installing systems in Calgary for 16
+						years. Boss & Hoss Irrigation Calgary has been working with many
+						local builders and landscaping companies in and around the Calgary
+						area. In addition, we also cater to single-family homes and have
+						successfully installed and servicing hundreds of homes… Continuing
+						with builders and landscapers we have achieved quality workmanship
+						above all others and consistently striving and maintaining
+						excellence in all areas of our business ethics. ßWe are
+						professionals who focus on Irrigation and Outdoor lighting which
+						goes hand in hand. Please feel free to contact us for an estimate
+						for your property needs. Click Here to View Our Work “Irrigation &
+						Outdoor Lighting”
+					</p>
+				</div>
+				<div className='basis-1/2'>
+					<div className='p-20 m-2 rounded bg-white'></div>
 				</div>
 			</div>
 			<div className='flex h-screen bg-black'>

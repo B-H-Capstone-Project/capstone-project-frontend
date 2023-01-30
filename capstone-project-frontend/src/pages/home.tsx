@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Header } from '../components/header';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -23,43 +24,126 @@ const item = {
 	},
 };
 
+const bossHossClients = [
+	{ id: 1, img: '', url: '' },
+	{ id: 2, img: '', url: '' },
+	{ id: 3, img: '', url: '' },
+	{ id: 4, img: '', url: '' },
+	{ id: 5, img: '', url: '' },
+	{ id: 6, img: '', url: '' },
+	{ id: 7, img: '', url: '' },
+	{ id: 8, img: '', url: '' },
+	{ id: 9, img: '', url: '' },
+	{ id: 10, img: '', url: '' },
+	{ id: 11, img: '', url: '' },
+	{ id: 12, img: '', url: '' },
+];
+
 export const Home = () => {
 	return (
-		<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen'>
-			<div className='p-10 basis-1/2 flex items-center'>
-				<div>
-					<div className='mb-3'>
-						<h1 className='text-7xl'>BOSS B&H HOSS</h1>
-						<h1 className='text-7xl'>Irrigation</h1>
+		<div>
+			<Header />
+			<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen'>
+				<div className='p-20 basis-1/2 flex items-center flex-1 h-full w-full'>
+					<div>
+						<div className='mb-3'>
+							<h1 className='text-7xl'>BOSS B&H HOSS</h1>
+							<h1 className='text-7xl'>Irrigation</h1>
+						</div>
+						<button className='text-sm py-1.5 px-5 ml-2 bg-lime-300 rounded-xl'>
+							Book a reservation -
+						</button>
 					</div>
-					<button className='text-sm py-1.5 px-5 ml-2 bg-green-400 rounded-xl'>
-						Book a reservation -
-					</button>
 				</div>
-			</div>
-			<div className='basis-1/2 flex justify-center'>
-				<div className='flex items-center basis-1/2 justify-end'>
+				<div className='basis-1/2 flex'>
+					<div className='flex-1 flex justify-end items-center'>
+						<motion.div
+							variants={container}
+							initial='hidden'
+							animate='visible'
+							className='bg-black rounded-lg w-3/4 h-1/3 mr-10'></motion.div>
+					</div>
 					<motion.div
 						variants={container}
 						initial='hidden'
 						animate='visible'
-						className='bg-black p-20 m-2 rounded'></motion.div>
-				</div>
-				<div className='flex items-center basis-1/2'>
-					<motion.div
-						className='flex flex-col justify-center'
-						variants={container}
-						initial='hidden'
-						animate='visible'>
+						className='flex-1 flex flex-col justify-center'>
+						<motion.div
+							key={1}
+							variants={item}
+							className='bg-black rounded-lg w-3/4 h-1/3 mb-10'></motion.div>
 						<motion.div
 							key={2}
 							variants={item}
-							className='bg-black p-10 m-2 rounded'></motion.div>
-						<motion.div
-							key={3}
-							variants={item}
-							className='bg-yellow-300 m-2 p-10 rounded'></motion.div>
+							className='bg-yellow-300 rounded-lg w-3/4 h-1/3'></motion.div>
 					</motion.div>
+				</div>
+			</div>
+			<div className='h-screen bg-black flex'>
+				<div>
+					<h2 className='text-lime-300'>Quality Work Since 2005</h2>
+					<p className='text-white'>
+						WE TREAT EVERY PROPERTY AS IF IT IS OUR OWN PROPERTY.
+					</p>
+					<p className='text-white'>
+						Boss & Hoss Irrigation has been installing systems in Calgary for 16
+						years. Boss & Hoss Irrigation Calgary has been working with many
+						local builders and landscaping companies in and around the Calgary
+						area. In addition, we also cater to single-family homes and have
+						successfully installed and servicing hundreds of homes… Continuing
+						with builders and landscapers we have achieved quality workmanship
+						above all others and consistently striving and maintaining
+						excellence in all areas of our business ethics. ßWe are
+						professionals who focus on Irrigation and Outdoor lighting which
+						goes hand in hand. Please feel free to contact us for an estimate
+						for your property needs. Click Here to View Our Work “Irrigation &
+						Outdoor Lighting”
+					</p>
+				</div>
+				<div className='basis-1/2'>
+					<div className='p-20 m-2 rounded bg-white'></div>
+				</div>
+			</div>
+			<div className='flex h-screen bg-black'>
+				<div className='flex-1 p-20'>
+					<div className='p-20 m-10 rounded bg-white'></div>
+				</div>
+				<div className='flex-1 p-20'>
+					<div className='ml-10'>
+						<h2 className='text-lime-300'>
+							Our <br /> Service
+						</h2>
+					</div>
+					<div className='grid grid-rows-2 grid-flow-col gap-4'>
+						<div className='p-20'>
+							<h3 className='text-white'>Residential</h3>
+							<p className='text-white'>sdfsdfsdfsdf</p>
+						</div>
+						<div className='p-20'>
+							<h3 className='text-white'>Residential</h3>
+							<p className='text-white'>sdfsdfsdfsdf</p>
+						</div>
+						<div className='p-20'>
+							<h3 className='text-white'>Residential</h3>
+							<p className='text-white'>sdfsdfsdfsdf</p>
+						</div>
+						<div className='p-20'>
+							<h3 className='text-white'>Residential</h3>
+							<p className='text-white'>sdfsdfsdfsdf</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className='h-screen bg-black'>
+				<h2 className='text-lime-300 p-20'>Our Clients</h2>
+				<div className='grid grid-rows-4 grid-flow-col gap-4 p-20'>
+					{bossHossClients.map((client) => (
+						<div
+							key={client.id}
+							className='p-5 bg-red-300 m-1'>
+							{client.img}
+						</div>
+					))}
 				</div>
 			</div>
 		</div>

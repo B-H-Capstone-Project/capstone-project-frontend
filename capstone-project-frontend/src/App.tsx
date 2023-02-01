@@ -3,9 +3,10 @@ import { LoggedInRouter } from "./routers/logged-in-router";
 import { LoggedOutRouter } from "./routers/logged-out-router";
 
 function App() {
+  /*
   const [user, setUser] = React.useState(null);
   React.useEffect(() => {
-      fetch('http://localhost:8000/api/v1/user', {
+      fetch('http://localhost:8080/api/v1/user', {
         method: "get",
         credentials: "include",
         headers: {
@@ -34,8 +35,8 @@ function App() {
       if (result.data) {
         setUser(null)
       }
-    }
-	return (user? <LoggedInRouter /> : <LoggedOutRouter />);
+    }*/
+	return <LoggedOutRouter />;
 }
 
 export default App;

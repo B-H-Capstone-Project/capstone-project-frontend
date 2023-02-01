@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
@@ -17,7 +18,7 @@ const attemptToVerify = async () => {
     if (!code || !email) {
       return setVerificationState(VerificationState.invalid)
     }
-    const response = await fetch('http://localhost:8000/api/v1/verify-email', {
+    const response = await fetch('http://localhost:8080/auth/verify-email', {
       method: "post",
       headers: {
         // needed so express parser says OK to read

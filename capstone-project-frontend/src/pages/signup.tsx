@@ -23,7 +23,7 @@ export const SignUp = () => {
               </p>
               <form>
                 {/* FirstName & LastName */}
-                <div className="grid grid-cols-2 gap-4 content-evenly ...">
+                <div className="grid grid-col-2 gap-4 content-evenly ...">
                   <div>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       First Name *

@@ -23,8 +23,8 @@ export const SignUp = () => {
               </p>
               <form>
                 {/* FirstName & LastName */}
-                <div className="grid grid-col-2 gap-4 content-evenly ...">
-                  <div>
+                <div className="grid grid-col-2 gap-4 content-evenly flow-root inline-grid">
+                  <div className="flex-wrap">
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       First Name *
                     </label>
@@ -35,6 +35,8 @@ export const SignUp = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="John"
                     />
+                  </div>
+                  <div className="flex-wrap">
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Last Name *
                     </label>

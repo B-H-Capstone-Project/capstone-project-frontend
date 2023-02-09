@@ -1,5 +1,4 @@
 /** @format */
-
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -42,6 +41,9 @@ export const SignIn = () => {
 					<title>Sign In | BOSS&HOSS</title>
 				</Helmet>
 				<div className='container px-6 py-12 h-full'>
+					<div>
+						{/* <img src={bg} /> */}
+					</div>
 					<div className='flex justify-center items-center flex-wrap h-full g-6 text-gray-800'>
 						<div className='md:w-8/12 lg:w-5/12 lg:ml-20'>
 							<form onSubmit={handleSubmit(onSubmit)}>

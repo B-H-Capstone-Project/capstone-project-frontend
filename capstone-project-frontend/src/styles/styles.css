@@ -597,6 +597,10 @@ video {
   visibility: visible;
 }
 
+.relative {
+  position: relative;
+}
+
 .float-left {
   float: left;
 }
@@ -680,12 +684,16 @@ video {
   display: none;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
 .h-full {
   height: 100%;
+}
+
+.h-\[440px\] {
+  height: 440px;
+}
+
+.h-screen {
+  height: 100vh;
 }
 
 .h-4 {
@@ -708,6 +716,10 @@ video {
   width: 100%;
 }
 
+.w-\[220px\] {
+  width: 220px;
+}
+
 .w-4 {
   width: 1rem;
 }
@@ -722,6 +734,10 @@ video {
 
 .max-w-screen-2xl {
   max-width: 1536px;
+}
+
+.max-w-screen-sm {
+  max-width: 640px;
 }
 
 .basis-1\/2 {
@@ -769,6 +785,18 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
 }
 
 .rounded {
@@ -877,6 +905,10 @@ video {
   padding: 5rem;
 }
 
+.p-2 {
+  padding: 0.5rem;
+}
+
 .p-6 {
   padding: 1.5rem;
 }
@@ -885,17 +917,6 @@ video {
   padding: 0.625rem;
 }
 
-.p-2 {
-  padding: 0.5rem;
-}
-
-<<<<<<< HEAD
-=======
-.p-0 {
-  padding: 0px;
-}
-
->>>>>>> f6cfa20cb12b5826333d984e33361d7a0848d09b
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -1085,6 +1106,10 @@ video {
   transition-duration: 150ms;
 }
 
+.duration-300 {
+  transition-duration: 300ms;
+}
+
 .duration-200 {
   transition-duration: 200ms;
 }
@@ -1157,6 +1182,13 @@ video {
 .checked\:bg-blue-600:checked {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+
+.hover\:scale-105:hover {
+  --tw-scale-x: 1.05;
+  --tw-scale-y: 1.05;
+  -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .hover\:bg-blue-700:hover {

@@ -15,7 +15,7 @@ import { OurWork } from '../pages/our-work';
 import VerifyEmail from '../components/verifyEmail';
 import CheckYourEmail from '../components/checkYourEmail';
 import { ContactUs } from '../pages/contactUs';
-import App from '../admin/App';
+import { Admin } from '../admin/admin';
 
 export const LoggedOutRouter = () => {
 	return (
@@ -51,12 +51,12 @@ export const LoggedOutRouter = () => {
 						element={<ContactUs />}
 					/>
 					<Route
-						path='*'
-						element={<NotFound />}
+						path='/admin'
+						element={<Admin />}
 					/>
 					<Route
-						path='/admin'
-						element={<App />}
+						path='*'
+						element={<NotFound />}
 					/>
 				</Routes>
 			</Router>

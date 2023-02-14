@@ -1,6 +1,7 @@
 import React from "react";
 import { LoggedInRouter } from "./routers/logged-in-router";
 import { LoggedOutRouter } from "./routers/logged-out-router";
+// import { AdminLoggedInRouter } from "./routers/admin-logged-in-router";
 
 function App() {
   /*
@@ -37,6 +38,7 @@ function App() {
       }
     }*/
 	return <LoggedOutRouter />;
+	// return <AdminLoggedInRouter />;
 }
 
 export default App;

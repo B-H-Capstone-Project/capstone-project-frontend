@@ -2,13 +2,7 @@
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { NotFound } from "../pages/404";
-import { Home } from "../pages/home";
-import { SignIn } from "../pages/signin";
-import { SignUp } from "../pages/signup";
-import { OurWork } from "../pages/our-work";
-import VerifyEmail from "../components/verifyEmail";
-import CheckYourEmail from "../components/checkYourEmail";
-import { ContactUs } from "../pages/contactUs";
+
 
 // Admin Dashboard
 import AdminApp from "../admin/AdminApp";
@@ -24,26 +18,26 @@ import FAQ from "../admin/scenes/faq";
 import Calendar from "../admin/scenes/calendar/calendar";
 import Geography from "../admin/scenes/geography";
 import '../admin/index.css';
-export const LoggedOutRouter = () => {
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "../admin/theme";
+import { useState } from "react";
+import Sidebar from "../admin/scenes/global/sidebar";
+import Topbar from "../admin/scenes/global/topbar";
+
+export const AdminLoggedInRouter = () => {
+    const [theme, colorMode] :any = useMode();
+    // const [isSidebar, setIsSidebar] : any = useState(true);
   return (
     <>
-      <div className="bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100">
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/check-your-email" element={<CheckYourEmail />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/our-work" element={<OurWork />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            {/* <Route path="*" element={<NotFound />} /> */}
-          </Routes>
-        </Router>
-      </div>
+
       {/* Admin Dashboard */}
-      <div className="app">
-        <Router>
+      <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="app">
+        <Sidebar  />
+          <main className="content">
+            <Topbar />
           <Routes>
             <Route path="/admin" element={<AdminApp />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
@@ -57,9 +51,11 @@ export const LoggedOutRouter = () => {
             <Route path="/admin/faq" element={<FAQ />} />
             <Route path="/admin/calendar" element={<Calendar />} />
             <Route path="/admin/geography" element={<Geography />} />
-          </Routes>
-        </Router>
-      </div>
+            </Routes>
+          </main>
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
     </>
-  );
+    );
 };

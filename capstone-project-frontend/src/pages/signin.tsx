@@ -23,7 +23,6 @@ export const SignIn = () => {
 	const navigate = useNavigate();
 
 	const onSubmit = async (data: any) => {
-		console.log('singIn');
 		const { email, password } = getValues();
 		try {
 			const response = await axios.post('http://localhost:8080/auth/signin', {
@@ -40,7 +39,7 @@ export const SignIn = () => {
 		<>
 			<section className='h-screen'>
 				<Helmet>
-					<title>Sing In | BOSS&HOSS</title>
+					<title>Sign In | BOSS&HOSS</title>
 				</Helmet>
 				<div className='container px-6 py-12 h-full'>
 					<div className='flex justify-center items-center flex-wrap h-full g-6 text-gray-800'>

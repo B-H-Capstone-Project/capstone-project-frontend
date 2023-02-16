@@ -19,7 +19,6 @@ import { ContactUs } from '../pages/contactUs';
 // Admin Dashboard
 import AdminApp from "../admin/AdminApp";
 import Dashboard from "../admin/scenes/dashboard";
-import Team from "../admin/scenes/team";
 import Contacts from "../admin/scenes/contacts";
 import Invoices from "../admin/scenes/invoices";
 import Form from "../admin/scenes/form";
@@ -27,7 +26,6 @@ import Bar from "../admin/scenes/bar";
 import Pie from "../admin/scenes/pie";
 import Line from "../admin/scenes/line";
 import FAQ from "../admin/scenes/faq";
-import Calendar from "../admin/scenes/calendar/calendar";
 import Geography from "../admin/scenes/geography";
 import '../admin/index.css';
 export const LoggedOutRouter = () => {

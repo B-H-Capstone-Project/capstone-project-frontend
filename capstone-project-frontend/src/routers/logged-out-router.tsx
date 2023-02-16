@@ -14,7 +14,6 @@ import { Home } from '../pages/home';
 import { SignUp } from '../pages/signup';
 import { OurWork } from '../pages/our-work';
 import VerifyEmail from '../components/verifyEmail';
-import CheckYourEmail from '../components/checkYourEmail';
 import { ContactUs } from '../pages/contactUs';
 
 export const LoggedOutRouter = () => {
@@ -33,10 +32,6 @@ export const LoggedOutRouter = () => {
 					<Route
 						path='/signin'
 						element={<SignIn />}
-					/>
-					<Route
-						path='/check-your-email'
-						element={<CheckYourEmail />}
 					/>
 					<Route
 						path='/verify-email'

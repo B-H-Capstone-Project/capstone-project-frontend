@@ -7,7 +7,7 @@ import { NotFound } from "../pages/404";
 // Admin Dashboard
 import AdminApp from "../admin/AdminApp";
 import Dashboard from "../admin/scenes/dashboard";
-import Team from "../admin/scenes/team";
+import Team from "../admin/scenes/employees";
 import Contacts from "../admin/scenes/contacts";
 import Invoices from "../admin/scenes/invoices";
 import Form from "../admin/scenes/form";
@@ -15,7 +15,7 @@ import Bar from "../admin/scenes/bar";
 import Pie from "../admin/scenes/pie";
 import Line from "../admin/scenes/line";
 import FAQ from "../admin/scenes/faq";
-import Calendar from "../admin/scenes/calendar/calendar";
+import Calendar from "../admin/scenes/reservations/reservations";
 import Geography from "../admin/scenes/geography";
 import '../admin/index.css';
 import { CssBaseline, ThemeProvider } from "@mui/material";

@@ -15,7 +15,7 @@ import {
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
-const Calendar = () => {
+const Reservations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [currentEvents, setCurrentEvents] = useState([]);
@@ -48,7 +48,7 @@ const Calendar = () => {
 
   return (
     <Box m="20px">
-      <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+      <Header title="Reservations" subtitle="Full Calendar Interactive Page" />
 
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
@@ -128,4 +128,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default Reservations;

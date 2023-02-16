@@ -6,10 +6,8 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
-import AdminApp from "../../AdminApp";
-import Topbar from "../global/topbar";
 
-const Team = () => {
+const Employees = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -72,9 +70,8 @@ const Team = () => {
 
   return (
     <>
-      <AdminApp />
         <Box m="20px">
-          <Header title="TEAM" subtitle="Managing the Team Members" />
+          <Header title="Employees" subtitle="Managing the Employees" />
           <Box
             m="40px 0 0 0"
             height="75vh"
@@ -111,4 +108,4 @@ const Team = () => {
   );
 };
 
-export default Team;
+export default Employees;

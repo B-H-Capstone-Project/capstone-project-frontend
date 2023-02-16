@@ -26,18 +26,18 @@ const item = {
 };
 
 const bossHossClients = [
-	{ id: 1, img: '', url: '' },
-	{ id: 2, img: '', url: '' },
-	{ id: 3, img: '', url: '' },
-	{ id: 4, img: '', url: '' },
-	{ id: 5, img: '', url: '' },
-	{ id: 6, img: '', url: '' },
-	{ id: 7, img: '', url: '' },
-	{ id: 8, img: '', url: '' },
-	{ id: 9, img: '', url: '' },
-	{ id: 10, img: '', url: '' },
-	{ id: 11, img: '', url: '' },
-	{ id: 12, img: '', url: '' },
+	{ id: 1, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/landcapers.png' },
+	{ id: 2, img: 'https://bossandhoss.com/wp-content/uploads/2021/05/brookfield-1.jpg' },
+	{ id: 3, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/hli.png' },
+	{ id: 4, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/assiboine.png' },
+	{ id: 5, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/hendge.png' },
+	{ id: 6, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/peter.png' },
+	{ id: 7, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/builders.png' },
+	{ id: 8, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/1.png' },
+	{ id: 9, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/2.png' },
+	{ id: 10, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/3.png' },
+	{ id: 11, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/4.png' },
+	{ id: 12, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/5.png' },
 ];
 
 export const Home = () => {
@@ -62,7 +62,7 @@ export const Home = () => {
 							variants={container}
 							initial='hidden'
 							animate='visible'
-							className='bg-black rounded-lg w-3/4 h-1/3 mr-10'></motion.div>
+							className='bg-black rounded-xl w-3/4 h-1/3 mr-10'></motion.div>
 					</div>
 					<motion.div
 						variants={container}
@@ -72,17 +72,17 @@ export const Home = () => {
 						<motion.div
 							key={1}
 							variants={item}
-							className='bg-black rounded-lg w-3/4 h-1/3 mb-10'></motion.div>
+							className='bg-black rounded-xl w-3/4 h-1/3 mb-10'></motion.div>
 						<motion.div
 							key={2}
 							variants={item}
-							className='bg-yellow-300 rounded-lg w-3/4 h-1/3'></motion.div>
+							className='bg-yellow-300 rounded-xl w-3/4 h-1/3'></motion.div>
 					</motion.div>
 				</div>
 			</div>
-			<div className='h-screen bg-black flex justify-center'>
-				<div className='p-20 flex items-center'>
-					<div className='basis-1/2 mr-10'>
+			<div className='h-screen bg-black flex'>
+				<div className='flex-1 w-64 flex justify-center items-center p-20'>
+					<div>
 						<h2 className='text-lime-300 text-4xl font-bold'>
 							Quality Work Since 2005
 						</h2>
@@ -104,61 +104,96 @@ export const Home = () => {
 							“Irrigation & Outdoor Lighting”
 						</p>
 					</div>
-					<div className='basis-1/2'>
-						<div className='bg-white rounded-lg'>sdfsfdfs</div>
-					</div>
+				</div>
+				<div className='flex-1 w-64 flex justify-center items-center'>
+					<div className='bg-white rounded-lg w-3/5 h-3/5 '></div>
 				</div>
 			</div>
-			<div className='flex h-screen w-full bg-zinc-800'>
-				<div className='besis-1/2 w-full flex justify-center items-center'>
-					<div className='p-20 rounded-xl bg-white shadow-[-30px_30px_0px_0px_rgba(206,250,83)]'></div>
+			<div className='flex h-screen bg-zinc-800'>
+				<div className='flex-1 w-64 flex justify-center items-center'>
+					<div className='w-3/5 h-4/6 rounded-xl bg-white shadow-[-40px_40px_0px_0px_rgba(206,250,83)]'></div>
 				</div>
-				<div className='besis-1/2 flex justify-center items-center flex-col mr-10'>
-					<div className='w-full'>
-						<h2 className='text-lime-300 text-4xl font-bold'>
+				<div className='flex-1 w-64 flex justify-center items-center flex-col mr-10'>
+					<div className='w-full mb-3'>
+						<h2 className='text-lime-300 text-7xl font-bold py-5'>
 							Our <br className='mb-2' /> Services
 						</h2>
 					</div>
 					<div className='grid grid-rows-2 grid-flow-col gap-4'>
-						<div className='p-20 bg-red-300'>
-							<div>
-								<CheckIcon className='bg-lime-300 rounded p-10' />
+						<div className='m-1'>
+							<div className='mb-2'>
+								<CheckIcon className='bg-lime-300 rounded p-1' />
 							</div>
-							<h3 className='text-white text-xl font-bold'>Residential</h3>
-							<p className='text-white'>sdffdgfdgfdgdfgdfgsdfsdfsdf</p>
+							<div>
+								<h3 className='text-white text-xl font-bold mb-2'>
+									Residential
+								</h3>
+								<p className='text-white'>
+									workmanship above all others and consistently striving and
+									maintaining excellence in all areas of our business ethics.
+									ßWe are professionals who focus on Irrigation and Outdoor
+									lighting which goes hand in hand.
+								</p>
+							</div>
 						</div>
-						<div className='p-20 bg-red-300'>
-							<div>
-								<CheckIcon className='bg-lime-300 rounded p-10' />
+						<div className='m-1'>
+							<div className='mb-2'>
+								<CheckIcon className='bg-lime-300 rounded p-1' />
 							</div>
-							<h3 className='text-white text-xl font-bold'>Residential</h3>
-							<p className='text-white'>sdfsdfsdfdgfdgfdgfsdf</p>
+							<div>
+								<h3 className='text-white text-xl font-bold mb-2'>
+									Residential
+								</h3>
+								<p className='text-white'>
+									workmanship above all others and consistently striving and
+									maintaining excellence in all areas of our business ethics.
+									ßWe are professionals who focus on Irrigation and Outdoor
+									lighting which goes hand in hand.
+								</p>
+							</div>
 						</div>
-						<div className='p-20 bg-red-300'>
-							<div>
-								<CheckIcon className='bg-lime-300 rounded p-10' />
+						<div className='m-1'>
+							<div className='mb-2'>
+								<CheckIcon className='bg-lime-300 rounded p-1' />
 							</div>
-							<h3 className='text-white text-xl font-bold'>Residential</h3>
-							<p className='text-white'>sdfsdfsdfgdfgfdgfdgfdgdfsdf</p>
+							<div>
+								<h3 className='text-white text-xl font-bold mb-2'>
+									Residential
+								</h3>
+								<p className='text-white'>
+									workmanship above all others and consistently striving and
+									maintaining excellence in all areas of our business ethics.
+									ßWe are professionals who focus on Irrigation and Outdoor
+									lighting which goes hand in hand.
+								</p>
+							</div>
 						</div>
-						<div className='p-20 bg-red-300'>
-							<div>
-								<CheckIcon className='bg-lime-300 rounded p-10' />
+						<div className='m-1'>
+							<div className='mb-2'>
+								<CheckIcon className='bg-lime-300 rounded p-1' />
 							</div>
-							<h3 className='text-white text-xl font-bold'>Residential</h3>
-							<p className='text-white'>sdfsdfsdfgfdgfdgdfgdfgdgdfsdf</p>
+							<div>
+								<h3 className='text-white text-xl font-bold mb-2'>
+									Residential
+								</h3>
+								<p className='text-white'>
+									workmanship above all others and consistently striving and
+									maintaining excellence in all areas of our business ethics.
+									ßWe are professionals who focus on Irrigation and Outdoor
+									lighting which goes hand in hand.
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div className='h-screen bg-black'>
-				<h2 className='text-lime-300 p-20'>Our Clients</h2>
-				<div className='grid grid-rows-4 grid-flow-col gap-4 p-20'>
+			<div className='h-screen bg-black flex justify-center flex-col items-center'>
+				<h2 className='text-lime-300 text-5xl font-bold p-20 '>Our Clients</h2>
+				<div className='grid grid-rows-4 grid-flow-col'>
 					{bossHossClients.map((client) => (
 						<div
-							key={client.id}
-							className='p-5 bg-red-300 m-1'>
-							{client.img}
+							key={client.id}>
+							<img src={`${client.img}`}/>
 						</div>
 					))}
 				</div>

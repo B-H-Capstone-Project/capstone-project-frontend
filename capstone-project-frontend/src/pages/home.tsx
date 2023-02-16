@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Header } from '../components/header';
 import CheckIcon from '@mui/icons-material/Check';
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -43,7 +44,6 @@ const bossHossClients = [
 export const Home = () => {
 	return (
 		<div>
-			<Header />
 			<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen'>
 				<div className='p-20 basis-1/2 flex items-center flex-1 h-full w-full'>
 					<div>
@@ -52,7 +52,27 @@ export const Home = () => {
 							<h1 className='text-7xl'>Irrigation</h1>
 						</div>
 						<button className='text-sm py-1.5 px-5 ml-2 bg-lime-300 rounded-xl'>
-							Book a reservation -
+							Book a reservation
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1, marginLeft: 1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
+              <HorizontalRuleIcon sx={{ fontSize: 10, }}/>
 						</button>
 					</div>
 				</div>

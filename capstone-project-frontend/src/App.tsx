@@ -6,10 +6,8 @@ import { LoggedOutRouter } from './routers/logged-out-router';
 import { LOCAL_STORAGE_TOKEN } from  '../src/constant'
 
 function App() {
-	const token = localStorage.getItem('token');
-  const loggedIn = Boolean(token);
-	return (
-    loggedIn?  <LoggedInRouter /> : <LoggedOutRouter />);
+  const isLoggedIn = true;
+	return (isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
 }
 
 export default App;

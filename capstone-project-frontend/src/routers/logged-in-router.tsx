@@ -6,6 +6,7 @@ import { Reservation } from '../pages/reservation';
 import { Home } from '../pages/home';
 import { NotFound } from '../pages/404';
 import { useMe } from '../hooks/useMe';
+import { Header } from '../components/header';
 
 const ClientRoutes = [
 	<>
@@ -23,12 +24,13 @@ const ClientRoutes = [
 ];
 
 export const LoggedInRouter = () => {
-  const { loading, data } = useMe();
+	const { loading, data } = useMe();
 
-  console.log(data);
+	console.log(data);
 	return (
 		<div className=''>
 			<Router>
+				<Header />
 				<Routes>
 					<Route
 						path='/'

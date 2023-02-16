@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Header } from '../components/header';
+import CheckIcon from '@mui/icons-material/Check';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -108,32 +109,44 @@ export const Home = () => {
 					</div>
 				</div>
 			</div>
-			<div className='flex h-screen bg-zinc-800'>
-				<div className='flex-1 p-20'>
-					<div className='p-20 m-10 rounded bg-white shadow-lime-700'></div>
+			<div className='flex h-screen w-full bg-zinc-800'>
+				<div className='besis-1/2 w-full flex justify-center items-center'>
+					<div className='p-20 rounded-xl bg-white shadow-[-30px_30px_0px_0px_rgba(206,250,83)]'></div>
 				</div>
-				<div className='flex-1 p-20'>
-					<div className='ml-10'>
-						<h2 className='text-lime-300'>
-							Our <br /> Service
+				<div className='besis-1/2 flex justify-center items-center flex-col mr-10'>
+					<div className='w-full'>
+						<h2 className='text-lime-300 text-4xl font-bold'>
+							Our <br className='mb-2' /> Services
 						</h2>
 					</div>
 					<div className='grid grid-rows-2 grid-flow-col gap-4'>
-						<div className='p-20'>
-							<h3 className='text-white'>Residential</h3>
-							<p className='text-white'>sdfsdfsdfsdf</p>
+						<div className='p-20 bg-red-300'>
+							<div>
+								<CheckIcon className='bg-lime-300 rounded p-10' />
+							</div>
+							<h3 className='text-white text-xl font-bold'>Residential</h3>
+							<p className='text-white'>sdffdgfdgfdgdfgdfgsdfsdfsdf</p>
 						</div>
-						<div className='p-20'>
-							<h3 className='text-white'>Residential</h3>
-							<p className='text-white'>sdfsdfsdfsdf</p>
+						<div className='p-20 bg-red-300'>
+							<div>
+								<CheckIcon className='bg-lime-300 rounded p-10' />
+							</div>
+							<h3 className='text-white text-xl font-bold'>Residential</h3>
+							<p className='text-white'>sdfsdfsdfdgfdgfdgfsdf</p>
 						</div>
-						<div className='p-20'>
-							<h3 className='text-white'>Residential</h3>
-							<p className='text-white'>sdfsdfsdfsdf</p>
+						<div className='p-20 bg-red-300'>
+							<div>
+								<CheckIcon className='bg-lime-300 rounded p-10' />
+							</div>
+							<h3 className='text-white text-xl font-bold'>Residential</h3>
+							<p className='text-white'>sdfsdfsdfgdfgfdgfdgfdgdfsdf</p>
 						</div>
-						<div className='p-20'>
-							<h3 className='text-white'>Residential</h3>
-							<p className='text-white'>sdfsdfsdfsdf</p>
+						<div className='p-20 bg-red-300'>
+							<div>
+								<CheckIcon className='bg-lime-300 rounded p-10' />
+							</div>
+							<h3 className='text-white text-xl font-bold'>Residential</h3>
+							<p className='text-white'>sdfsdfsdfgfdgfdgdfgdfgdgdfsdf</p>
 						</div>
 					</div>
 				</div>

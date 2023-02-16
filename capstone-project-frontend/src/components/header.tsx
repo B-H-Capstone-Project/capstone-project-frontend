@@ -1,8 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link'
-import { OurWork } from '../pages/our-work';
-import { ContactUs } from '../pages/contactUs';
 import { NavLink } from 'react-router-dom';
 
 export const Header = () => {

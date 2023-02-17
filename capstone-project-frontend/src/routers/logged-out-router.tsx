@@ -15,6 +15,7 @@ import { SignUp } from '../pages/signup';
 import { OurWork } from '../pages/our-work';
 import VerifyEmail from '../components/verifyEmail';
 import { ContactUs } from '../pages/contactUs';
+import { OurWork } from '../pages/our-work';
 
 // Admin Dashboard
 import AdminApp from "../admin/AdminApp";
@@ -65,5 +66,5 @@ export const LoggedOutRouter = () => {
 				</Routes>
 			</Router>
 		</div>
-	);
+ 	);
 };

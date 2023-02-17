@@ -1,6 +1,8 @@
 /** @format */
 
 import React from 'react';
+import { Services } from '../components/services';
+import { Table } from '../components/clientTable';
 import { Variants, motion } from 'framer-motion';
 import CheckIcon from '@mui/icons-material/Check';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';

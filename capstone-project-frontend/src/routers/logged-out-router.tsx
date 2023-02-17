@@ -13,7 +13,8 @@ import { ContactUs } from "../pages/contactUs";
 // Admin Dashboard
 import AdminApp from "../admin/AdminApp";
 import Dashboard from "../admin/scenes/dashboard";
-import Team from "../admin/scenes/team";
+import Employees from "../admin/scenes/employees";
+import Customers from "../admin/scenes/customers";
 import Contacts from "../admin/scenes/contacts";
 import Invoices from "../admin/scenes/invoices";
 import Form from "../admin/scenes/form";
@@ -21,7 +22,7 @@ import Bar from "../admin/scenes/bar";
 import Pie from "../admin/scenes/pie";
 import Line from "../admin/scenes/line";
 import FAQ from "../admin/scenes/faq";
-import Calendar from "../admin/scenes/calendar/calendar";
+import Reservations from "../admin/scenes/reservations/reservations";
 import Geography from "../admin/scenes/geography";
 import '../admin/index.css';
 export const LoggedOutRouter = () => {
@@ -47,7 +48,9 @@ export const LoggedOutRouter = () => {
           <Routes>
             <Route path="/admin" element={<AdminApp />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/team" element={<Team />} />
+            <Route path="/admin/employees" element={<Employees />} />
+            <Route path="/admin/customers" element={<Customers />} />
+            <Route path="/admin/reservations" element={<Reservations />} />
             <Route path="/admin/contacts" element={<Contacts />} />
             <Route path="/admin/invoices" element={<Invoices />} />
             <Route path="/admin/form" element={<Form />} />
@@ -55,7 +58,6 @@ export const LoggedOutRouter = () => {
             <Route path="/admin/pie" element={<Pie />} />
             <Route path="/admin/line" element={<Line />} />
             <Route path="/admin/faq" element={<FAQ />} />
-            <Route path="/admin/calendar" element={<Calendar />} />
             <Route path="/admin/geography" element={<Geography />} />
           </Routes>
         </Router>

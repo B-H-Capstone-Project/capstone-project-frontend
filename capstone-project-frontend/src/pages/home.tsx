@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Variants, motion } from 'framer-motion';
-import { Header } from '../components/header';
 import CheckIcon from '@mui/icons-material/Check';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 
@@ -12,8 +11,8 @@ const container = {
 		opacity: 1,
 		scale: 1,
 		transition: {
-			delayChildren: 0.3,
-			staggerChildren: 0.2,
+			delayChildren: 0.5,
+			staggerChildren: 0.5,
 		},
 	},
 };
@@ -27,18 +26,18 @@ const item = {
 };
 
 const cardVariants: Variants = {
-  offscreen: {
-    y: 300
-  },
-  onscreen: {
-    y: 50,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      bounce: 0.4,
-      duration: 0.8
-    }
-  }
+	offscreen: {
+		y: 300,
+	},
+	onscreen: {
+		y: 0,
+		rotate: 0,
+		transition: {
+			type: 'spring',
+			bounce: 0.4,
+			duration: 0.8,
+		},
+	},
 };
 
 const bossHossClients = [
@@ -176,9 +175,11 @@ export const Home = () => {
 					initial='offscreen'
 					whileInView='onscreen'
 					viewport={{ once: true, amount: 0.8 }}>
-					<motion.div className='w-3/5 h-4/6 rounded-xl bg-white shadow-[-40px_40px_0px_0px_rgba(206,250,83)]' variants={cardVariants}></motion.div>
+					<motion.div
+						className='w-3/5 h-4/6 rounded-xl bg-white shadow-[-40px_40px_0px_0px_rgba(206,250,83)] -mt-8'
+						variants={cardVariants}></motion.div>
 				</motion.div>
-				<div className='flex-1 w-64 flex justify-center items-center flex-col mr-10'>
+				<div className='flex-1 w-64 flex justify-center flex-col mr-10'>
 					<div className='w-full mb-3'>
 						<h2 className='text-lime-300 text-7xl font-bold py-5'>
 							Our <br className='mb-2' /> Services

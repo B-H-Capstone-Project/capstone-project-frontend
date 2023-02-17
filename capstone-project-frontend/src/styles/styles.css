@@ -638,6 +638,10 @@ video {
   margin-bottom: 2.5rem;
 }
 
+.-mt-8 {
+  margin-top: -2rem;
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }

@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Header } from '../components/header';
 import { Reservation } from '../pages/reservation';
 import { Home } from '../pages/home';
+import { NotFound } from '../pages/404';
+import { useMe } from '../hooks/useMe';
+import { Header } from '../components/header';
 
 const ClientRoutes = [
 	<>
@@ -22,6 +24,9 @@ const ClientRoutes = [
 ];
 
 export const LoggedInRouter = () => {
+	const { loading, data } = useMe();
+
+	console.log(data);
 	return (
 		<div className=''>
 			<Router>
@@ -30,6 +35,14 @@ export const LoggedInRouter = () => {
 					<Route
 						path='/'
 						element={<Home />}
+					/>
+					<Route
+						path='/reservation'
+						element={<Reservation />}
+					/>
+					<Route
+						path='*'
+						element={<NotFound />}
 					/>
 				</Routes>
 			</Router>

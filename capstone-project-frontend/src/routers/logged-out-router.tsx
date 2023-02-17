@@ -5,6 +5,7 @@ import { NotFound } from "../pages/404";
 import { Home } from "../pages/home";
 import { SignIn } from "../pages/signin";
 import { SignUp } from "../pages/signup";
+import { Header } from '../components/header';
 import { OurWork } from "../pages/our-work";
 import VerifyEmail from "../components/verifyEmail";
 import CheckYourEmail from "../components/checkYourEmail";
@@ -26,6 +27,43 @@ import Reservations from "../admin/scenes/reservations/reservations";
 import Geography from "../admin/scenes/geography";
 import '../admin/index.css';
 export const LoggedOutRouter = () => {
+	return (
+		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
+			<Router>
+				<Header />
+				<Routes>
+					<Route
+						path='/'
+						element={<Home />}
+					/>
+					<Route
+						path='/signup'
+						element={<SignUp />}
+					/>
+					<Route
+						path='/signin'
+						element={<SignIn />}
+					/>
+					<Route
+						path='/verify-email'
+						element={<VerifyEmail />}
+					/>
+					<Route
+						path='/our-work'
+						element={<OurWork />}
+					/>
+					<Route
+						path='/contact-us'
+						element={<ContactUs />}
+					/>
+					<Route
+						path='*'
+						element={<NotFound />}
+					/>
+				</Routes>
+			</Router>
+		</div>
+	);
   return (
     <>
       <div className="bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100">

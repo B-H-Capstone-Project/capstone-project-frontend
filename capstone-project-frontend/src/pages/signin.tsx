@@ -1,11 +1,13 @@
 /** @format */
+
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { FormError } from '../components/form-error';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux'
+import { login } from '../redux/reducer/user'
 
-interface ISignInForm {
+export interface ISignInForm {
 	email: string;
 	password: string;
 }
@@ -20,19 +22,27 @@ export const SignIn = () => {
 		mode: 'onBlur',
 	});
 	const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-	const onSubmit = async (data: any) => {
-		const { email, password } = getValues();
-		try {
-			const response = await axios.post('http://localhost:8080/auth/signin', {
-				// Data to be sent to the server
-				email: email,
-				password: password,
-			});
-			console.log(response.data);
-		} catch (err) {
-			console.log(err);
-		}
+	const onSubmit = () => {
+    console.log('submit');
+    dispatch(login(getValues()));
+		/*
+      const { email, password } = getValues();
+      try {
+         const response = await axios.post('/auth/signin', {
+            // Data to be sent to the server
+            email: email,
+            password: password,
+         });
+         if (response.data.token) {
+          const token = response.data.token;
+          localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
+         }
+         navigate('/')
+      } catch (err) {
+         console.log(err);
+      } */
 	};
 	return (
 		<>
@@ -41,9 +51,6 @@ export const SignIn = () => {
 					<title>Sign In | BOSS&HOSS</title>
 				</Helmet>
 				<div className='container px-6 py-12 h-full'>
-					<div>
-						{/* <img src={bg} /> */}
-					</div>
 					<div className='flex justify-center items-center flex-wrap h-full g-6 text-gray-800'>
 						<div className='md:w-8/12 lg:w-5/12 lg:ml-20'>
 							<form onSubmit={handleSubmit(onSubmit)}>

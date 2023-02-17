@@ -1,8 +1,9 @@
 /** @format */
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Header } from '../components/header';
+import { Services } from '../components/services';
+import { Table } from '../components/clientTable';
+import { Variants, motion } from 'framer-motion';
 import CheckIcon from '@mui/icons-material/Check';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 
@@ -12,8 +13,8 @@ const container = {
 		opacity: 1,
 		scale: 1,
 		transition: {
-			delayChildren: 0.3,
-			staggerChildren: 0.2,
+			delayChildren: 0.5,
+			staggerChildren: 0.5,
 		},
 	},
 };
@@ -26,14 +27,47 @@ const item = {
 	},
 };
 
+const cardVariants: Variants = {
+	offscreen: {
+		y: 300,
+	},
+	onscreen: {
+		y: 0,
+		rotate: 0,
+		transition: {
+			type: 'spring',
+			bounce: 0.4,
+			duration: 0.8,
+		},
+	},
+};
+
 const bossHossClients = [
-	{ id: 1, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/landcapers.png' },
-	{ id: 2, img: 'https://bossandhoss.com/wp-content/uploads/2021/05/brookfield-1.jpg' },
+	{
+		id: 1,
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/landcapers.png',
+	},
+	{
+		id: 2,
+		img: 'https://bossandhoss.com/wp-content/uploads/2021/05/brookfield-1.jpg',
+	},
 	{ id: 3, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/hli.png' },
-	{ id: 4, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/assiboine.png' },
-	{ id: 5, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/hendge.png' },
-	{ id: 6, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/peter.png' },
-	{ id: 7, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/builders.png' },
+	{
+		id: 4,
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/assiboine.png',
+	},
+	{
+		id: 5,
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/hendge.png',
+	},
+	{
+		id: 6,
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/peter.png',
+	},
+	{
+		id: 7,
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/builders.png',
+	},
 	{ id: 8, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/1.png' },
 	{ id: 9, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/2.png' },
 	{ id: 10, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/3.png' },
@@ -53,26 +87,28 @@ export const Home = () => {
 						</div>
 						<button className='text-sm py-1.5 px-5 ml-2 bg-lime-300 rounded-xl'>
 							Book a reservation
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1, marginLeft: 1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1}}/>
-              <HorizontalRuleIcon sx={{ fontSize: 10, }}/>
+							<HorizontalRuleIcon
+								sx={{ fontSize: 10, marginRight: -1, marginLeft: 1 }}
+							/>
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+							<HorizontalRuleIcon sx={{ fontSize: 10 }} />
 						</button>
 					</div>
 				</div>
@@ -125,15 +161,27 @@ export const Home = () => {
 						</p>
 					</div>
 				</div>
-				<div className='flex-1 w-64 flex justify-center items-center'>
-					<div className='bg-white rounded-lg w-3/5 h-3/5 '></div>
-				</div>
+				<motion.div
+					className='flex-1 w-64 flex justify-center items-center'
+					initial='hidden'
+					whileInView='visible'
+					viewport={{ once: true, amount: 0.8 }}>
+					<motion.div
+						className='bg-white rounded-lg w-3/5 h-3/5 '
+						variants={container}></motion.div>
+				</motion.div>
 			</div>
 			<div className='flex h-screen bg-zinc-800'>
-				<div className='flex-1 w-64 flex justify-center items-center'>
-					<div className='w-3/5 h-4/6 rounded-xl bg-white shadow-[-40px_40px_0px_0px_rgba(206,250,83)]'></div>
-				</div>
-				<div className='flex-1 w-64 flex justify-center items-center flex-col mr-10'>
+				<motion.div
+					className='flex-1 w-64 flex justify-center items-center'
+					initial='offscreen'
+					whileInView='onscreen'
+					viewport={{ once: true, amount: 0.8 }}>
+					<motion.div
+						className='w-3/5 h-4/6 rounded-xl bg-white shadow-[-40px_40px_0px_0px_rgba(206,250,83)] -mt-8'
+						variants={cardVariants}></motion.div>
+				</motion.div>
+				<div className='flex-1 w-64 flex justify-center flex-col mr-10'>
 					<div className='w-full mb-3'>
 						<h2 className='text-lime-300 text-7xl font-bold py-5'>
 							Our <br className='mb-2' /> Services
@@ -211,9 +259,8 @@ export const Home = () => {
 				<h2 className='text-lime-300 text-5xl font-bold p-20 '>Our Clients</h2>
 				<div className='grid grid-rows-4 grid-flow-col'>
 					{bossHossClients.map((client) => (
-						<div
-							key={client.id}>
-							<img src={`${client.img}`}/>
+						<div key={client.id}>
+							<img src={`${client.img}`} />
 						</div>
 					))}
 				</div>

@@ -12,5 +12,4 @@ module.exports = {
     },
   },
   purge: ["./src/**/*.tsx"],
-  Plugin: [require('tailwind-scrollbar-hide')],
 }

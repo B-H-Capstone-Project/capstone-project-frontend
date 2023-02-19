@@ -1,189 +1,245 @@
-import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { FormError } from '../components/form-error';
+import axios from 'axios';
+interface ISignUpForm {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  address_line: string;
+  unit_number: string;
+  postal_code: string;
+  city: string;
+  province: string;
+  country: string;
+}
 
 export const SignUp = () => {
+
+  const {
+    register,
+    getValues,
+    formState: { errors, isValid },
+    handleSubmit,
+  } = useForm<ISignUpForm>({
+    mode: 'onBlur',
+  });
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: any) => {
+    const { first_name, last_name, phone_number, email, password, confirm_password, address_line, unit_number, postal_code, city, province, country } = getValues();
+    try {
+      const response = await axios.post('http://localhost:8080/auth/signup', {
+        // Data to be sent to the server
+        first_name: first_name,
+        last_name: last_name,
+        phone_number: phone_number,
+        email: email,
+        password: password,
+        confirm_password: confirm_password,
+        address_line: address_line,
+        unit_number: unit_number,
+        postal_code: postal_code,
+        city: city,
+        province: province,
+        country: country,
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
-      <div className="m-0 bg-gray-50 dark:bg-gray-900 ">
+      <div className="m-0 from-slate-100 via-lime-100 to-slate-100 ">
 
-      {/* flex items-center justify-center px-6 py-8  md:h-screen lg:py-0 */}
+        {/* flex items-center justify-center px-6 py-8  md:h-screen lg:py-0 */}
         <div className="m-auto flex items-center flex-col p-20 justify-center">
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 white">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-500">
                 Sign Up
               </h1>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <Link
                   to="signin"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium text-primary-600 hover:underline text-lime-500"
                 >
                   Sign In
                 </Link>
               </p>
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 {/* FirstName & LastName */}
-                <div className="grid grid-col-2 gap-4 content-evenly ...">
-                  <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <div className="w-1/2 flex flex-row gap-4">
+                  <div className="flex flex-col">
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       First Name *
                     </label>
                     <input
                       type="text"
-                      name="first_name"
                       id="first_name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      {...register('first_name')}
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="John"
                     />
                   </div>
-                  <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <div className="flex flex-col">
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Last Name *
                     </label>
                     <input
                       type="text"
-                      name="last_name"
                       id="last_name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      {...register('last_name')}
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Doe"
                     />
                   </div>
                 </div>
-
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="text"
+                    id="phone_number"
+                    {...register('phone_number')}
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                </div>
                 {/* Email */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                     Email *
                   </label>
                   <input
                     type="email"
-                    name="email"
                     id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    {...register('email')}
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
                   />
                 </div>
 
                 {/* Password & Confirm password */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                     Password *
                   </label>
                   <input
                     type="password"
-                    name="password"
                     id="password"
+                    {...register('password')}
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                     Confirm password *
                   </label>
                   <input
-                    type="confirm-password"
-                    name="confirm-password"
+                    type="password"
                     id="confirm-password"
+                    {...register('confirm_password')}
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
                 </div>
 
                 {/* Address */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                     Address *
                   </label>
                   <input
                     type="text"
-                    name="address_line"
                     id="address_line"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                    {...register('address_line')}
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
                 </div>
                 {/* Unit Number & Postal Code  */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                     Unit Number
                   </label>
                   <input
                     type="text"
-                    name="unit_number"
                     id="unit_number"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                    {...register('unit_number')}
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
                 </div>
                 {/* Postal Code & City */}
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Postal Code *
-                  </label>
-                  <input
-                    type="text"
-                    name="postal_code"
-                    id="postal_code"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
+                <div className="w-1/2 flex flex-row gap-4">
+                  <div className="flex flex-col">
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      Postal Code *
+                    </label>
+                    <input
+                      type="text"
+                      id="postal_code"
+                      {...register('postal_code')}
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                  </div>
 
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    City *
-                  </label>
-                  <input
-                    type="text"
-                    name="city"
-                    id="city"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                  <div className="flex flex-col">
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      City *
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      {...register('city')}
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                  </div>
                 </div>
 
                 {/* Province & Country */}
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Province *
-                  </label>
-                  <input
-                    type="text"
-                    name="province"
-                    id="province"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
+                <div className="w-1/2 flex flex-row gap-4">
+                  <div className="flex flex-col">
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      Province *
+                    </label>
+                    <input
+                      type="text"
+                      {...register('province')}
+                      id="province"
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                  </div>
 
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Country *
-                  </label>
-                  <input
-                    type="text"
-                    name="country"
-                    id="country"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                  <div className="flex flex-col">
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      Country *
+                    </label>
+                    <input
+                      type="text"
+                      id="country"
+                      {...register('country')}
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                  </div>
                 </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Phone Number *
-                  </label>
-                  <input
-                    type="text"
-                    name="phone_number"
-                    id="phone_number"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
-                <div className="flex items-start">
+                <div className="p-5 flex items-start">
                   <div className="flex items-center h-5">
                     <input
                       id="terms"
                       aria-describedby="terms"
                       type="checkbox"
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
                     />
                   </div>
-                  <div className="ml-3 text-sm">
+                  <div className=" ml-3 text-sm">
                     <label className="font-light text-gray-500 dark:text-gray-300">
                       I accept the{" "}
                       <a
@@ -195,12 +251,40 @@ export const SignUp = () => {
                     </label>
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  className="w-full text-grey focus:ring-4 focus:outline-none focus:ring-primary-300"
-                >
-                  Create account
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded">
+                    Create account
+                  </button>
+                </div>
+                <p>
+                  ---------------------------- or ----------------------------
+                </p>
+                <div className="flex justify-center gap-4 mt-2 mb-2">
+                  <div className='flex justify-start'>
+                  <button
+                    type="submit"
+                    className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded">
+                    Google
+                  </button>
+                  </div>
+                  <div className='flex justify-end'>
+                  <button
+                    type="submit"
+                    className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded">
+                    Facebook
+                  </button>
+                  </div>
+                </div>
+                <div className='flex justify-center mt-4'>
+                <label>
+                  <Link to='guest'
+                  className="font-medium text-primary-700 hover:underline text-lime-500">
+                          Continue As Guest
+                  </Link>
+                  </label>
+                  </div>
               </form>
             </div>
           </div>

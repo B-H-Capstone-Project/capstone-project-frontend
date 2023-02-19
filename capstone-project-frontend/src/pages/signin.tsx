@@ -2,10 +2,11 @@
 
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import React, { useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { login } from '../redux/reducer/user'
+import axios from 'axios';
+import { LOCAL_STORAGE_TOKEN } from '../constant';
 
 export interface ISignInForm {
 	email: string;
@@ -24,13 +25,14 @@ export const SignIn = () => {
 	const navigate = useNavigate();
   const dispatch = useDispatch();
 
-	const onSubmit = () => {
+	const onSubmit = async () => {
     console.log('submit');
     dispatch(login(getValues()));
-		/*
+		
       const { email, password } = getValues();
       try {
          const response = await axios.post('/auth/signin', {
+        //  const response = await axios.post('http://localhost:8080/auth/signin', {
             // Data to be sent to the server
             email: email,
             password: password,
@@ -40,9 +42,11 @@ export const SignIn = () => {
           localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
          }
          navigate('/')
+        console.log(response.data);
+        
       } catch (err) {
          console.log(err);
-      } */
+      } 
 	};
 	return (
 		<>

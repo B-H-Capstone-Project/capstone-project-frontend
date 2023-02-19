@@ -697,6 +697,7 @@ video {
   height: 33.333333%;
 }
 
+<<<<<<< HEAD
 .h-3\/5 {
   height: 60%;
 }
@@ -705,6 +706,8 @@ video {
   height: 66.666667%;
 }
 
+=======
+>>>>>>> parent of 88d009f (Create onClick to popup an img)
 .h-5 {
   height: 1.25rem;
 }
@@ -935,6 +938,13 @@ video {
   background-clip: padding-box;
 }
 
+<<<<<<< HEAD
+=======
+.object-scale-down {
+  object-fit: scale-down;
+}
+
+>>>>>>> parent of 88d009f (Create onClick to popup an img)
 .p-1\.5 {
   padding: 0.375rem;
 }
@@ -1234,10 +1244,13 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+<<<<<<< HEAD
 .hover\:border-collapse:hover {
   border-collapse: collapse;
 }
 
+=======
+>>>>>>> parent of 88d009f (Create onClick to popup an img)
 .hover\:bg-blue-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));

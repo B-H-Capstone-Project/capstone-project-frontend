@@ -9,7 +9,6 @@ import { SignIn } from '../pages/signin';
 import { Header } from '../components/header';
 import { Home } from '../pages/home';
 import { SignUp } from '../pages/signup';
-import { OurWork } from '../pages/our-work';
 import VerifyEmail from '../components/verifyEmail';
 import { ContactUs } from '../pages/contactUs';
 

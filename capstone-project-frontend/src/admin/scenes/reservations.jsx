@@ -12,8 +12,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import Header from "../../components/Header";
-import { tokens } from "../../theme";
+import Header from "../components/Header";
+import { tokens } from "../theme";
 
 const Reservations = () => {
   const theme = useTheme();

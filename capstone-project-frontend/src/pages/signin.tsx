@@ -3,6 +3,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux'
 import { login } from '../redux/reducer/user'
 import axios from 'axios';
@@ -145,9 +146,9 @@ export const SignIn = () => {
               </p>
 			  </div>
 							</form>
-							</div>
 						</div>
 					</div>
+				</div>
 			</section>
 		</>
 	);

@@ -2,7 +2,7 @@
 
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux'
 import { login } from '../redux/reducer/user'
@@ -26,7 +26,7 @@ export const SignIn = () => {
 
 	const onSubmit = () => {
     console.log('submit');
-    dispatch(login(getValues()));
+    //dispatch(login(getValues()));
 		/*
       const { email, password } = getValues();
       try {

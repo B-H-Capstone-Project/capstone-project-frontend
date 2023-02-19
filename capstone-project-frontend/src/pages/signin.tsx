@@ -141,9 +141,9 @@ export const SignIn = () => {
               </p>
 			  </div>
 							</form>
-							</div>
 						</div>
 					</div>
+				</div>
 			</section>
 		</>
 	);

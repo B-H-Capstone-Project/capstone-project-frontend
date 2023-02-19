@@ -5,7 +5,8 @@ import { LOCAL_STORAGE_TOKEN } from  '../src/constant'
 
 
 function App() {
-  const isLoggedIn = true;
+	const token = localStorage.getItem('token');
+  const isLoggedIn = Boolean(token);
 	return (isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
 }
 

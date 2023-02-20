@@ -75,7 +75,7 @@ export const LoggedInRouter = () => {
 	const [theme, colorMode]: any = useMode();
 
 	return (
-		<div>
+		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'> 
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={theme}>
 					<CssBaseline />

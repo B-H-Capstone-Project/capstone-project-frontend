@@ -3,11 +3,12 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { FormError } from '../components/form-error';
-import axios from 'axios';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import axios from '../api/axios';
 
 
-interface ISignInForm {
+export interface ISignInForm {
 	email: string;
 	password: string;
 }
@@ -23,18 +24,27 @@ export const SignIn = () => {
 	});
 	const navigate = useNavigate();
 
-	const onSubmit = async (data: any) => {
-		const { email, password } = getValues();
-		try {
-			const response = await axios.post('http://localhost:8080/auth/signin', {
-				// Data to be sent to the server
-				email: email,
-				password: password,
-			});
-			console.log(response.data);
-		} catch (err) {
-			console.log(err);
-		}
+	const onSubmit = async() => {
+    console.log('submit');
+
+      const { email, password } = getValues();
+      try {
+         const response = await axios.post('/auth/signin', {
+        //  const response = await axios.post('http://localhost:8080/auth/signin', {
+            // Data to be sent to the server
+            email: email,
+            password: password,
+         });
+         if (response.data.token) {
+          const token = response.data.token;
+          //ßlocalStorage.setItem(LOCAL_STORAGE_TOKEN, token);
+         }
+         navigate('/')
+        console.log(response.data);
+        
+      } catch (err) {
+         console.log(err);
+      } 
 	};
 	return (
 		<>
@@ -133,9 +143,9 @@ export const SignIn = () => {
               </p>
 			  </div>
 							</form>
-							</div>
 						</div>
 					</div>
+				</div>
 			</section>
 		</>
 	);

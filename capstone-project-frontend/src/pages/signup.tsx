@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormError } from '../components/form-error';
 import axios from 'axios';
+import React from 'react';
+
+
 interface ISignUpForm {
   first_name: string;
   last_name: string;

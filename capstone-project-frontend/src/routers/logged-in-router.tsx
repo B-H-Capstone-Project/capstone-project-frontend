@@ -61,7 +61,7 @@ const adminRoutes = [
 export const LoggedInRouter = () => {
 	const { loading, data } = useMe();
 	const [theme, colorMode]: any = useMode();
-
+  
 	return (
 		<div>
 			<ColorModeContext.Provider value={colorMode}>

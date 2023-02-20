@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import jwt, { JwtPayload } from 'jwt-decode'; // import dependency
-import { LOCAL_STORAGE_TOKEN } from '../constant';
 import jwtDecode from 'jwt-decode';
 
 interface IJwtDecode {

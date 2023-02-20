@@ -20,7 +20,7 @@ export const OurWork = () => {
   const [model, setModel] = useState(false);
   const [tempimgSrc, setTempImg] = useState('');
 
-  const getImg = (imgSrc:string) =>{
+  const getImg = (imgSrc: string) => {
     setTempImg(imgSrc);
     setModel(true);
   }
@@ -29,27 +29,29 @@ export const OurWork = () => {
   return (
     <>
       <Header></Header>
-      <div className="p-4 mx-auto w-2/3 h-3/4"
-      id={model? "model open" : "model"}>
-        <img src={tempimgSrc} />
-        
-      </div>
-      <div className="p-4 mx-16 space-y-4">
+      <div className="p-8 mx-auto  space-y-4 ">
+
+
         {/* <img className="w-full h-[440px] object-cover" src="https://www.linkpicture.com/q/1-1_26.jpg"></img>  */}
         {/*demo img*/}
-        <div className='relative flex items-center'>
+        <div className='relative flex items-center  '>
           <button onClick={slideLeft}><MdChevronLeft size={50} /></button>
 
-          <div id='slider' className='w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide' > {/* Note: Scrollbar-hide does not apply... */}
+          <div id='slider' className='w-full h-full object-cover overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide ' > {/* Note: Scrollbar-hide does not apply... */}
             {imgData.map((item, index) => (
-              <img onClick={() =>getImg(item.imgSrc)}
-                className='w-[220px] inline-block p-2 cursor-pointer hover:scale-105 ease-in-out duration-300'
+              <img onClick={() => getImg(item.imgSrc)}
+                className='w-[220px] inline-block p-2 cursor-pointer hover:scale-105 ease-in-out duration-300 '
                 src={item.imgSrc}
                 alt='/' />
             )
             )}
           </div>
           <button onClick={slideRight}><MdChevronRight size={50} /></button>
+        </div>
+        <div 
+          id={model ? "model open" : "model"}>
+          <img src={tempimgSrc} className='' />
+
         </div>
       </div>
 
@@ -58,4 +60,6 @@ export const OurWork = () => {
     </>
   );
 };
+
+export default OurWork;
 

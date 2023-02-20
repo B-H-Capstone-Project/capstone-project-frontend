@@ -1,7 +1,7 @@
-import React, { useState, Component } from "react";
+import React, { useState } from "react";
 import { imgData } from './galleryImg';
-import { MdChevronRight, MdChevronLeft } from "react-icons/md";
-import { Header } from '../components/header';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import slider from "react-slick";
 
 export const OurWork = () => {
@@ -18,7 +18,7 @@ export const OurWork = () => {
   }
 
   const [model, setModel] = useState(false);
-  const [tempimgSrc, setTempImg] = useState('');
+  const [tempimgSrc, setTempImg] = useState(imgData[0].imgSrc);
 
   const getImg = (imgSrc:string) =>{
     setTempImg(imgSrc);
@@ -28,17 +28,16 @@ export const OurWork = () => {
 
   return (
     <>
-      <Header></Header>
+
       <div className="p-4 mx-auto w-2/3 h-3/4"
       id={model? "model open" : "model"}>
         <img src={tempimgSrc} />
-        
       </div>
       <div className="p-4 mx-16 space-y-4">
         {/* <img className="w-full h-[440px] object-cover" src="https://www.linkpicture.com/q/1-1_26.jpg"></img>  */}
         {/*demo img*/}
         <div className='relative flex items-center'>
-          <button onClick={slideLeft}><MdChevronLeft size={50} /></button>
+          <button onClick={slideLeft}><ChevronLeftIcon  /></button>
 
           <div id='slider' className='w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide' > {/* Note: Scrollbar-hide does not apply... */}
             {imgData.map((item, index) => (
@@ -49,7 +48,7 @@ export const OurWork = () => {
             )
             )}
           </div>
-          <button onClick={slideRight}><MdChevronRight size={50} /></button>
+          <button onClick={slideRight}><ChevronRightIcon /></button>
         </div>
       </div>
 

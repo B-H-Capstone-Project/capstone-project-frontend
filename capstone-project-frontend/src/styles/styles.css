@@ -796,6 +796,7 @@ video {
   width: 220px;
 }
 
+
 .w-2\/4 {
   width: 50%;
 }
@@ -1057,6 +1058,14 @@ video {
 
 .p-2\.5 {
   padding: 0.625rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
 }
 
 .p-5 {

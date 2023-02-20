@@ -7,6 +7,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import axios from '../api/axios';
 
+
 export interface ISignInForm {
 	email: string;
 	password: string;
@@ -29,6 +30,7 @@ export const SignIn = () => {
       const { email, password } = getValues();
       try {
          const response = await axios.post('/auth/signin', {
+        //  const response = await axios.post('http://localhost:8080/auth/signin', {
             // Data to be sent to the server
             email: email,
             password: password,
@@ -38,6 +40,8 @@ export const SignIn = () => {
           //ßlocalStorage.setItem(LOCAL_STORAGE_TOKEN, token);
          }
          navigate('/')
+        console.log(response.data);
+        
       } catch (err) {
          console.log(err);
       } 
@@ -139,9 +143,9 @@ export const SignIn = () => {
               </p>
 			  </div>
 							</form>
-							</div>
 						</div>
 					</div>
+				</div>
 			</section>
 		</>
 	);

@@ -11,11 +11,12 @@ import { Header } from "../components/header";
 import { NotFound } from "../pages/404";
 import { ContactUs } from "../pages/contactUs";
 import { OurWork } from "../pages/our-work";
+import { Reservation } from "../pages/reservation";
+import ReservationForm from "../pages/reservation-form";
 
 // admin
 import AdminApp from "../admin/AdminApp";
 import Dashboard from "../admin/scenes/dashboard";
-import { Reservation } from "../pages/reservation";
 import Customers from "../admin/scenes/customers";
 import Employees from "../admin/scenes/employees";
 import Reservations from "../admin/scenes/reservations";
@@ -43,6 +44,10 @@ const clientRoutes = [
     component: <Reservation />,
   },
   {
+    path: "/reservation/form",
+    component: <ReservationForm />,
+  },
+  {
     path: "/contact-us",
     component: <ContactUs />,
   },
@@ -54,7 +59,7 @@ const clientRoutes = [
 
 //admin routes
 const adminRoutes = [
-  // { path: '/admin', component: <AdminApp /> },
+  { path: '/admin', component: <AdminApp /> },
   { path: "/admin/dashboard", component: <Dashboard /> },
   { path: "/admin/customers", component: <Customers /> },
   { path: "/admin/employees", component: <Employees /> },
@@ -71,29 +76,37 @@ const adminRoutes = [
 
 
 export const LoggedInRouter = () => {
-  const { loading, data } = useMe();
-  const [theme, colorMode]: any = useMode();
+	const { loading, data } = useMe();
+	const [theme, colorMode]: any = useMode();
 
-  return (
-    <div>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Router>
-			<Header />
-            {/* <AdminApp /> */}
-            <Routes>
-              {clientRoutes.map((route) => (
-                <Route path={`${route.path}`} element={route.component} />
-              ))}
-              {adminRoutes.map((route) => (
-                <Route path={`${route.path}`} element={route.component} />
-              ))}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
-    </div>
-  );
+	return (
+		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'> 
+			<ColorModeContext.Provider value={colorMode}>
+				<ThemeProvider theme={theme}>
+					<CssBaseline />
+					<Router>
+						<Header />
+						<Routes>
+							{clientRoutes.map((route) => (
+								<Route
+									path={`${route.path}`}
+									element={route.component}
+								/>
+							))}
+							{adminRoutes.map((route) => (
+								<Route
+									path={`${route.path}`}
+									element={route.component}
+								/>
+							))}
+							<Route
+								path='*'
+								element={<NotFound />}
+							/>
+						</Routes>
+					</Router>
+				</ThemeProvider>
+			</ColorModeContext.Provider>
+		</div>
+	);
 };

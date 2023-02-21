@@ -1,19 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
+import signIn from '../../services/auth.service';
 
-const initialStateValue = { email: '', password: '' };
+const token = localStorage.getItem('token');
+const user = Boolean(token);
 
-export const userSlice = createSlice({
-	name: 'user',
-	initialState: { value: initialStateValue },
+const initialStateValue = user
+  ? { isLoggedIn: true, user, loading: false, token, error: null}
+  : { isLoggedIn: false, user: null, loading: false, token, error: null };
+
+
+export const authSlice = createSlice({
+	name: 'authentication',
+	initialState: initialStateValue ,
 	reducers: {
-		login: (state, action) => {
-			state.value = action.payload;
+		login: (state) => {
+			state.isLoggedIn = true;
 		},
 		logout: (state) => {
-			state.value = initialStateValue;
+			state.isLoggedIn = false;
 		},
 	},
+  extraReducers: {
+    [signIn.pending]: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    [signIn.fulfilled]: (state) => {
+      state.loading = false
+    },
+    [signIn.rejected]: (state, { playload }) => {
+      state.loading = false
+      state.error = playload
+    },
+  }
 });
 
-export const { login, logout } = userSlice.actions;
-export default userSlice.reducer;
+
+export const authActions = authSlice.actions;

@@ -11,6 +11,7 @@ import { Home } from '../pages/home';
 import { SignUp } from '../pages/signup';
 import VerifyEmail from '../components/verifyEmail';
 import { ContactUs } from '../pages/contactUs';
+import { OurWork } from '../pages/our-work';
 
 export const LoggedOutRouter = () => {
 	return (

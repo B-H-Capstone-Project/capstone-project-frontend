@@ -1,74 +1,99 @@
 /** @format */
 
-import React, { useCallback, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Header } from '../components/header';
-import { Reservation } from '../pages/reservation';
-import { Home } from '../pages/home';
-import axios from '../api/axios';
-import jwt, { JwtPayload } from 'jwt-decode'; // import dependency
-import { LOCAL_STORAGE_TOKEN } from '../constant';
-import jwtDecode from 'jwt-decode';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useMe } from "../hooks/useMe";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
-const ClientRoutes = [
-	<>
-		<Route
-			key={1}
-			path='/'
-			element={<Home />}
-		/>
-		<Route
-			key={4}
-			path='/reservation'
-			element={<Reservation />}
-		/>
-	</>,
+// client
+import { Home } from "../pages/home";
+import { Header } from "../components/header";
+import { NotFound } from "../pages/404";
+import { ContactUs } from "../pages/contactUs";
+import { OurWork } from "../pages/our-work";
+
+// admin
+import AdminApp from "../admin/AdminApp";
+import Dashboard from "../admin/scenes/dashboard";
+import { Reservation } from "../pages/reservation";
+import Customers from "../admin/scenes/customers";
+import Employees from "../admin/scenes/employees";
+import Reservations from "../admin/scenes/reservations";
+import Invoices from "../admin/scenes/invoices";
+import Contacts from "../admin/scenes/contacts";
+import Bar from "../admin/scenes/bar";
+import Form from "../admin/scenes/form";
+import Pie from "../admin/scenes/pie";
+import Line from "../admin/scenes/line";
+import FAQ from "../admin/scenes/faq";
+import Geography from "../admin/scenes/geography";
+import { ColorModeContext, useMode } from "../admin/theme";
+
+// user test
+// let admin = "admin";
+
+//customer routes
+const clientRoutes = [
+  {
+    path: "/",
+    component: <Home />,
+  },
+  {
+    path: "/reservation",
+    component: <Reservation />,
+  },
+  {
+    path: "/contact-us",
+    component: <ContactUs />,
+  },
+  {
+    path: "/our-work",
+    component: <OurWork />,
+  },
 ];
 
+//admin routes
+const adminRoutes = [
+  // { path: '/admin', component: <AdminApp /> },
+  { path: "/admin/dashboard", component: <Dashboard /> },
+  { path: "/admin/customers", component: <Customers /> },
+  { path: "/admin/employees", component: <Employees /> },
+  { path: "/admin/reservations", component: <Reservations /> },
+  { path: "/admin/contacts", component: <Contacts /> },
+  { path: "/admin/invoices", component: <Invoices /> },
+  { path: "/admin/form", component: <Form /> },
+  { path: "/admin/bar", component: <Bar /> },
+  { path: "/admin/pie", component: <Pie /> },
+  { path: "/admin/line", component: <Line /> },
+  { path: "/admin/faq", component: <FAQ /> },
+  { path: "/admin/geography", component: <Geography /> },
+];
+
+
 export const LoggedInRouter = () => {
-	const token = localStorage.getItem('token');
-  const [data, setData] = useState(null)
-  const [query, setQuery] = useState("react hooks")
-  let userId: any = undefined;
-	if (token) {
-    const decoded = jwtDecode<JwtPayload>(token);
-		userId = decoded.id;
-	}
+  const { loading, data } = useMe();
+  const [theme, colorMode]: any = useMode();
 
-	const getData = useCallback(async () => {
-    try {
-      if (userId !== undefined) {
-        await axios
-          .get(`/user/${userId}`)
-          .then(function (response) {
-            setData(response.data)
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .then(function () {
-            // 항상 실행되는 영역
-          });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-	}, [query]);
-
-	return (
-		<div className=''>
-			<Router>
-				<Routes>
-					<Route
-						path='/'
-						element={<Home />}
-					/>
-					<Route
-						path='/reservation'
-						element={<Reservation />}
-					/>
-				</Routes>
-			</Router>
-		</div>
-	);
+  return (
+    <div>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+			<Header />
+            {/* <AdminApp /> */}
+            <Routes>
+              {clientRoutes.map((route) => (
+                <Route path={`${route.path}`} element={route.component} />
+              ))}
+              {adminRoutes.map((route) => (
+                <Route path={`${route.path}`} element={route.component} />
+              ))}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </div>
+  );
 };

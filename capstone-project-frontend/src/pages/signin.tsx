@@ -3,12 +3,11 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import axios from '../api/axios';
+import { FormError } from '../components/form-error';
+import axios from 'axios';
 
 
-export interface ISignInForm {
+interface ISignInForm {
 	email: string;
 	password: string;
 }
@@ -24,32 +23,26 @@ export const SignIn = () => {
 	});
 	const navigate = useNavigate();
 
-	const onSubmit = async() => {
-    console.log('submit');
-
-      const { email, password } = getValues();
-      try {
-         const response = await axios.post('/auth/signin', {
-        //  const response = await axios.post('http://localhost:8080/auth/signin', {
-            // Data to be sent to the server
-            email: email,
-            password: password,
-         });
-         if (response.data.token) {
-          const token = response.data.token;
-          //ßlocalStorage.setItem(LOCAL_STORAGE_TOKEN, token);
-         }
-         navigate('/')
-        console.log(response.data);
-        
-      } catch (err) {
-         console.log(err);
-      } 
+	const onSubmit = async (data: any) => {
+		const { email, password } = getValues();
+		try {
+			const response = await axios.post('http://localhost:8080/auth/signin', {
+				// Data to be sent to the server
+				email: email,
+				password: password,
+			});
+			console.log(response.data);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 	return (
 		<>
-			<section className='h-screen bg-[length:1000px_625px] bg-[url("https://s3-alpha-sig.figma.com/img/ea9d/7411/f1c7bd178af6515cc828a195e91666be?Expires=1677456000&Signature=N~Oyz2hqQx~yv5Lk6XJYZhWllYZNcsE8q0yQC6IaepJ7ftVE3CrSuw8oe4T0HSbFKiJUcmQp2qR4RvzVXWVnQn7QjzXFit7nyjFIYnMUKnP2DdPxjs~JFj39u6uCyPDlBhaU4-UcS5PCyJ7xHEAMVi3JJ00VdxYSkFNU-CIAShFi753gbWgckj3ABLuDjH~sJt~SjfjeZRrjR5xIFlwZKU6ljWKzNDs2amxfJVlbaAn~kN~i9vlpBS0~dcVQJcL9d0FTd00MchBboUrmH1f7Lru28QnCuXHkrZbWdUiut3JDPF3Q5azUOz9f-HsA9lJuwChmn30X7xXo1PUUW9rVLA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4")]'>
-				<Helmet>
+    //max-w-full h-auto
+			<section className=''>
+      <img className="h-48 w-full object-cover md:h-full md:w-48" src="https://s3-alpha-sig.figma.com/img/ea9d/7411/f1c7bd178af6515cc828a195e91666be?Expires=1677456000&Signature=N~Oyz2hqQx~yv5Lk6XJYZhWllYZNcsE8q0yQC6IaepJ7ftVE3CrSuw8oe4T0HSbFKiJUcmQp2qR4RvzVXWVnQn7QjzXFit7nyjFIYnMUKnP2DdPxjs~JFj39u6uCyPDlBhaU4-UcS5PCyJ7xHEAMVi3JJ00VdxYSkFNU-CIAShFi753gbWgckj3ABLuDjH~sJt~SjfjeZRrjR5xIFlwZKU6ljWKzNDs2amxfJVlbaAn~kN~i9vlpBS0~dcVQJcL9d0FTd00MchBboUrmH1f7Lru28QnCuXHkrZbWdUiut3JDPF3Q5azUOz9f-HsA9lJuwChmn30X7xXo1PUUW9rVLA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"/>
+
+        <Helmet>
 					<title>Sign In | BOSS&HOSS</title>
 				</Helmet>                             
 				<div className=''>
@@ -143,9 +136,9 @@ export const SignIn = () => {
               </p>
 			  </div>
 							</form>
+							</div>
 						</div>
 					</div>
-				</div>
 			</section>
 		</>
 	);

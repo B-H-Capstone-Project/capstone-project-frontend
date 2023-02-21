@@ -4,20 +4,18 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { RootState } from '../redux/store';
-import AuthService from "../services/auth.service";
-import { LOGOUT } from '../redux/types';
+import AuthService from '../services/auth.service';
 import { authActions } from '../redux/reducer/user';
 
 export const Header = () => {
-  const dispatch = useDispatch();
-	const isAuth = useSelector((state:RootState) => state.isLoggedIn);
+	const dispatch = useDispatch();
+	const isAuth = useSelector((state: RootState) => state.isLoggedIn);
 
-  const logOutHandler = () => {
-    AuthService.logout();
-    dispatch(authActions.logout);
-  };
-
-  console.log(isAuth);
+	const logOutHandler = () => {
+		AuthService.signOut();
+		dispatch(authActions.logout);
+    window.location.reload();;
+	};
 
 	return (
 		<header>
@@ -42,7 +40,9 @@ export const Header = () => {
 							</button>
 						</NavLink>
 					) : (
-						<button onClick={logOutHandler} className=' bg-black hover:bg-blue-700 py-3 px-10  text-white font-bold rounded-lg'>
+						<button
+							onClick={logOutHandler}
+							className=' bg-black hover:bg-blue-700 py-3 px-10  text-white font-bold rounded-lg'>
 							SIGN OUT
 						</button>
 					)}

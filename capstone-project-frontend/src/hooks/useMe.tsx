@@ -3,7 +3,6 @@
 // useApi.tsx
 import { useEffect, useState } from 'react';
 import axios from '../api/axios';
-import jwt, { JwtPayload } from 'jwt-decode'; // import dependency
 import jwtDecode from 'jwt-decode';
 
 interface IJwtDecode {

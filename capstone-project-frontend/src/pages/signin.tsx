@@ -3,10 +3,10 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
-import { login } from '../redux/reducer/user'
-import axios from 'axios';
-import { LOCAL_STORAGE_TOKEN } from '../constant';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import axios from '../api/axios';
+
 
 export interface ISignInForm {
    email: string;
@@ -14,21 +14,19 @@ export interface ISignInForm {
 }
 
 export const SignIn = () => {
-   const {
-      register,
-      getValues,
-      formState: { errors, isValid },
-      handleSubmit,
-   } = useForm<ISignInForm>({
-      mode: 'onBlur',
-   });
-   const navigate = useNavigate();
-  const dispatch = useDispatch();
+	const {
+		register,
+		getValues,
+		formState: { errors, isValid },
+		handleSubmit,
+	} = useForm<ISignInForm>({
+		mode: 'onBlur',
+	});
+	const navigate = useNavigate();
 
-   const onSubmit = async () => {
+	const onSubmit = async() => {
     console.log('submit');
-    dispatch(login(getValues()));
-      
+
       const { email, password } = getValues();
       try {
         //  const response = await axios.post('/auth/signin', {
@@ -39,11 +37,7 @@ export const SignIn = () => {
          });
          if (response.data.token) {
           const token = response.data.token;
-          console.log('------------------------');
-          console.log(token);
-          
-          // window.localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
-          localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
+          //ßlocalStorage.setItem(LOCAL_STORAGE_TOKEN, token);
          }
          navigate('/')
         console.log(response.data);
@@ -147,12 +141,12 @@ export const SignIn = () => {
                   Continue As Guest
                 </Link>
               </p>
-           </div>
-                     </form>
-                     </div>
-                  </div>
-               </div>
-         </section>
-      </>
-   );
+			  </div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</>
+	);
 };

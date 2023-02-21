@@ -1,15 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import signIn from '../../services/auth.service';
 
 const token = localStorage.getItem('token');
 const user = Boolean(token);
 
 const initialStateValue = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+  ? { isLoggedIn: true, user, loading: false, token, error: null}
+  : { isLoggedIn: false, user: null, loading: false, token, error: null };
 
-
-console.log(user);
 
 export const authSlice = createSlice({
 	name: 'authentication',
@@ -22,6 +20,19 @@ export const authSlice = createSlice({
 			state.isLoggedIn = false;
 		},
 	},
+  extraReducers: {
+    [signIn.pending]: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    [signIn.fulfilled]: (state) => {
+      state.loading = false
+    },
+    [signIn.rejected]: (state, { playload }) => {
+      state.loading = false
+      state.error = playload
+    },
+  }
 });
 
 

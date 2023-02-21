@@ -10,8 +10,8 @@ import authService from '../services/auth.service';
 import { RootState } from '../redux/store';
 
 export interface ISignInForm {
-	email: string;
-	password: string;
+   email: string;
+   password: string;
 }
 
 export const SignIn = () => {
@@ -28,7 +28,6 @@ export const SignIn = () => {
 
 	const onSubmit = async () => {
 		console.log('submit');
-
 		const { email, password } = getValues();
     console.log(email, password);
 		authService.signIn(email, password).then(
@@ -141,6 +140,7 @@ export const SignIn = () => {
 										</Link>
 									</p>
 								</div>
+
 							</form>
 						</div>
 					</div>

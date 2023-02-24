@@ -31,10 +31,7 @@ export const SignIn = () => {
 
 	const onSubmit = async () => {
     console.log('submit');
-<<<<<<< HEAD
-=======
     //dispatch(login(getValues()));
->>>>>>> 969bb68 (dddd)
 		
       const { email, password } = getValues();
       try {
@@ -46,10 +43,7 @@ export const SignIn = () => {
          });
          if (response.data.token) {
           const token = response.data.token;
-<<<<<<< HEAD
-=======
           //localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
->>>>>>> 969bb68 (dddd)
          }
          navigate('/')
         console.log(response.data);

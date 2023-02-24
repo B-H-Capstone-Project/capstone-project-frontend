@@ -83,8 +83,8 @@ function ReservationForm() {
 
               <form onSubmit={handleSubmit(onSubmit)}>
                 {/* FirstName & LastName */}
-                <div className="w-1/2 flex flex-row gap-4">
-                  <div className="flex flex-col">
+                <div className="flex flex-row gap-4">           
+                <div className="md:w-1/2">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       First Name *
                     </label>
@@ -92,11 +92,11 @@ function ReservationForm() {
                       type="text"
                       id="first_name"
                       {...register("first_name")}
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="John"
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className="md:w-1/2">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Last Name *
                     </label>
@@ -104,7 +104,7 @@ function ReservationForm() {
                       type="text"
                       id="last_name"
                       {...register("last_name")}
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Doe"
                     />
                   </div>
@@ -155,12 +155,12 @@ function ReservationForm() {
                     type="text"
                     id="unit_number"
                     {...register("unit_number")}
-                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
                 </div>
                 {/* Postal Code & City */}
-                <div className="w-1/2 flex flex-row gap-4">
-                  <div className="flex flex-col">
+                <div className="flex flex-row gap-4">           
+                <div className="md:w-1/2">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Postal Code *
                     </label>
@@ -168,10 +168,10 @@ function ReservationForm() {
                       type="text"
                       id="postal_code"
                       {...register("postal_code")}
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className="md:w-1/2">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       City *
                     </label>
@@ -179,14 +179,14 @@ function ReservationForm() {
                       type="text"
                       id="city"
                       {...register("city")}
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                 </div>
 
                 {/* Province & Country */}
-                <div className="w-1/2 flex flex-row gap-4">
-                  <div className="flex flex-col">
+                <div className="flex flex-row gap-4">           
+                <div className="md:w-1/2">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Province *
                     </label>
@@ -194,10 +194,10 @@ function ReservationForm() {
                       type="text"
                       {...register("province")}
                       id="province"
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className="md:w-1/2">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Country *
                     </label>
@@ -205,7 +205,7 @@ function ReservationForm() {
                       type="text"
                       id="country"
                       {...register("country")}
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                 </div>

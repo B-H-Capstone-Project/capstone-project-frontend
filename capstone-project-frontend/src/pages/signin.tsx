@@ -31,6 +31,7 @@ export const SignIn = () => {
 
 	const onSubmit = async () => {
     console.log('submit');
+    //dispatch(login(getValues()));
 		
       const { email, password } = getValues();
       try {
@@ -42,6 +43,7 @@ export const SignIn = () => {
          });
          if (response.data.token) {
           const token = response.data.token;
+          //localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
          }
          navigate('/')
         console.log(response.data);

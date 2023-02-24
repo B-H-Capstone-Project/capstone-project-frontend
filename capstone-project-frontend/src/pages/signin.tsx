@@ -25,6 +25,7 @@ export const SignIn = () => {
 	});
 	const navigate = useNavigate();
 <<<<<<< HEAD
+<<<<<<< HEAD
   const dispatch = useDispatch();
 
 	const onSubmit = async () => {
@@ -146,6 +147,9 @@ export const SignIn = () => {
 			  </div>
 =======
   const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
+=======
+//   const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
+>>>>>>> 12fe374 (after main pull, comment route user signin error)
 
 	const onSubmit = async () => {
 		console.log('submit');

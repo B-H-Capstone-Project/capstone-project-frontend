@@ -20,19 +20,19 @@ export const authSlice = createSlice({
 			state.isLoggedIn = false;
 		},
 	},
-  extraReducers: {
-    [signIn.pending]: (state) => {
-      state.loading = true
-      state.error = null
-    },
-    [signIn.fulfilled]: (state) => {
-      state.loading = false
-    },
-    [signIn.rejected]: (state, { playload }) => {
-      state.loading = false
-      state.error = playload
-    },
-  }
+  // extraReducers: {
+  //   [signIn.pending]: (state) => {
+  //     state.loading = true
+  //     state.error = null
+  //   },
+  //   [signIn.fulfilled]: (state) => {
+  //     state.loading = false
+  //   },
+  //   [signIn.rejected]: (state, { playload }) => {
+  //     state.loading = false
+  //     state.error = playload
+  //   },
+  // }
 });
 
 

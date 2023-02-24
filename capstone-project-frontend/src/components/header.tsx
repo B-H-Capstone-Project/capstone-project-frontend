@@ -1,21 +1,15 @@
 /** @format */
 
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { RootState } from '../redux/store';
-import AuthService from '../services/auth.service';
+import { useAppDispatch } from '../redux/hook';
+import { signOut } from '../redux/reducer/authSlice';
 
 export const Header = () => {
-	const dispatch = useDispatch();
-	const isAuth = useSelector((state: RootState) => state.isLoggedIn);
-
-	const logOutHandler = () => {
-		AuthService.signOut();
-		//dispatch(signInSlice.logout);
-    window.location.reload();;
-	};
-
+  const dispatch = useAppDispatch();
+	const isAuth = useSelector((state: RootState) => state.auth);
 	return (
 		<header>
 			<nav className='flex justify-between py-2.5'>
@@ -32,7 +26,7 @@ export const Header = () => {
 					<div className='text-xs mr-10'>
 						<NavLink to='/contact-us'>CONTACT US</NavLink>
 					</div>
-					{!isAuth ? (
+					{!isAuth.isLoggedIn ? (
 						<NavLink to='signin'>
 							<button className=' bg-black hover:bg-blue-700 py-3 px-10  text-white font-bold rounded-lg'>
 								SIGN IN
@@ -40,7 +34,7 @@ export const Header = () => {
 						</NavLink>
 					) : (
 						<button
-							onClick={logOutHandler}
+							onClick={() => dispatch(signOut())}
 							className=' bg-black hover:bg-blue-700 py-3 px-10  text-white font-bold rounded-lg'>
 							SIGN OUT
 						</button>

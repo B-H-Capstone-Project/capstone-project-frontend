@@ -3,14 +3,9 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from '../api/axios';
-import authService from '../services/auth.service';
-import { RootState } from '../redux/store';
-import loginAction from '../redux/action/loginAction'
-import { useAppDispatch } from '../redux/hook';
-import signInSlice from '../redux/reducer/signInSlice';
+import React from 'react';
+import { useAppDispatch, useAppSelector } from '../redux/hook';
+import { signIn } from '../redux/reducer/authSlice'
 
 export interface ISignInForm {
 	email: string;
@@ -26,31 +21,13 @@ export const SignIn = () => {
 	} = useForm<ISignInForm>({
 		mode: 'onBlur',
 	});
+  const { loading, error, userInfo } = useAppSelector((state) => state.auth)
 	const navigate = useNavigate();
-  const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const onSubmit = async () => {
-    console.log('submit');
-    //dispatch(login(getValues()));
-		
-      const { email, password } = getValues();
-      try {
-         const response = await axios.post('/auth/signin', {
-        //  const response = await axios.post('http://localhost:8080/auth/signin', {
-            // Data to be sent to the server
-            email: email,
-            password: password,
-         });
-         if (response.data.token) {
-          const token = response.data.token;
-          //localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
-         }
-         navigate('/')
-        console.log(response.data);
-        
-      } catch (err) {
-         console.log(err);
-      } 
+    const { email, password } = getValues();
+    dispatch(signIn({email: email, password: password}));
 	};
 	return (
 		<>
@@ -123,31 +100,6 @@ export const SignIn = () => {
 								<p>
 									---------------------------- or ----------------------------
 								</p>
-								<div className='flex justify-center mt-4 mb-4'>
-									<div className='absolute bottom-0 left-16 h-5 w-16'>
-										<button
-											type='submit'
-											className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
-											Google
-										</button>
-									</div>
-									<div className='absolute bottom-0 right-17 h-5 w-16'>
-										<button
-											type='submit'
-											className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
-											Facebook
-										</button>
-									</div>
-								</div>
-								<div className='absolute inset-x-0 bottom-0'>
-									<p>
-										<Link
-											to='guest'
-											className='font-medium text-primary-700 hover:underline text-lime-500'>
-											Continue As Guest
-										</Link>
-									</p>
-								</div>
 								<div className='flex justify-center mt-4 mb-4'>
 									<div className='absolute bottom-0 left-16 h-5 w-16'>
 										<button

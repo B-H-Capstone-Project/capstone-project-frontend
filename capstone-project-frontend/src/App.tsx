@@ -1,13 +1,14 @@
 import React from 'react';
 import { LoggedInRouter } from './routers/logged-in-router';
 import { LoggedOutRouter } from './routers/logged-out-router';
-import { truncate } from 'fs';
+import { useSelector } from 'react-redux';
+import { RootState } from './redux/store';
 
 
 function App() {
-  //const isLoggedIn = useSelector((state:RootState) => state.isLoggedIn);
-  const isLoggedIn = true
-	return (isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
+	const isAuth = useSelector((state: RootState) => state.auth);
+  console.log(isAuth);
+	return (isAuth.isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
 }
 
 

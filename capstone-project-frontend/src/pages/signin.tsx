@@ -46,15 +46,10 @@ export const SignIn = () => {
 
 	return (
 		<>
-			<section className=' bg max-w-full h-auto bg:src="https://s3-alpha-sig.figma.com/img/ea9d/7411/f1c7bd178af6515cc828a195e91666be?Expires=1677456000&Signature=N~Oyz2hqQx~yv5Lk6XJYZhWllYZNcsE8q0yQC6IaepJ7ftVE3CrSuw8oe4T0HSbFKiJUcmQp2qR4RvzVXWVnQn7QjzXFit7nyjFIYnMUKnP2DdPxjs~JFj39u6uCyPDlBhaU4-UcS5PCyJ7xHEAMVi3JJ00VdxYSkFNU-CIAShFi753gbWgckj3ABLuDjH~sJt~SjfjeZRrjR5xIFlwZKU6ljWKzNDs2amxfJVlbaAn~kN~i9vlpBS0~dcVQJcL9d0FTd00MchBboUrmH1f7Lru28QnCuXHkrZbWdUiut3JDPF3Q5azUOz9f-HsA9lJuwChmn30X7xXo1PUUW9rVLA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"'>
-      <img className="h-48 w-full object-cover md:h-full md:w-48" />
-
-        <Helmet>
-					<title>Sign In | BOSS&HOSS</title>
-				</Helmet>
 				<div className=''>
-					<div className='absolute inset-y-0 right-0 h-full w-2/4 dark:border-black bg-white'>
-						<div className='md:w-8/12 lg:w-5/12 lg:ml-20'>
+						<img className='absolute left-0 h-screen w-screen' src="https://s3-alpha-sig.figma.com/img/ea9d/7411/f1c7bd178af6515cc828a195e91666be?Expires=1677456000&Signature=N~Oyz2hqQx~yv5Lk6XJYZhWllYZNcsE8q0yQC6IaepJ7ftVE3CrSuw8oe4T0HSbFKiJUcmQp2qR4RvzVXWVnQn7QjzXFit7nyjFIYnMUKnP2DdPxjs~JFj39u6uCyPDlBhaU4-UcS5PCyJ7xHEAMVi3JJ00VdxYSkFNU-CIAShFi753gbWgckj3ABLuDjH~sJt~SjfjeZRrjR5xIFlwZKU6ljWKzNDs2amxfJVlbaAn~kN~i9vlpBS0~dcVQJcL9d0FTd00MchBboUrmH1f7Lru28QnCuXHkrZbWdUiut3JDPF3Q5azUOz9f-HsA9lJuwChmn30X7xXo1PUUW9rVLA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"/>
+					<div className='absolute right-0 h-screen w-2/4 dark:border-black bg-white'>
+						<div className='lg:w-1/2 lg:ml-20'>
 							<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-500 mt-20 mb-5'>
 								Sign In
 							</h1>
@@ -68,7 +63,7 @@ export const SignIn = () => {
 							</p>
 							<form
 								onSubmit={handleSubmit(onSubmit)}
-								className='absolute inset-y-50 left-30 w-4/5'>
+								>
 								<div>
 									<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
 										Email *
@@ -114,40 +109,39 @@ export const SignIn = () => {
 									className='inline-block px-6 py-3 mb-4 bg-lime-500 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-lime-700 hover:shadow-lg focus:bg-lime-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-4/5'>
 									Let's get started
 								</button>
-								<p>
-									---------------------------- or ----------------------------
-								</p>
-								<div className='flex justify-center mt-4 mb-4'>
-									<div className='absolute bottom-0 left-16 h-5 w-16'>
-										<button
-											type='submit'
-											className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
-											Google
-										</button>
-									</div>
-									<div className='absolute bottom-0 right-17 h-5 w-16'>
-										<button
-											type='submit'
-											className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
-											Facebook
-										</button>
-									</div>
-								</div>
+								<div className="flex justify-between items-center mt-3">
+            <hr className="w-full"/>
+            <span className="p-2 text-gray-400 mb-1">OR</span>
+            <hr className="w-full"/>
+            </div>
+				<div className="flex flex-row gap-4">           
+                  <div className="md:w-1/2">
+						<button type="button" className="text-white bg-[#4285F4] hover:bg-[#4285F4] focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
+                          <svg className="w-4 h-4 mr-2 -ml-1" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>
+                            Sign in with Google
+                            </button>
+							  </div>
+				  <div className="md:w-1/2">
+						<button type="button" className="text-white bg-[#3b5998] hover:bg-[#3b5998] focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2">
+                          <svg className="w-4 h-4 mr-2 -ml-1" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook-f" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M279.1 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.4 0 225.4 0c-73.22 0-121.1 44.38-121.1 124.7v70.62H22.89V288h81.39v224h100.2V288z"></path></svg>
+                            Sign in with Facebook
+                            </button>
+                            </div>
+                            </div>
 								<div className='absolute inset-x-0 bottom-0'>
 									<p>
 										<Link
 											to='guest'
 											className='font-medium text-primary-700 hover:underline text-lime-500'>
-											Continue As Guest
+											
 										</Link>
 									</p>
 								</div>
 
 							</form>
-							</div>
 						</div>
 					</div>
-			</section>
+				</div>
 		</>
 	);
 };

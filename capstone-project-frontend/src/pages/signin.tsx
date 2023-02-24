@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from '../api/axios';
 import authService from '../services/auth.service';
 import { RootState } from '../redux/store';
+import loginAction from '../redux/action/loginAction'
+import { useAppDispatch } from '../redux/hook';
+import signInSlice from '../redux/reducer/signInSlice';
 
 export interface ISignInForm {
    email: string;
@@ -28,7 +31,7 @@ export const SignIn = () => {
 
 	const onSubmit = async () => {
     console.log('submit');
-    dispatch(login(getValues()));
+    //dispatch(login(getValues()));
 		
       const { email, password } = getValues();
       try {
@@ -40,7 +43,7 @@ export const SignIn = () => {
          });
          if (response.data.token) {
           const token = response.data.token;
-          localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
+          //localStorage.setItem(LOCAL_STORAGE_TOKEN, token);
          }
          navigate('/')
         console.log(response.data);

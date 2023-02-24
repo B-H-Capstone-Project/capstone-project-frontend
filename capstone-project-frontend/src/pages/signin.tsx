@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from '../api/axios';
 import authService from '../services/auth.service';
 import { RootState } from '../redux/store';
+import loginAction from '../redux/action/loginAction'
+import { useAppDispatch } from '../redux/hook';
+import signInSlice from '../redux/reducer/signInSlice';
 
 export interface ISignInForm {
 	email: string;
@@ -27,24 +30,25 @@ export const SignIn = () => {
   const dispatch = useDispatch();
 
 	const onSubmit = async () => {
-		console.log('submit');
-
-		const { email, password } = getValues();
-		try {
-			//  const response = await axios.post('/auth/signin', {
-			const response = await axios.post('http://localhost:8080/auth/signin', {
-				// Data to be sent to the server
-				email: email,
-				password: password,
-			});
-			if (response.data.token) {
-				const token = response.data.token;
-			}
-			navigate('/');
-			console.log(response.data);
-		} catch (err) {
-			console.log(err);
-		}
+    console.log('submit');
+		
+      const { email, password } = getValues();
+      try {
+         const response = await axios.post('/auth/signin', {
+        //  const response = await axios.post('http://localhost:8080/auth/signin', {
+            // Data to be sent to the server
+            email: email,
+            password: password,
+         });
+         if (response.data.token) {
+          const token = response.data.token;
+         }
+         navigate('/')
+        console.log(response.data);
+        
+      } catch (err) {
+         console.log(err);
+      } 
 	};
 	return (
 		<>

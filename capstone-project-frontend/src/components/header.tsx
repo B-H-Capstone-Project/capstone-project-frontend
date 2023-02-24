@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { RootState } from '../redux/store';
 import AuthService from '../services/auth.service';
-import { authActions } from '../redux/reducer/user';
 
 export const Header = () => {
 	const dispatch = useDispatch();
@@ -13,7 +12,7 @@ export const Header = () => {
 
 	const logOutHandler = () => {
 		AuthService.signOut();
-		dispatch(authActions.logout);
+		//dispatch(signInSlice.logout);
     window.location.reload();;
 	};
 

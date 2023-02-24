@@ -5,14 +5,8 @@ import { truncate } from 'fs';
 
 
 function App() {
-  // console.log('----------------app---------------');
-  // console.log(localStorage.token);
-	// return (localStorage.token === undefined ? 
-  // <LoggedOutRouter />  :  <LoggedInRouter /> 
-  //  );
-  // return ( <LoggedOutRouter />);
-
-  const isLoggedIn = true;
+  //const isLoggedIn = useSelector((state:RootState) => state.isLoggedIn);
+  const isLoggedIn = true
 	return (isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
 }
 

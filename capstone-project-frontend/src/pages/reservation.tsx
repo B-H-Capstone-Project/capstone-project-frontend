@@ -8,6 +8,10 @@ export const Reservation = () => {
     <>
     <h1>Reservation</h1>
     <Link to='form'><button>+ New</button></Link>
+    <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">No Current Reservation</h5>
+    <p className="font-normal text-gray-700 dark:text-gray-400">Date&Time: 02/21/2023 Type: Outdoor Lighting Description:</p>
+</a>
     <h2>History</h2>
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

@@ -12,7 +12,7 @@ import { NotFound } from "../pages/404";
 import { ContactUs } from "../pages/contactUs";
 import { OurWork } from "../pages/our-work";
 import { Reservation } from "../pages/reservation";
-import ReservationForm from "../pages/reservation-form";
+import ReservationForm from "../components/reservation-form";
 
 // admin
 import AdminApp from "../admin/AdminApp";

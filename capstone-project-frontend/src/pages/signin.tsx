@@ -24,7 +24,7 @@ export const SignIn = () => {
 		mode: 'onBlur',
 	});
 	const navigate = useNavigate();
-  const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
+//   const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
 
 	const onSubmit = async () => {
 		console.log('submit');

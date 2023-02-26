@@ -2,13 +2,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 // date time picker
 import dayjs, { Dayjs } from "dayjs";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { useMutation, useQueryClient } from 'react-query';
+import axios from "../api/axios";
 
 interface IReservationForm {
   first_name: string;
@@ -24,51 +25,45 @@ interface IReservationForm {
   description: string;
 }
 
+const reservation = async (data: IReservationForm) => {
+	const { data: response } = await axios.post('reservation', data);
+	return response.data;
+};
+
 function ReservationForm() {
+  const queryClient = useQueryClient();
   const [value, setValue] = React.useState<Dayjs | null>(null);
 
   const {
     register,
-    getValues,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<IReservationForm>({
-    mode: "onBlur",
+    mode: "onChange",
   });
+  
   const navigate = useNavigate();
 
-  const onSubmit = async (data: any) => {
-    const {
-      first_name,
-      last_name,
-      phone_number,
-      email,
-      address_line,
-      unit_number,
-      postal_code,
-      city,
-      province,
-      country,
-      description,
-    } = getValues();
-    //   try {
-    //     const response = await axios.post('http://localhost:8080/auth/signup', {
-    //       // Data to be sent to the server
-    //       first_name: first_name,
-    //       last_name: last_name,
-    //       phone_number: phone_number,
-    //       email: email,
-    //       address_line: address_line,
-    //       unit_number: unit_number,
-    //       postal_code: postal_code,
-    //       city: city,
-    //       province: province,
-    //       country: country,
-    //     });
-    //     console.log(response.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
+	const { isLoading, mutate } = useMutation(reservation, {
+		onSuccess: (data) => {
+			console.log(data);
+			const message = 'success';
+			alert(message);
+		},
+		onError: () => {
+			alert('there was an error');
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries('create');
+		},
+	});
+
+  const onSubmit = async (data: IReservationForm) => {
+    const newReservation = {
+			...data,
+		};
+		mutate(newReservation);
+    //navigate('/');
   };
   return (
     <>

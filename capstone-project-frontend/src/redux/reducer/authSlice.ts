@@ -3,6 +3,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ISignInForm } from '../../pages/signin';
 import axios from '../../api/axios';
+import jwt_decode from "jwt-decode";
 
 interface User {
 	id: number;
@@ -10,24 +11,31 @@ interface User {
 }
 
 // initialize userToken from local storage
-const userToken = localStorage.getItem('token')
+const token = localStorage.getItem('token')
 	? localStorage.getItem('token')
 	: null;
+
+export interface IToken {
+  id: number;
+  role: number;
+  iat: number;
+  exp: number;
+}
 
 interface IAuthState {
 	loading: boolean;
 	userInfo: User | null; // for user object
-	userToken: string | null; // for storing the JWT
+	userToken: IToken | null; // for storing the JWT
 	success: boolean; // for monitoring the registration proces
 	isLoggedIn: boolean;
 	error: string | null;
 }
 
 const initialState: IAuthState = {
-	isLoggedIn: Boolean(userToken),
+	isLoggedIn: Boolean(token),
 	loading: false,
-	userInfo: null, // for user object
-	userToken: userToken, // for storing the JWT
+  userInfo: null,
+  userToken: token === null? null : jwt_decode(token), // for storing the JWT
 	error: null,
 	success: false, // for monitoring the registration process.
 };

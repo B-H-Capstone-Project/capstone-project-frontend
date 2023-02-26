@@ -28,6 +28,7 @@ export const SignIn = () => {
 	const onSubmit = async () => {
     const { email, password } = getValues();
     dispatch(signIn({email: email, password: password}));
+    navigate('/');
 	};
 	return (
 		<>

@@ -95,16 +95,25 @@ export const SignIn = () => {
 								<div className='p-5 flex items-start'>
 									<div className='flex items-center h-5'>
 										<input
-											id='remember'
-											aria-describedby='remember'
-											type='checkbox'
-											className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
+											type='email'
+											id='email'
+											{...register('email')}
+											className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-4/5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+											placeholder='name@company.com'
 										/>
 									</div>
-									<div className=' ml-2 text-sm'>
-										<label className='font-light text-lime-500 dark:text-lime-300'>
-											Remember Me{' '}
+									{/* Password Input Div */}
+									<div>
+										<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
+											Password *
 										</label>
+										<input
+											type='password'
+											id='password'
+											{...register('password')}
+											placeholder='••••••••'
+											className='bg-white-50 border border-white-100 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-4/5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+										/>
 									</div>
 								</div>
 								<button

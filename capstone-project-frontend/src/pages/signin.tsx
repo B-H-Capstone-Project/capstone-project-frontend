@@ -3,10 +3,9 @@
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import axios from '../api/axios';
-import authService from '../services/auth.service';
 import { RootState } from '../redux/store';
+import { useAppSelector } from '../redux/hook';
 
 export interface ISignInForm {
 	email: string;

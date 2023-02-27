@@ -16,11 +16,6 @@ export const useMe = () => {
 	const [data, setData] = useState(null);
 	const token = localStorage.getItem('token');
 	let userId: any = 1;
-	// decode id from token
-	if (token) {
-		const { id } = jwtDecode<IJwtDecode>(token);
-		userId = id;
-	}
 
 	const fetchApi = async () => {
 		try {

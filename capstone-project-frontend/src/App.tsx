@@ -4,10 +4,10 @@ import { LoggedOutRouter } from './routers/logged-out-router';
 import { useSelector } from 'react-redux';
 import { RootState } from './redux/store';
 
+
 function App() {
-  
-  const isLoggedIn = useSelector((state:RootState) => state.isLoggedIn);
-	return (isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
+	const isAuth = useSelector((state: RootState) => state.auth);
+	return (isAuth.isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
 }
 
 

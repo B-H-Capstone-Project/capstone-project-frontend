@@ -7,11 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from '../api/axios';
 import authService from '../services/auth.service';
 import { RootState } from '../redux/store';
-import { useForm } from 'react-hook-form';
 
 export interface ISignInForm {
-   email: string;
-   password: string;
+	email: string;
+	password: string;
 }
 //max-w-full h-auto
 export const SignIn = () => {
@@ -23,27 +22,15 @@ export const SignIn = () => {
 	} = useForm<ISignInForm>({
 		mode: 'onBlur',
 	});
+  const { loading, error, userInfo } = useAppSelector((state) => state.auth)
 	const navigate = useNavigate();
-  //npm const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
+  const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
 
 	const onSubmit = async () => {
-		console.log('submit');
-		const { email, password } = getValues();
-    console.log(email, password);
-		authService.signIn(email, password).then(
-      () => {
-        window.location.reload();
-      }, error => {
-        const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      }
-		);
+    const { email, password } = getValues();
+    dispatch(signIn({email: email, password: password}));
+    navigate('/');
 	};
-
 	return (
 		<>
 		<body>
@@ -63,7 +50,7 @@ export const SignIn = () => {
 								Don't have an account?{' '}
 								<Link
 									to='signup'
-									className='font-medium text-center text-primary-600 hover:underline text-lime-500'>
+									className='font-medium text-primary-600 hover:underline text-lime-500'>
 									Sign Up
 								</Link>
 							</p>
@@ -136,6 +123,8 @@ export const SignIn = () => {
 										</Link>
 									</p>
 								</div>
+
+							</form>
 						</div>
 					</div>
 				</div>

@@ -24,7 +24,6 @@ import { signOut } from '../redux/reducer/authSlice';
 
 export const Header = () => {
 	const [mobileOpen, setMobileOpen] = React.useState(false);
-	const drawerWidth = 240;
 	const handleDrawerToggle = () => {
 		setMobileOpen((prevState) => !prevState);
 	};
@@ -106,6 +105,12 @@ export const Header = () => {
 									<Button
 										variant='contained'
 										size='large'
+                    sx={{
+                      bgcolor: 'black',
+                      '&:hover': {
+                        backgroundColor: '#424242',
+                      },
+                    }}
 										component='label'>
 										SIGN IN
 									</Button>
@@ -120,6 +125,10 @@ export const Header = () => {
 										sx={{
 											fontWeight: '800',
 											fontSize: '0.9rem',
+                      bgcolor: 'black',
+                      '&:hover': {
+                        backgroundColor: '#424242',
+                      },
 										}}>
 										SIGN OUT
 									</Button>

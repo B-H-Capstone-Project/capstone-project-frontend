@@ -141,7 +141,7 @@ export const Header = () => {
 						display: { xs: 'block', sm: 'none' },
 						'& .MuiDrawer-paper': {
 							boxSizing: 'border-box',
-							width: drawerWidth,
+							width: '80%',
 						},
 					}}>
 					{drawer}

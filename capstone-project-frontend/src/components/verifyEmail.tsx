@@ -18,7 +18,7 @@ const attemptToVerify = async () => {
     if (!code || !email) {
       return setVerificationState(VerificationState.invalid)
     }
-    const response = await fetch('http://localhost:8080/auth/verify-email', {
+    const response = await fetch(']/auth/verify-email', {
       method: "post",
       headers: {
         // needed so express parser says OK to read

@@ -78,16 +78,22 @@ const bossHossClients = [
 export const Home = () => {
 	return (
 		<div>
-			<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen sm:flex-col'>
-				<div className='p-20 basis-1/2 flex items-center flex-1 h-full w-full sm:justify-center'>
-					<div>
-						<div className='mb-3'>
-							<h1 className='text-7xl sm:text-4xl'>BOSS B&H HOSS</h1>
-							<h1 className='text-7xl sm:text-4xl'>Irrigation</h1>
+			<div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen md:flex-col'>
+				<div className='p-20 basis-1/3 flex items-center flex-1 h-full w-full md:items-end md:justify-start md:px-0'>
+					<div className='md:-mb-20'>
+						<div className='mb-3 flex flex-col font-bold text-7xl sm:text-4xl md:m-3 md:mb-10'>
+							<div className='flex'>
+								<h1 className='mr-3'>BOSS</h1>
+								<h1 className='mr-3'>B&H</h1>
+								<h1 className=''>HOSS</h1>
+							</div>
+							<div>
+								<h1>Irrigation</h1>
+							</div>
 						</div>
-						<button className='text-sm py-1.5 px-5 ml-2 bg-lime-300 rounded-xl md:px-8'>
+						<button className='text-sm py-1.5 px-5 ml-2 bg-lime-300 rounded-xl md:text-xl md:py-3'>
 							Book a reservation
-{/* 							<HorizontalRuleIcon
+							<HorizontalRuleIcon
 								sx={{ fontSize: 10, marginRight: -1, marginLeft: 1 }}
 							/>
 							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
@@ -108,7 +114,7 @@ export const Home = () => {
 							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
 							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
 							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10 }} /> */}
+							<HorizontalRuleIcon sx={{ fontSize: 10 }} /> 
 						</button>
 					</div>
 				</div>
@@ -118,7 +124,7 @@ export const Home = () => {
 							variants={container}
 							initial='hidden'
 							animate='visible'
-							className='bg-black rounded-xl w-3/4 h-1/3 mr-10'></motion.div>
+							className='bg-black rounded-xl w-3/4 h-1/3 mr-10 md:w-3/5 md:h-3/5 md:m-3'></motion.div>
 					</div>
 					<motion.div
 						variants={container}
@@ -128,52 +134,46 @@ export const Home = () => {
 						<motion.div
 							key={1}
 							variants={item}
-							className='bg-black rounded-xl w-3/4 h-1/3 mb-10'></motion.div>
+							className='bg-black rounded-xl w-3/4 h-1/3 mb-10 md:w-2/5 md:mb-3'></motion.div>
 						<motion.div
 							key={2}
 							variants={item}
-							className='bg-yellow-300 rounded-xl w-3/4 h-1/3'></motion.div>
+							className='bg-yellow-300 rounded-xl w-3/4 h-1/3 md:w-2/5'></motion.div>
 					</motion.div>
 				</div>
 			</div>
-			<div className='h-screen bg-black flex sm:flex-col'>
-				<div className='flex-1 w-64 flex justify-center items-center p-20 md:w-full'>
-					<div>
-						<h2 className='text-lime-300 text-4xl font-bold sm:text-2xl'>
+			<div className='h-screen bg-black flex md:flex-col'>
+				<div className='w-64 flex justify-center items-center p-20 md:w-full sm:py-0 sm:px-10'>
+					<div className='mt-10'>
+						<h2 className='text-lime-300 text-4xl font-bold sm:text-3xl'>
 							Quality Work Since 2005
 						</h2>
 						<p className='text-white mb-10 text-xl sm:text-sm'>
 							WE TREAT EVERY PROPERTY AS IF IT IS OUR OWN PROPERTY.
 						</p>
-						<p className='text-white text-xl sm:text-xs'>
+						<p className='text-white text-xl sm:text-sm'>
 							Boss & Hoss Irrigation has been installing systems in Calgary for
 							16 years. Boss & Hoss Irrigation Calgary has been working with
 							many local builders and landscaping companies in and around the
 							Calgary area. In addition, we also cater to single-family homes
-							and have successfully installed and servicing hundreds of homes…
-							Continuing with builders and landscapers we have achieved quality
-							workmanship above all others and consistently striving and
-							maintaining excellence in all areas of our business ethics. ßWe
-							are professionals who focus on Irrigation and Outdoor lighting
-							which goes hand in hand. Please feel free to contact us for an
-							estimate for your property needs. Click Here to View Our Work
-							“Irrigation & Outdoor Lighting”
+							and have successfully installed and servicing hundreds of homes
+              
 						</p>
 					</div>
 				</div>
 				<motion.div
-					className='flex-1 w-64 flex justify-center items-center'
+					className='flex-1 w-64 flex justify-center items-center md:w-full md:items-center'
 					initial='hidden'
 					whileInView='visible'
 					viewport={{ once: true, amount: 0.8 }}>
 					<motion.div
-						className='bg-white rounded-lg w-3/5 h-3/5 '
+						className='bg-white rounded-lg w-3/5 h-3/5 sm:w-2/5'
 						variants={container}></motion.div>
 				</motion.div>
 			</div>
-			<div className='flex h-screen bg-zinc-800 sm:flex-col'>
+			<div className='flex h-screen bg-zinc-800 md:flex-col'>
 				<motion.div
-					className='flex-1 w-64 flex justify-center items-center'
+					className='flex-1 w-64 flex justify-center items-center md:order-2 md:w-full'
 					initial='offscreen'
 					whileInView='onscreen'
 					viewport={{ once: true, amount: 0.8 }}>
@@ -181,13 +181,13 @@ export const Home = () => {
 						className='w-3/5 h-4/6 rounded-xl bg-white shadow-[-40px_40px_0px_0px_rgba(206,250,83)] -mt-8'
 						variants={cardVariants}></motion.div>
 				</motion.div>
-				<div className='flex-1 w-64 flex justify-center flex-col mr-10 md:w-full items-center'>
-					<div className='mb-3'>
-						<h2 className='text-lime-300 text-7xl font-bold py-5 sm:text-2xl'>
-							Our <br className='mb-2' /> Services
+				<div className='flex-1 w-64 flex justify-center flex-col mr-10 md:w-full items-center md:order-1'>
+					<div className='mb-5'>
+						<h2 className='text-lime-300 text-7xl font-bold py-5 sm:text-2xl md:mt-10'>
+							Our Services
 						</h2>
 					</div>
-					<div className='grid grid-rows-2 grid-flow-col gap-4'>
+					<div className='grid grid-rows-2 grid-flow-col gap-4 md:m-3'>
 						<div className='m-1'>
 							<div className='mb-2'>
 								<CheckIcon className='bg-lime-300 rounded p-1' />
@@ -198,9 +198,6 @@ export const Home = () => {
 								</h3>
 								<p className='text-white sm:text-xs'>
 									workmanship above all others and consistently striving and
-									maintaining excellence in all areas of our business ethics.
-									ßWe are professionals who focus on Irrigation and Outdoor
-									lighting which goes hand in hand.
 								</p>
 							</div>
 						</div>
@@ -214,9 +211,6 @@ export const Home = () => {
 								</h3>
 								<p className='text-white sm:text-xs'>
 									workmanship above all others and consistently striving and
-									maintaining excellence in all areas of our business ethics.
-									ßWe are professionals who focus on Irrigation and Outdoor
-									lighting which goes hand in hand.
 								</p>
 							</div>
 						</div>
@@ -230,9 +224,6 @@ export const Home = () => {
 								</h3>
 								<p className='text-white sm:text-xs'>
 									workmanship above all others and consistently striving and
-									maintaining excellence in all areas of our business ethics.
-									ßWe are professionals who focus on Irrigation and Outdoor
-									lighting which goes hand in hand.
 								</p>
 							</div>
 						</div>
@@ -246,17 +237,16 @@ export const Home = () => {
 								</h3>
 								<p className='text-white sm:text-xs'>
 									workmanship above all others and consistently striving and
-									maintaining excellence in all areas of our business ethics.
-									ßWe are professionals who focus on Irrigation and Outdoor
-									lighting which goes hand in hand.
 								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div className='h-screen bg-black flex justify-center flex-col items-center'>
-				<h2 className='text-lime-300 text-5xl font-bold p-20 sm:text-2xl'>Our Clients</h2>
+			<div className='h-1/2 bg-black flex justify-center flex-col items-center'>
+				<h2 className='text-lime-300 text-5xl font-bold p-20 sm:text-2xl'>
+					Our Clients
+				</h2>
 				<div className='grid grid-rows-4 grid-flow-col'>
 					{bossHossClients.map((client) => (
 						<div key={client.id}>

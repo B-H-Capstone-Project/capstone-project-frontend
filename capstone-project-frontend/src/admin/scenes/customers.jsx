@@ -1,111 +1,42 @@
-import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../theme";
-import { mockDataTeam } from "../data/mockData";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-import Header from "../components/Header";
-
+  import { useEffect } from "react";
+  import { useState } from "react";
+  import axios from "axios";
+  
 const Customers = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const columns = [
-    { field: "id", headerName: "ID" },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "accessLevel",
-      headerName: "Access Level",
-      flex: 1,
-      renderCell: ({ row: { access } }) => {
-        return (
-          <Box
-            width="60%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor={
-              access === "admin"
-                ? colors.greenAccent[600]
-                : access === "manager"
-                ? colors.greenAccent[700]
-                : colors.greenAccent[700]
-            }
-            borderRadius="4px"
-          >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
-            </Typography>
-          </Box>
-        );
-      },
-    },
-  ];
+    const [customers, setCustomers] = useState([]);
+  
+    useEffect(() => {
+      const fecthAllCustomers = async () => {
+        try {
+          const res = await axios.get("http://localhost:8080/users/customer");
+          setCustomers(res.data.users);
 
-  return (
-    <>
-        <Box m="20px">
-          <Header title="Customers" subtitle="Managing the Customers" />
-          <Box
-            m="40px 0 0 0"
-            height="75vh"
-            sx={{
-              "& .MuiDataGrid-root": {
-                border: "none",
-              },
-              "& .MuiDataGrid-cell": {
-                borderBottom: "none",
-              },
-              "& .name-column--cell": {
-                color: colors.greenAccent[300],
-              },
-              "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: colors.blueAccent[700],
-                borderBottom: "none",
-              },
-              "& .MuiDataGrid-virtualScroller": {
-                backgroundColor: colors.primary[400],
-              },
-              "& .MuiDataGrid-footerContainer": {
-                borderTop: "none",
-                backgroundColor: colors.blueAccent[700],
-              },
-              "& .MuiCheckbox-root": {
-                color: `${colors.greenAccent[200]} !important`,
-              },
-            }}
-          >
-            <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
-          </Box>
-        </Box>
-    </>
-  );
-};
-
-export default Customers;
+          console.log('-------frontend customer.tsx-------')
+          console.log(res.data.users);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fecthAllCustomers();
+    }, []);
+  
+    return (
+      <>
+          <div>
+            <h1>Customers</h1>
+            <br/>
+            {customers.map((customer) => (
+              <div className="customer" key={customer.id}>
+                <h2>Name: {customer.first_name} {customer.last_name}</h2>
+                <h2>Phone Number: {customer.phone_number}</h2>
+                <h2>Address: {customer.address_id}</h2>
+                <h2>Role: {customer.role}</h2>
+                <h2>Active: {customer.is_active}</h2>
+                <br></br>
+              </div>
+            ))}
+          </div>
+      </>
+    );
+  };
+  export default Customers;

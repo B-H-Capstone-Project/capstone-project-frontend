@@ -3,25 +3,16 @@
 // useApi.tsx
 import { useEffect, useState } from 'react';
 import axios from '../api/axios';
-import jwtDecode from 'jwt-decode';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { meQuery } from '../pages/user/user.dto';
 
-interface IJwtDecode {
-	id: number;
-	iat: number;
-	exp: number;
-}
 
 export const useMe = () => {
 	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState(null);
-	const token = localStorage.getItem('token');
-	let userId: any = 1;
-	// decode id from token
-	if (token) {
-		const { id } = jwtDecode<IJwtDecode>(token);
-		userId = id;
-	}
-
+	const [data, setData] = useState<meQuery>();
+	const isAuth = useSelector((state: RootState) => state.auth);
+	const userId = isAuth.userToken?.id;
 	const fetchApi = async () => {
 		try {
 			if (userId !== undefined) {
@@ -29,6 +20,7 @@ export const useMe = () => {
 					.get(`/user/${userId}`)
 					.then(function (response) {
 						setData(response.data);
+            setLoading(false);
 					})
 					.catch(function (error) {
 						console.log(error);

@@ -1,14 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 // date time picker
 import { Dayjs } from "dayjs";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { useMutation, useQueryClient } from "react-query";
+import axios from "../api/axios";
+import { RootState } from "../redux/store";
 
 interface IReservationForm {
   first_name: string;
@@ -24,51 +26,45 @@ interface IReservationForm {
   description: string;
 }
 
-function ReservationForm() {
-  const [value, setValue] = React.useState<Dayjs | null>(null);
+const reservation = async (data: IReservationForm) => {
+  const { data: response } = await axios.post("reservation", data);
+  return response.data;
+};
 
+function ReservationForm() {
+  const queryClient = useQueryClient();
+  const isAuth = useSelector((state: RootState) => state.auth);
+  const [value, setValue] = React.useState<Dayjs | null>(null);
   const {
     register,
-    getValues,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<IReservationForm>({
-    mode: "onBlur",
+    mode: "onChange",
   });
+
   const navigate = useNavigate();
 
-  const onSubmit = async (data: any) => {
-    const {
-      first_name,
-      last_name,
-      phone_number,
-      email,
-      address_line,
-      unit_number,
-      postal_code,
-      city,
-      province,
-      country,
-      description,
-    } = getValues();
-    //   try {
-    //     const response = await axios.post('http://localhost:8080/auth/signup', {
-    //       // Data to be sent to the server
-    //       first_name: first_name,
-    //       last_name: last_name,
-    //       phone_number: phone_number,
-    //       email: email,
-    //       address_line: address_line,
-    //       unit_number: unit_number,
-    //       postal_code: postal_code,
-    //       city: city,
-    //       province: province,
-    //       country: country,
-    //     });
-    //     console.log(response.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
+  const { isLoading, mutate } = useMutation(reservation, {
+    onSuccess: (data) => {
+      console.log(data);
+      const message = "success";
+      alert(message);
+    },
+    onError: () => {
+      alert("there was an error");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("create");
+    },
+  });
+
+  const onSubmit = async (data: IReservationForm) => {
+    const newReservation = {
+      ...data,
+    };
+    mutate(newReservation);
+    //navigate('/');
   };
   return (
     <>
@@ -134,7 +130,23 @@ function ReservationForm() {
                   />
                 </div>
 
+
                 {/* Address */}
+                <div className='p-5 flex items-start'>
+									<div className='flex items-center h-5'>
+										<input
+											id='currentAddress'
+											aria-describedby='currentAddress'
+											type='checkbox'
+											className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
+										/>
+									</div>
+									<div className=' ml-3 text-sm'>
+										<label className='font-light text-gray-500 dark:text-gray-300'>
+											Use Current Address
+										</label>
+									</div>
+								</div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                     Address *
@@ -190,12 +202,29 @@ function ReservationForm() {
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Province *
                     </label>
-                    <input
+                    {/* <select value={value} onChange={handleChange}> */}
+                    <select 
+                    id="province"
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                      <option value="AB">AB</option>
+                      <option value="BC">BC</option>
+                      <option value="NB">NB</option>
+                      <option value="NL">NL</option>
+                      <option value="NS">NS</option>
+                      <option value="NT">NT</option>
+                      <option value="NU">NU</option>
+                      <option value="MB">MB</option>
+                      <option value="ON">ON</option>
+                      <option value="PE">PE</option>
+                      <option value="QC">QC</option>
+                      <option value="SK">SK</option>
+                      <option value="YT">YT</option>
+                    </select>
+                    {/* <input
                       type="text"
                       {...register("province")}
-                      id="province"
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    />
+                      /> */}
                   </div>
                   <div className="flex flex-col">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">

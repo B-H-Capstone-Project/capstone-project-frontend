@@ -3,15 +3,16 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from '../api/axios';
-import authService from '../services/auth.service';
+import React, { useEffect, useRef } from 'react';
+import jwt_decode from 'jwt-decode';
+import { useAppDispatch, useAppSelector } from '../redux/hook';
+import { signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
+import { useSelector } from 'react-redux';
 
 export interface ISignInForm {
-   email: string;
-   password: string;
+	email: string;
+	password: string;
 }
 
 export const SignIn = () => {
@@ -23,26 +24,38 @@ export const SignIn = () => {
 	} = useForm<ISignInForm>({
 		mode: 'onBlur',
 	});
+
+	const isAuth = useSelector((state: RootState) => state.auth);
 	const navigate = useNavigate();
-  const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
+	const dispatch = useAppDispatch();
 
 	const onSubmit = async () => {
-		console.log('submit');
 		const { email, password } = getValues();
-    console.log(email, password);
-		authService.signIn(email, password).then(
-      () => {
-        window.location.reload();
-      }, error => {
-        const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      }
-		);
+		dispatch(signIn({ email: email, password: password }));
+		navigate('/');
 	};
+
+	const handleCallbackResponse = (res: any) => {
+		localStorage.setItem('token', res.credential);
+		navigate('/');
+		// eslint-disable-next-line no-restricted-globals
+		location.reload();
+	};
+
+	useEffect(() => {
+		//google
+		/**global google */
+		google.accounts.id.initialize({
+			client_id:
+				'491120951735-hflt1frfijgbls8m0od302emo2i2cu1r.apps.googleusercontent.com',
+			callback: handleCallbackResponse,
+		});
+
+		google.accounts.id.renderButton(document.getElementById('signinDiv')!, {
+			theme: 'outline',
+			size: 'large',
+		});
+	}, []);
 
 	return (
 		<>
@@ -50,7 +63,7 @@ export const SignIn = () => {
 				<Helmet>
 					<title>Sign In | BOSS&HOSS</title>
 				</Helmet>
-				<div className=''>
+				<div>
 					<div className='absolute inset-y-0 right-0 h-full w-2/4 dark:border-black bg-white'>
 						<div className='md:w-8/12 lg:w-5/12 lg:ml-20'>
 							<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-500 mt-20 mb-5'>
@@ -59,7 +72,7 @@ export const SignIn = () => {
 							<p className='text-sm font-light text-gray-500 dark:text-gray-400 mt-5 mb-5'>
 								Don't have an account?{' '}
 								<Link
-									to='signup'
+									to='/signup'
 									className='font-medium text-primary-600 hover:underline text-lime-500'>
 									Sign Up
 								</Link>
@@ -93,54 +106,18 @@ export const SignIn = () => {
 									/>
 								</div>
 								<div className='p-5 flex items-start'>
-									<div className='flex items-center h-5'>
-										<input
-											id='remember'
-											aria-describedby='remember'
-											type='checkbox'
-											className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
-										/>
-									</div>
-									<div className=' ml-2 text-sm'>
-										<label className='font-light text-lime-500 dark:text-lime-300'>
-											Remember Me{' '}
-										</label>
-									</div>
+									<button
+										type='submit'
+										className='inline-block px-6 py-3 mb-4 bg-lime-500 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-lime-700 hover:shadow-lg focus:bg-lime-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-4/5'>
+										Let's get started
+									</button>
 								</div>
-								<button
-									type='submit'
-									className='inline-block px-6 py-3 mb-4 bg-lime-500 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-lime-700 hover:shadow-lg focus:bg-lime-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-4/5'>
-									Let's get started
-								</button>
-								<p>
-									---------------------------- or ----------------------------
-								</p>
-								<div className='flex justify-center mt-4 mb-4'>
-									<div className='absolute bottom-0 left-16 h-5 w-16'>
-										<button
-											type='submit'
-											className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
-											Google
-										</button>
-									</div>
-									<div className='absolute bottom-0 right-17 h-5 w-16'>
-										<button
-											type='submit'
-											className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
-											Facebook
-										</button>
-									</div>
+								<div className='absolute bottom-0 left-16 h-5 w-16'>
+									<div id='signinDiv'></div>
 								</div>
-								<div className='absolute inset-x-0 bottom-0'>
-									<p>
-										<Link
-											to='guest'
-											className='font-medium text-primary-700 hover:underline text-lime-500'>
-											Continue As Guest
-										</Link>
-									</p>
-								</div>
+								{/* 								<div className='absolute inset-x-0 bottom-0'>
 
+								</div> */}
 							</form>
 						</div>
 					</div>
@@ -149,3 +126,4 @@ export const SignIn = () => {
 		</>
 	);
 };
+

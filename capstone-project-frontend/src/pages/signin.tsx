@@ -116,13 +116,7 @@ export const SignIn = () => {
 									<div id='signinDiv'></div>
 								</div>
 								{/* 								<div className='absolute inset-x-0 bottom-0'>
-									<p>
-										<Link
-											to='guest'
-											className='font-medium text-primary-700 hover:underline text-lime-500'>
-											Continue As Guest
-										</Link>
-									</p>
+
 								</div> */}
 							</form>
 						</div>
@@ -132,3 +126,4 @@ export const SignIn = () => {
 		</>
 	);
 };
+

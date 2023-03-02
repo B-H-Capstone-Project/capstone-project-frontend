@@ -9,14 +9,13 @@ import {
   List,
   ListItem,
   ListItemText,
-  Modal,
   Typography,
   useTheme,
 } from "@mui/material";
 import Header from "../components/Header";
 import { tokens } from "../theme";
 import axios from "../../api/axios";
-import AdminResForm from "./reservationsComponents/adminResForm";
+import ReservationModal from "./reservationsComponents/reservationModal";
 
 export interface IReservation {
   id: number;
@@ -27,18 +26,6 @@ export interface IReservation {
   description: string;
 }
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 const Reservations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -47,7 +34,6 @@ const Reservations = () => {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>();
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const fecthAllCustomers = async () => {
@@ -70,10 +56,9 @@ const Reservations = () => {
     };
     fetchAllReservations();
     fecthAllCustomers();
-  }, []);
+  }, [setCurrentEvents]);
 
   const handleDateClick = (selected: any) => {
-    // console.log('handleDateClick',typeof selected.start);
     setSelectedDate(new Date(selected.start).toISOString().slice(0, -8));
     
     const calendarApi = selected.view.calendar;
@@ -94,7 +79,6 @@ const Reservations = () => {
 
   return (
     <>
-    
     <Box m="20px">
       <Header title="Reservations" subtitle="Full Calendar Interactive Page" />
 
@@ -164,22 +148,7 @@ const Reservations = () => {
         </Box>
       </Box>
     </Box>
-    <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      > 
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add New Reservation
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <AdminResForm customers={customers} selectedDate={selectedDate}/> 
-          </Typography>
-
-        </Box>
-      </Modal>
+    <ReservationModal customers={customers} selectedDate={selectedDate} open={open} setOpen={setOpen}/> 
     </>
   );
 };

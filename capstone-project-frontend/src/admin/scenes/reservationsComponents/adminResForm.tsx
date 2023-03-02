@@ -21,7 +21,6 @@ export interface IReservationForm {
   description: string;
 }
 const AdminResForm = (props: any) => {
-
     const {
         register,
         getValues,
@@ -56,7 +55,6 @@ const AdminResForm = (props: any) => {
             country: country,
             type
           });
-          console.log(response.data);
         } catch (err) {
           console.log(err);
         }
@@ -108,6 +106,7 @@ const AdminResForm = (props: any) => {
                     type="datetime-local"
                     id="date"
                     min={new Date().toISOString().slice(0, -8)}
+                    value={props.selectedDate}
                     {...register('date')}
                     className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />

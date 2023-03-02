@@ -42,21 +42,18 @@ const style = {
 const Reservations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  // const [currentEvents, setCurrentEvents] = useState<IReservation[]>([]);
   const [currentEvents, setCurrentEvents] = useState<IReservation[]>([]);
   const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-// will delete
-    const fecthAllEmployees = async () => {
+    const fecthAllCustomers = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/users");
+        const res = await axios.get("http://localhost:8080/users/customer");
         setCustomers(res.data.users);
-        // useState의 setBooks를 이용하여 나의 book data를 업데이트할 수 있음
-        // res.data가 업데이트 됨
       } catch (err) {
         console.log(err);
       }
@@ -72,22 +69,15 @@ const Reservations = () => {
       }
     };
     fetchAllReservations();
-    fecthAllEmployees();
+    fecthAllCustomers();
   }, []);
 
   const handleDateClick = (selected: any) => {
-    console.log('handleDateClick',selected);
-    // const title = prompt("Please enter a new title for your event");
+    // console.log('handleDateClick',typeof selected.start);
+    setSelectedDate(new Date(selected.start).toISOString().slice(0, -8));
+    
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
-
-    // if (title) {
-    //   calendarApi.addEvent({
-    //     id: `${selected.dateStr}-${title}`,
-    //     start: selected.startStr,
-    //     end: selected.endStr,
-    //     allDay: selected.allDay,
-    //   });
     }
 
   const handleEventClick = (selected: any) => {
@@ -165,7 +155,7 @@ const Reservations = () => {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            select={(selected)=> {handleOpen(); handleDateClick(selected)}}
+            select={(selected)=> {handleDateClick(selected); handleOpen() }}
             eventClick={handleEventClick}
             // eventsSet={(events:IReservation) => setCurrentEvents(events)}
             
@@ -185,7 +175,7 @@ const Reservations = () => {
             Add New Reservation
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <AdminResForm customers={customers}/> 
+            <AdminResForm customers={customers} selectedDate={selectedDate}/> 
           </Typography>
 
         </Box>

@@ -19,7 +19,7 @@ import ReservationForm from '../components/reservation-form';
 // admin
 import AdminApp from '../admin/AdminApp';
 import Dashboard from '../admin/scenes/dashboard';
-import Customers from '../admin/scenes/customers';
+import ManageCustomers from '../admin/scenes/customer/manage-customers';
 import Employees from '../admin/scenes/employees';
 import Reservations from '../admin/scenes/reservations';
 import Invoices from '../admin/scenes/invoices';
@@ -64,7 +64,7 @@ const clientRoutes = [
 const adminRoutes = [
 	{ path: '/admin', component: <AdminApp /> },
 	{ path: '/admin/dashboard', component: <Dashboard /> },
-	{ path: '/admin/customers', component: <Customers /> },
+	{ path: '/admin/customers', component: <ManageCustomers /> },
 	{ path: '/admin/employees', component: <Employees /> },
 	{ path: '/admin/reservations', component: <Reservations /> },
 	{ path: '/admin/contacts', component: <Contacts /> },

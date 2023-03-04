@@ -18,13 +18,13 @@ export const Header = () => {
         </div>
         <div className="flex justify-center items-center px-20">
           <div className="text-xs mr-10">
-            <NavLink to="/about">ABOUT</NavLink>
-          </div>
-          <div className="text-xs mr-10">
             <NavLink to="/our-work">OUR WORK</NavLink>
           </div>
           <div className="text-xs mr-10">
             <NavLink to="/contact-us">CONTACT US</NavLink>
+          </div>
+          <div className="text-xs mr-10">
+          {!isAuth.isLoggedIn ? (<NavLink to="/signin">RESERVATION</NavLink>):<NavLink to="/reservation">RESERVATION</NavLink>}
           </div>
           {!isAuth.isLoggedIn ? (
             <NavLink to="signin">

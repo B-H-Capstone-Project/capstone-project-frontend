@@ -1,0 +1,24 @@
+
+.custoemrs_div{
+    display:flex;
+}
+.customers {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+
+}
+
+.customers_table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* border-bottom: solid 1px gray; */
+}
+
+.customers_table_td {
+
+    /* padding: 10px; */
+    text-align: left;
+}

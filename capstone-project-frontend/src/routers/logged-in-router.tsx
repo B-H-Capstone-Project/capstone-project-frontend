@@ -32,6 +32,7 @@ import FAQ from '../admin/scenes/faq';
 import Geography from '../admin/scenes/geography';
 import { ColorModeContext, useMode } from '../admin/theme';
 import { IToken } from '../redux/reducer/authSlice';
+import { EditProfile } from '../pages/user/edit-profile';
 
 // user test
 // let admin = "admin";
@@ -58,6 +59,10 @@ const clientRoutes = [
 		path: '/our-work',
 		component: <OurWork />,
 	},
+  {
+		path: '/edit-profile',
+		component: <EditProfile />,
+	},
 ];
 
 //admin routes
@@ -78,7 +83,6 @@ const adminRoutes = [
 ];
 
 export const LoggedInRouter = () => {
-	const { loading, data } = useMe();
 	const [theme, colorMode]: any = useMode();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const token = isAuth.userToken;

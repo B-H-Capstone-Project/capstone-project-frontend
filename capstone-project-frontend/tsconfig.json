@@ -1,8 +1,6 @@
 {
 	"compilerOptions": {
-		"types": [
-      "node"
-    ],
+		"types": ["node", "google-one-tap", "google.accounts"],
 		"target": "es5",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,

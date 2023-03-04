@@ -61,7 +61,7 @@ export const SignUp = () => {
 		mutate(newUser);
 	};
 
-  return (
+	return (
     <>
       <div className="m-0 from-slate-100 via-lime-100 to-slate-100 ">
 

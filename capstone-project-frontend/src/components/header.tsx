@@ -9,7 +9,7 @@ import { signOut } from "../redux/reducer/authSlice";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  const isAuth = useSelector((state: RootState) => state.auth);
+  
   return (
     <header>
       <nav className="flex justify-between py-2.5">
@@ -26,22 +26,7 @@ export const Header = () => {
           <div className="text-xs mr-10">
             <NavLink to="/contact-us">CONTACT US</NavLink>
           </div>
-          {!isAuth.isLoggedIn ? (
-            <NavLink to="signin">
-              <button className=" bg-black hover:bg-blue-700 py-3 px-10  text-white font-bold rounded-lg">
-                SIGN IN
-              </button>
-            </NavLink>
-          ) : (
-            <NavLink to="/">
-              <button
-                onClick={() => dispatch(signOut())}
-                className=" bg-black hover:bg-blue-700 py-3 px-10  text-white font-bold rounded-lg"
-              >
-                SIGN OUT
-              </button>
-            </NavLink>
-          )}
+         
         </div>
       </nav>
     </header>

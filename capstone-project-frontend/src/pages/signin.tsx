@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from '../api/axios';
-import authService from '../services/auth.service';
 import { RootState } from '../redux/store';
 import { useForm } from 'react-hook-form';
 
@@ -27,21 +26,7 @@ export const SignIn = () => {
   //npm const {  isLoggedIn, user, loading, token, error } = useSelector((state: RootState) => state.user)
 
 	const onSubmit = async () => {
-		console.log('submit');
-		const { email, password } = getValues();
-    console.log(email, password);
-		authService.signIn(email, password).then(
-      () => {
-        window.location.reload();
-      }, error => {
-        const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      }
-		);
+
 	};
 
 	return (

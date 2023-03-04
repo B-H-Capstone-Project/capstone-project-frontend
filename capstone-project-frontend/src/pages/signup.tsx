@@ -65,7 +65,7 @@ export const SignUp = () => {
 		<div className='relative w-full h-screen'>
 			<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-15'>
 				<div className='sm:mb-3'>
-					<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
+					<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
 						Sign Up
 					</h1>
 					<p className='text-sm font-light text-gray-500 dark:text-gray-400'>

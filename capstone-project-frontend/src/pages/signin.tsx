@@ -3,9 +3,8 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect, useRef } from 'react';
-import jwt_decode from 'jwt-decode';
-import { useAppDispatch, useAppSelector } from '../redux/hook';
+import React, { useEffect } from 'react';
+import { useAppDispatch } from '../redux/hook';
 import { signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
@@ -29,6 +28,7 @@ export const SignIn = () => {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
+  console.log(isAuth);
 	const onSubmit = async () => {
 		const { email, password } = getValues();
 		dispatch(signIn({ email: email, password: password }));

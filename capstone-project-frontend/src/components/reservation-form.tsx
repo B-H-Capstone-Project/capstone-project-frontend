@@ -1,86 +1,81 @@
-/** @format */
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+// date time picker
+import dayjs, { Dayjs } from "dayjs";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { useMutation, useQueryClient } from "react-query";
+import axios from "../api/axios";
 
-import { Helmet } from 'react-helmet-async';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { FormError } from '../components/form-error';
-import { useMutation, useQueryClient } from 'react-query';
-import React from 'react';
-import axios from '../api/axios';
-
-interface ISignUpForm {
-	first_name: string;
-	last_name: string;
-	phone_number: string;
-	email: string;
-	password: string;
-	confirm_password: string;
-	address_line: string;
-	unit_number: string;
-	postal_code: string;
-	city: string;
-	province: string;
-	country: string;
+interface IReservationForm {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  address_line: string;
+  unit_number: string;
+  postal_code: string;
+  city: string;
+  province: string;
+  country: string;
+  description: string;
 }
 
-const signUp = async (data: ISignUpForm) => {
-	const { data: response } = await axios.post('auth/signup', data);
-	return response.data;
+const reservation = async (data: IReservationForm) => {
+  const { data: response } = await axios.post("reservation", data);
+  return response.data;
 };
 
-export const SignUp = () => {
-	const queryClient = useQueryClient();
-	const {
-		register,
-		getValues,
-		formState: { errors, isValid },
-		handleSubmit,
-	} = useForm<ISignUpForm>({
-		mode: 'onChange',
-	});
-	const navigate = useNavigate();
+function ReservationForm() {
+  const queryClient = useQueryClient();
+  const [value, setValue] = React.useState<Dayjs | null>(null);
 
-	const { isLoading, mutate } = useMutation(signUp, {
-		onSuccess: (data) => {
-			console.log(data);
-			const message = 'success';
-			alert(message);
-		},
-		onError: () => {
-			alert('there was an error');
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries('create');
-		},
-	});
+  const {
+    register,
+    formState: { errors, isValid },
+    handleSubmit,
+  } = useForm<IReservationForm>({
+    mode: "onChange",
+  });
 
-	const onSubmit = (data: ISignUpForm) => {
-		const newUser = {
-			...data,
-		};
-		mutate(newUser);
-	};
+  const navigate = useNavigate();
 
-	return (
+  const { isLoading, mutate } = useMutation(reservation, {
+    onSuccess: (data) => {
+      console.log(data);
+      const message = "success";
+      alert(message);
+    },
+    onError: () => {
+      alert("there was an error");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("create");
+    },
+  });
+
+  const onSubmit = async (data: IReservationForm) => {
+    const newReservation = {
+      ...data,
+    };
+    mutate(newReservation);
+    //navigate('/');
+  };
+  return (
     <>
       <div className="m-0 from-slate-100 via-lime-100 to-slate-100 ">
-
         {/* flex items-center justify-center px-6 py-8  md:h-screen lg:py-0 */}
         <div className="m-auto flex items-center flex-col p-20 justify-center">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 white">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-500">
-                Sign Up
+                Request Reservation
               </h1>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <Link
-                  to="signin"
-                  className="font-medium text-primary-600 hover:underline text-lime-500"
-                >
-                  Sign In
-                </Link>
-              </p>
+
               <form onSubmit={handleSubmit(onSubmit)}>
                 {/* FirstName & LastName */}
                 <div className="w-1/2 flex flex-row gap-4">
@@ -91,7 +86,7 @@ export const SignUp = () => {
                     <input
                       type="text"
                       id="first_name"
-                      {...register('first_name')}
+                      {...register("first_name")}
                       className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="John"
                     />
@@ -103,7 +98,7 @@ export const SignUp = () => {
                     <input
                       type="text"
                       id="last_name"
-                      {...register('last_name')}
+                      {...register("last_name")}
                       className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Doe"
                     />
@@ -116,9 +111,9 @@ export const SignUp = () => {
                   <input
                     type="text"
                     id="phone_number"
-                    {...register('phone_number')}
+                    {...register("phone_number")}
                     className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    />
+                  />
                 </div>
                 {/* Email */}
                 <div>
@@ -128,39 +123,29 @@ export const SignUp = () => {
                   <input
                     type="email"
                     id="email"
-                    {...register('email')}
+                    {...register("email")}
                     className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
                   />
                 </div>
 
-								{/* Password & Confirm password */}
-								<div>
-									<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-										Password *
-									</label>
-									<input
-										type='password'
-										id='password'
-										{...register('password')}
-										placeholder='••••••••'
-										className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									/>
-								</div>
-								<div>
-									<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-										Confirm password *
-									</label>
-									<input
-										type='password'
-										id='confirm-password'
-										{...register('confirm_password')}
-										placeholder='••••••••'
-										className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									/>
-								</div>
 
                 {/* Address */}
+                <div className='p-5 flex items-start'>
+									<div className='flex items-center h-5'>
+										<input
+											id='currentAddress'
+											aria-describedby='currentAddress'
+											type='checkbox'
+											className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
+										/>
+									</div>
+									<div className=' ml-3 text-sm'>
+										<label className='font-light text-gray-500 dark:text-gray-300'>
+											Use Current Address
+										</label>
+									</div>
+								</div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                     Address *
@@ -168,9 +153,9 @@ export const SignUp = () => {
                   <input
                     type="text"
                     id="address_line"
-                    {...register('address_line')}
+                    {...register("address_line")}
                     className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    />
+                  />
                 </div>
                 {/* Unit Number & Postal Code  */}
                 <div>
@@ -180,9 +165,9 @@ export const SignUp = () => {
                   <input
                     type="text"
                     id="unit_number"
-                    {...register('unit_number')}
+                    {...register("unit_number")}
                     className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    />
+                  />
                 </div>
                 {/* Postal Code & City */}
                 <div className="w-1/2 flex flex-row gap-4">
@@ -193,11 +178,10 @@ export const SignUp = () => {
                     <input
                       type="text"
                       id="postal_code"
-                      {...register('postal_code')}
+                      {...register("postal_code")}
                       className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
+                    />
                   </div>
-
                   <div className="flex flex-col">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       City *
@@ -205,9 +189,9 @@ export const SignUp = () => {
                     <input
                       type="text"
                       id="city"
-                      {...register('city')}
+                      {...register("city")}
                       className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
+                    />
                   </div>
                 </div>
 
@@ -217,14 +201,30 @@ export const SignUp = () => {
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Province *
                     </label>
-                    <input
+                    {/* <select value={value} onChange={handleChange}> */}
+                    <select 
+                    id="province"
+                    className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                      <option value="AB">AB</option>
+                      <option value="BC">BC</option>
+                      <option value="NB">NB</option>
+                      <option value="NL">NL</option>
+                      <option value="NS">NS</option>
+                      <option value="NT">NT</option>
+                      <option value="NU">NU</option>
+                      <option value="MB">MB</option>
+                      <option value="ON">ON</option>
+                      <option value="PE">PE</option>
+                      <option value="QC">QC</option>
+                      <option value="SK">SK</option>
+                      <option value="YT">YT</option>
+                    </select>
+                    {/* <input
                       type="text"
-                      {...register('province')}
-                      id="province"
-                      className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
+                      {...register("province")}
+                      /> */}
                   </div>
-
                   <div className="flex flex-col">
                     <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                       Country *
@@ -232,66 +232,86 @@ export const SignUp = () => {
                     <input
                       type="text"
                       id="country"
-                      {...register('country')}
+                      {...register("country")}
                       className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
+                    />
                   </div>
                 </div>
+                {/* Type */}
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  Type *
+                </label>
                 <div className="p-5 flex items-start">
                   <div className="flex items-center h-5">
                     <input
-                      id="terms"
+                      id="type"
                       aria-describedby="terms"
-                      type="checkbox"
+                      type="radio"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
                     />
-                  </div>
-                  <div className=" ml-3 text-sm">
-                    <label className="font-light text-gray-500 dark:text-gray-300">
-                      I accept the{" "}
-                      <a
-                        className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                        href="#"
-                      >
-                        Terms and Conditions
-                      </a>
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      Residential
+                    </label>
+                    <input
+                      id="type"
+                      aria-describedby="terms"
+                      type="radio"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
+                    />
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      Commercial
+                    </label>
+                    <input
+                      id="type"
+                      aria-describedby="terms"
+                      type="radio"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
+                    />
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      Service
+                    </label>
+                    <input
+                      id="type"
+                      aria-describedby="terms"
+                      type="radio"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
+                    />
+                    <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                      Outdoor Lighting
                     </label>
                   </div>
                 </div>
+                {/* Date / Time */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                    Date & Time
+                  </label>
+                  <DateTimePicker
+                    renderInput={(props) => <TextField {...props} />}
+                    value={value}
+                    onChange={(newValue) => {
+                      setValue(newValue);
+                    }}
+                  />
+                </LocalizationProvider>
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  Description
+                </label>
+                <input
+                  type="text"
+                  id="description"
+                  {...register("description")}
+                  className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                {/* Submit Button */}
                 <div className="flex justify-center">
                   <button
                     type="submit"
-                    className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded">
-                    Create account
+                    className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Submit
                   </button>
                 </div>
-                <p>
-                  ---------------------------- or ----------------------------
-                </p>
-                <div className="flex justify-center gap-4 mt-2 mb-2">
-                  <div className='flex justify-start'>
-                  <button
-                    type="submit"
-                    className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded">
-                    Google
-                  </button>
-                  </div>
-                  <div className='flex justify-end'>
-                  <button
-                    type="submit"
-                    className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded">
-                    Facebook
-                  </button>
-                  </div>
-                </div>
-                <div className='flex justify-center mt-4'>
-                <label>
-                  <Link to='guest'
-                  className="font-medium text-primary-700 hover:underline text-lime-500">
-                          Continue As Guest
-                  </Link>
-                  </label>
-                  </div>
               </form>
             </div>
           </div>
@@ -299,4 +319,6 @@ export const SignUp = () => {
       </div>
     </>
   );
-};
+}
+
+export default ReservationForm;

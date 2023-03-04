@@ -3,7 +3,6 @@
 // useApi.tsx
 import { useEffect, useState } from 'react';
 import axios from '../api/axios';
-import jwt, { JwtPayload } from 'jwt-decode'; // import dependency
 import jwtDecode from 'jwt-decode';
 
 interface IJwtDecode {
@@ -17,11 +16,6 @@ export const useMe = () => {
 	const [data, setData] = useState(null);
 	const token = localStorage.getItem('token');
 	let userId: any = 1;
-	// decode id from token
-	if (token) {
-		const { id } = jwtDecode<IJwtDecode>(token);
-		userId = id;
-	}
 
 	const fetchApi = async () => {
 		try {

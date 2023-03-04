@@ -27,8 +27,7 @@ export const SignIn = () => {
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-
-  console.log(isAuth);
+  
 	const onSubmit = async () => {
 		const { email, password } = getValues();
 		dispatch(signIn({ email: email, password: password }));

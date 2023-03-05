@@ -46,10 +46,9 @@ export const SignIn = () => {
 		/**global google */
 		google.accounts.id.initialize({
 			client_id:
-				'491120951735-hflt1frfijgbls8m0od302emo2i2cu1r.apps.googleusercontent.com',
+				'491120951735-lb1o3sg8oimfdocobfj639jljdetq2tj.apps.googleusercontent.com',
 			callback: handleCallbackResponse,
 		});
-
 		google.accounts.id.renderButton(document.getElementById('signinDiv')!, {
 			theme: 'outline',
 			size: 'large',

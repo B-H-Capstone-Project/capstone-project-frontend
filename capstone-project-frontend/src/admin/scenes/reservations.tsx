@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import FullCalendar, { formatDate, EventApi } from "@fullcalendar/react";
+import { useCallback, useEffect, useState } from "react";
+import FullCalendar, { formatDate, EventApi, EventInput } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import {
   Box,
@@ -45,6 +45,7 @@ const Reservations = () => {
       }
     };
 
+
     const fetchAllReservations = async () => {
       try {
         const res = await axios.get("http://localhost:8080/reservations");
@@ -58,12 +59,13 @@ const Reservations = () => {
     fecthAllCustomers();
   }, [setCurrentEvents]);
 
-  const handleDateClick = (selected: any) => {
-    setSelectedDate(new Date(selected.start).toISOString().slice(0, -8));
-    
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
-    }
+  const eventsOnCalendar: EventInput[] = currentEvents.map((reservation: IReservation) => {
+    return { title: reservation.type, start: reservation.date };
+  });
+
+    const handleDateClick = useCallback((arg: DateClickArg) => {
+      setSelectedDate(arg.date.toISOString().slice(0, -8));
+    }, []);
 
   const handleEventClick = (selected: any) => {
 
@@ -139,16 +141,17 @@ const Reservations = () => {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            select={(selected)=> {handleDateClick(selected); handleOpen() }}
+            select={(selected)=> handleOpen()}
+            dateClick={handleDateClick}
             eventClick={handleEventClick}
             // eventsSet={(events:IReservation) => setCurrentEvents(events)}
-            
+            events={eventsOnCalendar}
             // eventSources={currentEvents}
           />
         </Box>
       </Box>
     </Box>
-    <ReservationModal customers={customers} selectedDate={selectedDate} open={open} setOpen={setOpen}/> 
+    <ReservationModal customers={customers} selectedDate={selectedDate} setSelectedDate={setSelectedDate} open={open} setOpen={setOpen}/> 
     </>
   );
 };

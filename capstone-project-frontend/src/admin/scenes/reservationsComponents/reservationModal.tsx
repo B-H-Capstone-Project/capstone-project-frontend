@@ -64,6 +64,8 @@ const ReservationModal = (props: any) => {
     } catch (err) {
       console.log(err);
     }
+    props.setOpen(false);
+    window.location.reload();
   };
 
 
@@ -113,25 +115,25 @@ const ReservationModal = (props: any) => {
               </label>
               <input
                 type="radio"
-                id="residential"
+                value="Residential"
                 {...register('type')}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />Residential
               <input
                 type="radio"
-                id="commercial"
+                value="Commercial"
                 {...register('type')}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />Commercial
               <input
                 type="radio"
-                id="service"
+                value="Service"
                 {...register('type')}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />Service
+              />Service 
               <input
                 type="radio"
-                id="outdoorLightning"
+                value="Outdoor Lightning"
                 {...register('type')}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />Outdoor Lightning

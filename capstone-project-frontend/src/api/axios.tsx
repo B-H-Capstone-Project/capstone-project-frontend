@@ -1,6 +1,5 @@
-
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: `http://${process.env.BACKEND_IP}localhost:8080`
+    baseURL: `http://${process.env.BACKEND_IP}:8080`
 });

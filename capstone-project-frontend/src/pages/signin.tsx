@@ -27,15 +27,20 @@ export const SignIn = () => {
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-  
+
 	const onSubmit = async () => {
 		const { email, password } = getValues();
 		dispatch(signIn({ email: email, password: password }));
 		navigate('/');
 	};
 
+  console.log(isAuth.userToken);
+
 	const handleCallbackResponse = (res: any) => {
 		localStorage.setItem('token', res.credential);
+		if (isAuth.userToken?.role === 1 || 2) {
+			navigate('/admin');
+		}
 		navigate('/');
 		// eslint-disable-next-line no-restricted-globals
 		location.reload();
@@ -43,16 +48,19 @@ export const SignIn = () => {
 
 	useEffect(() => {
 		//google
-		/**global google */
 		google.accounts.id.initialize({
 			client_id:
 				'491120951735-lb1o3sg8oimfdocobfj639jljdetq2tj.apps.googleusercontent.com',
 			callback: handleCallbackResponse,
 		});
+
 		google.accounts.id.renderButton(document.getElementById('signinDiv')!, {
 			theme: 'outline',
 			size: 'large',
 		});
+
+    google.accounts.id.prompt();
+
 	}, []);
 
 	return (
@@ -124,4 +132,3 @@ export const SignIn = () => {
 		</>
 	);
 };
-

@@ -31,7 +31,6 @@ import Line from '../admin/scenes/line';
 import FAQ from '../admin/scenes/faq';
 import Geography from '../admin/scenes/geography';
 import { ColorModeContext, useMode } from '../admin/theme';
-import { IToken } from '../redux/reducer/authSlice';
 import { EditProfile } from '../pages/user/edit-profile';
 
 // user test

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
+import axios from "../../api/axios";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -8,7 +8,7 @@ const Employees = () => {
   useEffect(() => {
     const fecthAllEmployees = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/users/employee");
+        const res = await axios.get("/users/employee");
         setEmployees(res.data.users);
 
         console.log('-------frontend employee.tsx-------')

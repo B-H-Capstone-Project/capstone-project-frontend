@@ -63,6 +63,9 @@ export const SignUp = () => {
 
 	return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b712cfb72957cb0096dcdd18e49bca850f806a7e
     <>
       <div className="m-0 from-slate-100 via-lime-100 to-slate-100 ">
 

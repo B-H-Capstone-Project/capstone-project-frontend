@@ -26,10 +26,29 @@ export interface IReservation {
   description: string;
 }
 
+export interface IReservationWithUser {
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  address_line1: string;
+  address_line2?: string;
+  city: string;
+  province: string;
+  country: string;
+  postal_code: string;
+  profile: string;
+  reservation_id: number;
+  type: string;
+  date: Date;
+  description: string;
+}
+
 const Reservations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [currentEvents, setCurrentEvents] = useState<IReservation[]>([]);
+  const [currentEvents, setCurrentEvents] = useState<IReservationWithUser[]>([]);
   const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>();
@@ -48,7 +67,7 @@ const Reservations = () => {
 
     const fetchAllReservations = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/reservations");
+        const res = await axios.get("http://localhost:8080/reservationsUsers");
         console.log(res.data.reservations);
         setCurrentEvents(res.data.reservations);
       } catch (err) {
@@ -59,8 +78,12 @@ const Reservations = () => {
     fecthAllCustomers();
   }, [setCurrentEvents]);
 
-  const eventsOnCalendar: EventInput[] = currentEvents.map((reservation: IReservation) => {
-    return { title: reservation.type, start: reservation.date };
+  const eventsOnCalendar: EventInput[] = currentEvents.map((reservation: IReservationWithUser) => {
+    return {
+      id: reservation.reservation_id.toString(),
+      title: reservation.type,
+      start: reservation.date
+    };
   });
 
     const handleDateClick = useCallback((arg: DateClickArg) => {
@@ -95,9 +118,9 @@ const Reservations = () => {
         >
           <Typography variant="h5">Manage Reservations</Typography>
           <List>
-            {currentEvents.map((event: IReservation) => (
+            {currentEvents.map((event: IReservationWithUser) => (
               <ListItem
-                key={event.id}
+                key={event.reservation_id}
                 sx={{
                   backgroundColor: colors.greenAccent[500],
                   margin: "10px 0",

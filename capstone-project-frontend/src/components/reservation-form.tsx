@@ -1,15 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // date time picker
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "../api/axios";
+import { RootState } from "../redux/store";
 
 interface IReservationForm {
   first_name: string;
@@ -32,8 +33,8 @@ const reservation = async (data: IReservationForm) => {
 
 function ReservationForm() {
   const queryClient = useQueryClient();
+  const isAuth = useSelector((state: RootState) => state.auth);
   const [value, setValue] = React.useState<Dayjs | null>(null);
-
   const {
     register,
     formState: { errors, isValid },

@@ -43,6 +43,7 @@ export interface IReservationWithUser {
   type: string;
   date: Date;
   description: string;
+  is_confirmed: number;
 }
 
 const Reservations = () => {
@@ -93,13 +94,9 @@ const Reservations = () => {
   const handleEventClick = (selected: any) => {
 
     console.log('handleEventClick', selected);
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${selected.event.title}'`
-      )
-    ) {
+    
       selected.event.remove();
-    }
+
   };
 
   return (
@@ -119,6 +116,8 @@ const Reservations = () => {
           <Typography variant="h5">Manage Reservations</Typography>
           <List>
             {currentEvents.map((event: IReservationWithUser) => (
+              
+              event.is_confirmed===0 ? (
               <ListItem
                 key={event.reservation_id}
                 sx={{
@@ -139,7 +138,7 @@ const Reservations = () => {
                     </Typography>
                   }
                 />
-              </ListItem>
+              </ListItem>) : null
             ))}
           </List>
         </Box>

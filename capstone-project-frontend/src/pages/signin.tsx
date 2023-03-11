@@ -31,16 +31,16 @@ export const SignIn = () => {
 	const onSubmit = async () => {
 		const { email, password } = getValues();
 		dispatch(signIn({ email: email, password: password }));
-		navigate('/');
+    console.log("test");
+		if (isAuth.userToken?.role === 1 || 2) {
+			navigate('/admin');
+		} else {
+      navigate('/')
+    }
 	};
-
-  console.log(isAuth.userToken);
 
 	const handleCallbackResponse = (res: any) => {
 		localStorage.setItem('token', res.credential);
-		if (isAuth.userToken?.role === 1 || 2) {
-			navigate('/admin');
-		}
 		navigate('/');
 		// eslint-disable-next-line no-restricted-globals
 		location.reload();

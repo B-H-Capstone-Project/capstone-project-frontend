@@ -3,9 +3,8 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect, useRef } from 'react';
-import jwt_decode from 'jwt-decode';
-import { useAppDispatch, useAppSelector } from '../redux/hook';
+import React, { useEffect } from 'react';
+import { useAppDispatch } from '../redux/hook';
 import { signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
@@ -35,8 +34,13 @@ export const SignIn = () => {
 		navigate('/');
 	};
 
+  console.log(isAuth.userToken);
+
 	const handleCallbackResponse = (res: any) => {
 		localStorage.setItem('token', res.credential);
+		if (isAuth.userToken?.role === 1 || 2) {
+			navigate('/admin');
+		}
 		navigate('/');
 		// eslint-disable-next-line no-restricted-globals
 		location.reload();
@@ -44,10 +48,9 @@ export const SignIn = () => {
 
 	useEffect(() => {
 		//google
-		/**global google */
 		google.accounts.id.initialize({
 			client_id:
-				'491120951735-hflt1frfijgbls8m0od302emo2i2cu1r.apps.googleusercontent.com',
+				'491120951735-lb1o3sg8oimfdocobfj639jljdetq2tj.apps.googleusercontent.com',
 			callback: handleCallbackResponse,
 		});
 
@@ -55,6 +58,9 @@ export const SignIn = () => {
 			theme: 'outline',
 			size: 'large',
 		});
+
+    google.accounts.id.prompt();
+
 	}, []);
 
 	return (
@@ -126,4 +132,3 @@ export const SignIn = () => {
 		</>
 	);
 };
-

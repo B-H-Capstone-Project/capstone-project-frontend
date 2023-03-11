@@ -6,6 +6,8 @@ import { Table } from '../components/clientTable';
 import { Variants, motion } from 'framer-motion';
 import CheckIcon from '@mui/icons-material/Check';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
+import { RootState } from '../redux/store';
+import { useSelector } from 'react-redux';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -143,8 +145,8 @@ export const Home = () => {
 				</div>
 			</div>
 			<div className='h-screen bg-black flex md:flex-col'>
-				<div className='w-64 flex justify-center items-center p-20 md:w-full sm:py-0 sm:px-10'>
-					<div className='mt-10'>
+				<div className='flex-1 flex items-center'>
+					<div className='p-20'>
 						<h2 className='text-lime-300 text-4xl font-bold sm:text-3xl'>
 							Quality Work Since 2005
 						</h2>
@@ -162,12 +164,12 @@ export const Home = () => {
 					</div>
 				</div>
 				<motion.div
-					className='flex-1 w-64 flex justify-center items-center md:w-full md:items-center'
+					className='flex-1 w-64 flex justify-center items-center w-full'
 					initial='hidden'
 					whileInView='visible'
 					viewport={{ once: true, amount: 0.8 }}>
 					<motion.div
-						className='bg-white rounded-lg w-3/5 h-3/5 sm:w-2/5'
+						className='bg-white rounded-lg w-3/5 h-3/5'
 						variants={container}></motion.div>
 				</motion.div>
 			</div>

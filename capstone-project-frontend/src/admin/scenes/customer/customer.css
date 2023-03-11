@@ -1,67 +1,51 @@
-.customer {
-    /* width: 100%; */
-    display: flex;
-    /* flex-direction: row; */
-    justify-content: left;
-    align-items: center;
-    text-align: left;
-    border: 1px solid rgba(218, 218, 218, 0.426);
-    box-shadow: #cecece 2px 2px 2px;
-    /* padding: 3px; */
+table{
+    border: solid 0.5px rgb(196, 196, 196);
 }
 
 .customer:hover {
     background-color: rgba(230, 230, 230, 0.248);
 }
 
-.customer_div_profile, .customer_div_role, .customer_div_active {
-    flex: 1;
+.customer_table_td_id{
+    width: 25px;
 }
-.customer_div_name{
-    flex: 2;
-}
-
-.customer_div_email{
-    flex: 3;
-}
-.customer_div_phone{
-    flex: 2;
-}
-
-
-.customer_table {
+.customer_table_td_img{
+    width: 70px;
     display: flex;
-    width: 100%;
-}
-
-.customer_table_td {
-    text-align: left;
-    /* border: 1px solid gray; */
-}
-
-.customer_profile_div {
-    display: flex;
-    align-items: center;
     justify-content: center;
-    margin: 0;
-    text-align: center;
 }
 
 .customer_img {
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
     border-radius: 50%;
     margin: 0;
-    text-align: center;
+}
+
+.customer_table_td_email{
+    width: 200px;
+}
+
+.customer_table_td_name{
+    width: 150px;
+}
+
+.customer_table_td_phone, .customer_table_td_postalcode{
+    width: 120px;
+}
+
+.customer_table_td_address{
+    width: 300px;
+}
+
+.customer_table_td_city, .customer_table_td_province, .customer_table_td_country, .customer_table_td_role, .customer_table_td_active, .customer_table_td_actions{
+    width: 80px
 }
 
 .manage_icon {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
 }
 
@@ -71,9 +55,9 @@
 }
 
 .manage_icon_edit:hover, .manage_icon_delete:hover {
-    color: #006b20;
+    color: #757575;
 }
 
 .manage_icon_delete {
     padding-left: 10px;
-}
+} 

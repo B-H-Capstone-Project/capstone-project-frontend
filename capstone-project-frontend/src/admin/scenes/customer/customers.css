@@ -1,24 +1,36 @@
-
-.custoemrs_div{
-    display:flex;
-}
-.customers {
+.customers_component {
     display: flex;
     flex-direction: column;
-    justify-content: left;
-    align-items: center;
 
 }
-
-.customers_table {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    /* border-bottom: solid 1px gray; */
-}
-
 .customers_table_td {
-
-    /* padding: 10px; */
     text-align: left;
 }
+
+.customers_table_td_id{
+    width: 25px;
+}
+.customers_table_td_profile{
+    width: 70px;
+}
+
+.customers_table_td_email{
+    width: 200px;
+}
+
+.customers_table_td_name{
+    width: 150px;
+}
+
+.customers_table_td_phone, .customers_table_td_postalcode{
+    width: 120px;
+}
+
+.customers_table_td_address{
+    width: 300px;
+}
+
+.customers_table_td_city, .customers_table_td_province, .customers_table_td_country, .customers_table_td_role, .customers_table_td_active, .customers_table_td_actions{
+    width: 80px
+}
+

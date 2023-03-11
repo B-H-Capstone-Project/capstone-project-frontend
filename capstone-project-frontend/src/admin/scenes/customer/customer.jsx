@@ -14,7 +14,12 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+
+//update
+import { useMutation, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 const style = {
   position: "absolute",
@@ -29,70 +34,68 @@ const style = {
 };
 
 export default function Customer({customerprop}) {
+  const queryClient = useQueryClient();
+  const isAuth = useSelector((state) => state.auth);
+	const navigate = useNavigate();
+  const customerId = customerprop.id;
+
+  const {
+		register,
+		getValues,
+		formState: { errors, isValid },
+		handleSubmit,
+	} = useForm({
+		mode: 'onChange',
+    defaultValues: {
+      first_name: customerprop.first_name,
+      last_name: customerprop.last_name,
+      phone_number: customerprop.phone_number,
+      password: customerprop.password,
+      confirm_password: customerprop.password,
+      address_line1: customerprop.address_line1,
+      address_line2: customerprop.address_line2,
+      postal_code: customerprop.postal_code,
+      city: customerprop.city,
+      province: customerprop.province,
+      country: customerprop.country,
+      role: customerprop.role,
+      is_active: customerprop.is_active,
+    }
+	});
+
+  const { isLoading, mutate } = useMutation(
+		async (updateCustomer) => {
+			return (await axios.put(`http://localhost:8080/user/${customerId}`, updateCustomer))
+				.data;
+		},
+    {
+			onSuccess: (data) => {
+				const message = 'success';
+				alert(message);
+        window.location.replace("/admin/customers");
+			},
+			onError: () => {
+        alert('there was an error');
+			},
+			onSettled: () => {
+        queryClient.invalidateQueries('create');
+			},
+		}
+    );
+
+  const onSubmit = (data) => {
+    console.log(data);
+		const updateCustomer = {
+			...data,
+		};
+		mutate(updateCustomer);
+	};
+
   //modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // const {
-	// 	register,
-	// } = useForm({
-	// 	mode: 'onChange',
-	// });
-
-  // //update
-  const [first_name, setFirstName] = useState("");
-  const [last_name, setLastName] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone_number, setPhoneNumber] = useState("");
-  const [address_line1, setAddressLine1] = useState("");
-  const [address_line2, setAddressLine2] = useState("");
-  const [city, setCity] = useState("");
-  const [province, setProvince] = useState("");
-  const [postal_code, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
-  const [role, setRole] = useState("");
-  const [is_active, setIsActive] = useState("");
-
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    console.log('handleUpdate In');
-    // console.log("e: " + JSON.stringify(e));
-    // console.log("customerporp.email: " + customerprop.email);
-    // console.log("userprop._id: " + userprop._id);
-    const updatedCustomer = {
-      userId: customerprop.id,
-      profile: customerprop.profile,
-      email: customerprop.email,
-      first_name,
-      last_name,
-      password,
-      // confirm_password,
-      phone_number,
-      address_line1,
-      address_line2,
-      city,
-      province,
-      postal_code,
-      country,
-      role,
-      is_active,
-    };
-
-    try {
-      console.log("update try in");
-      const res = await axios.put(`http://localhost:8080/user/${customerprop.id}`,
-        updatedCustomer
-      );
-      console.log("res:" + res);
-      // console.log("res" + JSON.stringify(res.data.user));
-    } catch (err) {
-      console.log("catch in");
-      console.log("error: " + err);
-    }
-  };
-
+ 
   //delete
   const handleDelete = (e) => {
     console.log(e);
@@ -130,8 +133,8 @@ export default function Customer({customerprop}) {
         <table className="customer_table">
           <tbody>
             <tr>
-              <td className="customer_table_td">{customerprop.id}</td>
-              <td className="customer_table_td">
+              <td className="customer_table_td_id">{customerprop.id}</td>
+              <td className="customer_table_td_img">
                 <div className="customer_profile_div">
                   <img
                     className="customer_img"
@@ -140,25 +143,25 @@ export default function Customer({customerprop}) {
                   />
                 </div>
               </td>
-              <td className="customer_table_td">{customerprop.email}</td>
-              <td className="customer_table_td">
+              <td className="customer_table_td_email">{customerprop.email}</td>
+              <td className="customer_table_td_name">
                 {customerprop.first_name} {customerprop.last_name}
               </td>
-              <td className="customer_table_td">{customerprop.phone_number}</td>
-              <td className="customer_table_td">
+              <td className="customer_table_td_phone">{customerprop.phone_number}</td>
+              <td className="customer_table_td_address">
                 {customerprop.address_line1} {customerprop.address_line2}
               </td>
-              <td className="customer_table_td">{customerprop.city}</td>
-              <td className="customer_table_td">{customerprop.province}</td>
-              <td className="customer_table_td">{customerprop.postal_code}</td>
-              <td className="customer_table_td">{customerprop.country}</td>
-              <td className="customer_table_td">
+              <td className="customer_table_td_city">{customerprop.city}</td>
+              <td className="customer_table_td_province">{customerprop.province}</td>
+              <td className="customer_table_td_postalcode">{customerprop.postal_code}</td>
+              <td className="customer_table_td_country">{customerprop.country}</td>
+              <td className="customer_table_td_role">
                 {customerprop.role == 3 && "Customer"}
               </td>
-              <td className="customer_table_td">
+              <td className="customer_table_td_active">
                 {customerprop.is_active == true ? "Active" : "In Active"}
               </td>
-              <td className="customer_table_td">
+              <td className="customer_table_td_actions">
                 <div className="manage_icon">
                   <EditIcon
                     className="manage_icon_edit"
@@ -171,7 +174,13 @@ export default function Customer({customerprop}) {
                     className="manage_icon_delete"
                     onClick={handleDelete}
                   />
-
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+                  
                   {/* Update Modal */}
                   <Modal
                     open={open}
@@ -180,7 +189,7 @@ export default function Customer({customerprop}) {
                     aria-describedby="modal-modal-description"
                   >
                     <Box sx={style}>
-                      <form onSubmit={handleUpdate}>
+                      <form onSubmit={handleSubmit(onSubmit)}>
                         <Typography
                           id="modal-modal-title"
                           variant="h6"
@@ -200,6 +209,7 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "617px",
                           }}
+                          
                           defaultValue={customerprop.email}
                           InputProps={{
                             readOnly: true,
@@ -213,9 +223,7 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue="password"
-                          // {...register('password')}
-                          onChange={(e) => setPassword(e.target.value)}
+                          {...register('password')}
                         />
                         <TextField
                           required
@@ -225,7 +233,6 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          // onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                         <TextField
                           required
@@ -236,9 +243,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.first_name}
-                          // {...register('first_name')}
-                          onChange={(e) => setFirstName(e.target.value)}
+                          placeholder={customerprop.first_name}
+                          {...register('first_name')}
                         />
                         <TextField
                           required
@@ -248,10 +254,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.last_name}
-                          
-                          // {...register('last_name')}
-                          onChange={(e) => setLastName(e.target.value)}
+                          placeholder={customerprop.last_name}
+                          {...register('last_name')}
                         />
                         <TextField
                           required
@@ -262,10 +266,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "617px",
                           }}
-                          defaultValue={customerprop.phone_number}
-                          
-                          // {...register('phone_number')}
-                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          placeholder={customerprop.phone_number}
+                          {...register('phone_number')}
                         />
                         <TextField
                           required
@@ -275,10 +277,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.address_line1}
-                          
-                          // {...register('address_line1')}
-                          onChange={(e) => setAddressLine1(e.target.value)}
+                          placeholder={customerprop.address_line1}
+                          {...register('address_line1')}
                         />
                         <TextField
                           required
@@ -288,10 +288,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.address_line2}
-                          
-                          // {...register('address_line2')}
-                          onChange={(e) => setAddressLine2(e.target.value)}
+                          placeholder={customerprop.address_line2}
+                          {...register('address_line2')}
                         />
                         <TextField
                           required
@@ -301,10 +299,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.city}
-                          
-                          // {...register('city')}
-                          onChange={(e) => setCity(e.target.value)}
+                          placeholder={customerprop.city}
+                          {...register('city')}
                         />
                         <TextField
                           required
@@ -314,10 +310,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.province}
-                          
-                          // {...register('province')}
-                          onChange={(e) => setProvince(e.target.value)}
+                          placeholder={customerprop.province}
+                          {...register('province')}
                         />
                         <TextField
                           required
@@ -327,10 +321,8 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.postal_code}
-                          
-                          // {...register('postal_code')}
-                          onChange={(e) => setPostalCode(e.target.value)}
+                          placeholder={customerprop.postal_code}
+                          {...register('postal_code')}
                         />
                         <TextField
                           required
@@ -340,39 +332,33 @@ export default function Customer({customerprop}) {
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          defaultValue={customerprop.country}
-                          
-                          // {...register('country')}
-                          onChange={(e) => setCountry(e.target.value)}
+                          placeholder={customerprop.country}
+                          {...register('country')}
                         />
                         <Select
-                          value={role}
-                        
+                        required
+                        placeholder={customerprop.role}
                           sx={{
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          
-                          // {...register('role')}
-                          onChange={(e) => setRole(e.target.value)}
+                          {...register('role')}
                         >
                           <MenuItem value={1}>Admin</MenuItem>
                           <MenuItem value={2}>Employee</MenuItem>
                           <MenuItem value={3}>Customer</MenuItem>
                         </Select>
                         <Select
+                        required
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           sx={{
                             margin: "0.5rem",
                             width: "300px",
                           }}
-                          // value={customerprop.is_active}
-                          value={is_active}
-                          label="Active"
+                          placeholder={customerprop.is_active}
                           
-                          // {...register('is_active')}
-                          onChange={(e) => setIsActive(e.target.value)}
+                          {...register('is_active')}
                         >
                           <MenuItem value={1}>Active</MenuItem>
                           <MenuItem value={2}>In Active</MenuItem>
@@ -394,12 +380,6 @@ export default function Customer({customerprop}) {
                       </form>
                     </Box>
                   </Modal>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </>
   );
 }

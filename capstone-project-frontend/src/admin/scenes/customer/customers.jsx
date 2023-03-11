@@ -36,23 +36,23 @@ export default function Customers({customers}) {
       <table className="customers_table">
         <thead>
           <tr className="customers_table_td">
-            <td className="customers_table_td">| ID</td>
-            <td className="customers_table_td">| Profile</td>
-            <td className="customers_table_td">| Email</td>
-            <td className="customers_table_td">| Name</td>
-            <td className="customers_table_td">| Phone</td>
-            <td className="customers_table_td">| Address</td>
-            <td className="customers_table_td">| City</td>
-            <td className="customers_table_td">| Province</td>
-            <td className="customers_table_td">| Postal Code</td>
-            <td className="customers_table_td">| Country</td>
-            <td className="customers_table_td">| Role</td>
-            <td className="customers_table_td">| Active</td>
-            <td className="customers_table_td">| Actions</td>
+            <td className="customers_table_td_id">ID</td>
+            <td className="customers_table_td_profile">Profile</td>
+            <td className="customers_table_td_email">Email</td>
+            <td className="customers_table_td_name">Name</td>
+            <td className="customers_table_td_phone">Phone</td>
+            <td className="customers_table_td_address">Address</td>
+            <td className="customers_table_td_city">City</td>
+            <td className="customers_table_td_province">Province</td>
+            <td className="customers_table_td_postalcode">Postal Code</td>
+            <td className="customers_table_td_country">Country</td>
+            <td className="customers_table_td_role">Role</td>
+            <td className="customers_table_td_active">Active</td>
+            <td className="customers_table_td_actions">Actions</td>
           </tr>
         </thead>
       </table>
-      <div className="customers">
+      <div className="customers_component">
         {customers.map((c) => (
           <Customer key={c.id} customerprop={c} />
         ))}

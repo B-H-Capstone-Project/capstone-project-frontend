@@ -8,6 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -93,31 +94,33 @@ export const Home = () => {
 								<h1>Irrigation</h1>
 							</div>
 						</div>
-						<button className='text-sm py-1.5 px-5 ml-2 bg-lime-300 rounded-xl md:text-xl md:py-3'>
-							Book a reservation
-							<HorizontalRuleIcon
-								sx={{ fontSize: 10, marginRight: -1, marginLeft: 1 }}
-							/>
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
-							<HorizontalRuleIcon sx={{ fontSize: 10 }} /> 
-						</button>
+						<Link to="/reservation">
+							<button className='text-sm py-1.5 px-5 ml-2 bg-lime-300 rounded-xl md:text-xl md:py-3'>
+								Book a reservation
+								<HorizontalRuleIcon
+									sx={{ fontSize: 10, marginRight: -1, marginLeft: 1 }}
+								/>
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10, marginRight: -1 }} />
+								<HorizontalRuleIcon sx={{ fontSize: 10 }} />
+							</button>
+						</Link>
 					</div>
 				</div>
 				<div className='basis-1/2 flex'>
@@ -159,7 +162,6 @@ export const Home = () => {
 							many local builders and landscaping companies in and around the
 							Calgary area. In addition, we also cater to single-family homes
 							and have successfully installed and servicing hundreds of homes
-              
 						</p>
 					</div>
 				</div>

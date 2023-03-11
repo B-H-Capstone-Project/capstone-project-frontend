@@ -47,7 +47,5 @@ export const imgData = [
         id:12,
         imgSrc: 'https://www.linkpicture.com/q/7-1_8.jpg'
     }
-    
-
 ];
 

@@ -1,36 +1,7 @@
-import React from "react";
 import Customer from "./customer";
 import "./customers.css";
-import PropTypes from 'prop-types';
 
-// interface ICustomerForm {
-//   id: string,
-//   profile: string,
-// 	first_name: string,
-// 	last_name: string,
-// 	phone_number: string,
-// 	email: string,
-// 	password: string,
-// 	confirm_password: string,
-// 	address_line1: string,
-// 	address_line2: string,
-// 	postal_code: string,
-// 	city: string,
-// 	province: string,
-// 	country: string,
-//   role: number,
-//   is_active: boolean,
-// }
-
-// interface ICustomersProps {
-//   customers: ICustomerForm[];
-// }
-
-// Customers.propTypes = {
-//   customers: PropTypes.arrayOf(PropTypes.shape(any))
-// }
-
-export default function Customers({customers}) {
+export default function Customers({customers}:any) {
   return (
     <>
       <table className="customers_table">
@@ -53,7 +24,7 @@ export default function Customers({customers}) {
         </thead>
       </table>
       <div className="customers_component">
-        {customers.map((c) => (
+        {customers.map((c:any) => (
           <Customer key={c.id} customerprop={c} />
         ))}
       </div>

@@ -27,26 +27,29 @@ const style = {
   p: 4,
 };
 
-// interface ICustomer {
-//   id: string;
-//   first_name: string;
-//   last_name: string;
-//   phone_number: string;
-//   email: string;
-//   address_line1: string;
-//   address_line2?: string;
-//   postal_code: string;
-//   city: string;
-//   province: string;
-//   country: string;
-// }
+interface ICustomer {
+  // id: string;
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  address_line1: string;
+  address_line2?: string;
+  postal_code: string;
+  city: string;
+  province: string;
+  country: string;
+  role: number;
+  is_active: boolean;
+}
 
-const signUp = async (data) => {
+const signUp = async (data:any) => {
 	const { data: response } = await axios.post('auth/signup', data);
 	return response.data;
 };
 
-const CustomerModal = (props) => {
+const CustomerModal = (props:any) => {
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
   const queryClient = useQueryClient();
@@ -55,7 +58,7 @@ const CustomerModal = (props) => {
     getValues,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm({
+  } = useForm<ICustomer>({
     mode: "onChange",
   });
 
@@ -76,7 +79,7 @@ const CustomerModal = (props) => {
 		},
 	});
 
-	const onSubmit = (data) => {
+	const onSubmit = (data:ICustomer) => {
 		const newUser = {
 			...data,
 		};
@@ -117,7 +120,7 @@ const CustomerModal = (props) => {
               margin: "0.5rem",
               width: "300px",
             }}
-            placeholder=""
+            placeholder='••••••••'
             {...register("password")}
           />
           <TextField

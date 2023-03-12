@@ -54,8 +54,9 @@ export const Header = () => {
 			<CssBaseline />
 			<AppBar
 				sx={{
-					bgcolor: 'white',
+					bgcolor: 'inherit',
 				}}
+        position='static'
 				component='nav'
 				color='transparent'
 				elevation={0}>

@@ -109,7 +109,7 @@ const Dashboard: any = () => {
   }, []);
 
   return isLoaded ? (
-    <Box display="flex" height="100%">
+    <Box display="flex" height="1000px">
       <AdminSidebar />
       <Box display="flex" flexDirection="column" width="100%" height="100%">
         <Box m="20px" className="content">
@@ -137,9 +137,7 @@ const Dashboard: any = () => {
                 subtitle="New Employees"
                 increase={`${employeesPercentage} from last week`}
                 icon={
-                  <PersonAddIcon
-                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                  />
+                  <PersonAddIcon sx={{ color: "#3CB045", fontSize: "26px" }} />
                 }
               />
             </Box>
@@ -155,9 +153,7 @@ const Dashboard: any = () => {
                 subtitle="New Customers"
                 increase={`${customersPercentage} from last week`}
                 icon={
-                  <PersonAddIcon
-                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                  />
+                  <PersonAddIcon sx={{ color: "#3CB045", fontSize: "26px" }} />
                 }
               />
             </Box>
@@ -174,7 +170,7 @@ const Dashboard: any = () => {
                 increase={`${reservationsPercentage} from last week`}
                 icon={
                   <CalendarTodayOutlinedIcon
-                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    sx={{ color: "#3CB045", fontSize: "26px" }}
                   />
                 }
               />
@@ -192,14 +188,13 @@ const Dashboard: any = () => {
                 increase={`${pendingReservationsPercentage} from last week`}
                 icon={
                   <CalendarTodayOutlinedIcon
-                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                    sx={{ color: "#3CB045", fontSize: "26px" }}
                   />
                 }
               />
             </Box>
             {/* Row 3 */}
-            <Box gridColumn="span 8" gridRow="span 2">
-              Google Maps
+            <Box gridColumn="span 8" gridRow="span 2" paddingTop={"50px"}>
               <Map />
             </Box>
           </Box>

@@ -323,10 +323,7 @@ export default function Employee({ employeeprop }: any) {
                   margin: "0",
                 }}
               >
-                <EditIcon
-                  className={classes.icon_edit}
-                  onClick={handleOpen}
-                />
+                <EditIcon className={classes.icon_edit} onClick={handleOpen} />
                 <ClearIcon
                   fontSize="large"
                   className={classes.icon_delete}

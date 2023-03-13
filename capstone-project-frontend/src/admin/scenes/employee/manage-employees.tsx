@@ -29,7 +29,7 @@ const ManageEmployees = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", width: "100%" }}>
+      <Box sx={{ display: "flex", width: "100%", height: "800px" }}>
         <AdminSidebar />
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Box sx={{ margin: "20px" }}>

@@ -98,6 +98,9 @@ export const Header = () => {
 								<NavLink to='/our-work'>OUR WORK</NavLink>
 							</div>
 							<div className='text-xs mr-10'>
+								<NavLink to='/reservation'>RESERVATION</NavLink>
+							</div>
+							<div className='text-xs mr-10'>
 								<NavLink to='/contact-us'>CONTACT US</NavLink>
 							</div>
 

@@ -103,7 +103,7 @@ export const LoggedInRouter = () => {
                 />
               ))}
               <Route path="*" element={<NotFound />} />
-              {token?.role === 1 || 2 &&
+              {token?.role === 1 || token?.role === 2 &&
                   adminRoutes.map((route) => (
                     <Route
                       key={route.path}

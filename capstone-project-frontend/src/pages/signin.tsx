@@ -31,16 +31,18 @@ export const SignIn = () => {
 	const onSubmit = async () => {
 		const { email, password } = getValues();
 		dispatch(signIn({ email: email, password: password }));
-		navigate('/');
-	};
 
-  console.log(isAuth.userToken);
+		if (isAuth.userToken) {
+			if (isAuth.userToken?.role === 1 || isAuth.userToken?.role === 2) {
+				navigate('/admin');
+			}
+		} else {
+			navigate('/');
+		}
+	};
 
 	const handleCallbackResponse = (res: any) => {
 		localStorage.setItem('token', res.credential);
-		if (isAuth.userToken?.role === 1 || 2) {
-			navigate('/admin');
-		}
 		navigate('/');
 		// eslint-disable-next-line no-restricted-globals
 		location.reload();
@@ -59,8 +61,7 @@ export const SignIn = () => {
 			size: 'large',
 		});
 
-    google.accounts.id.prompt();
-
+		google.accounts.id.prompt();
 	}, []);
 
 	return (

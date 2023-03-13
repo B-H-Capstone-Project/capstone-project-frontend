@@ -18,7 +18,6 @@ import AdminHeader from "./global/admin-header";
 const Dashboard:any = () => {
   const theme:any = useTheme();
   const colors:any = tokens(theme.palette.mode);
-
   return (
     <Box display="flex">
       <AdminSidebar />

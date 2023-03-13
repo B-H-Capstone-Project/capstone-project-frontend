@@ -13,14 +13,15 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../api/axios';
 import { RootState } from '../redux/store';
+import { useMe } from '../hooks/useMe';
 
 interface IReservationForm {
 	first_name: string;
 	last_name: string;
 	phone_number: string;
 	email: string;
-	address_line: string;
-	unit_number: string;
+	address_line1: string;
+	address_line2: string;
 	postal_code: string;
 	city: string;
 	province: string;
@@ -29,13 +30,16 @@ interface IReservationForm {
 }
 
 const reservation = async (data: IReservationForm) => {
-	const { data: response } = await axios.post('reservation', data);
+	const { data: response } = await axios.post('auth/newreservation', data);
+	console.log(data);
 	return response.data;
 };
 
 function ReservationForm() {
 	const queryClient = useQueryClient();
+	const { data } = useMe();
 	const isAuth = useSelector((state: RootState) => state.auth);
+	
 	const [value, setValue] = React.useState<Dayjs | null>(null);
 	const {
 		register,
@@ -48,13 +52,16 @@ function ReservationForm() {
 	const navigate = useNavigate();
 
 	const { isLoading, mutate } = useMutation(reservation, {
+		
 		onSuccess: (data) => {
-			console.log(data);
+			console.log("success in" + data);
 			const message = 'success';
 			alert(message);
 		},
-		onError: () => {
-			alert('there was an error');
+		onError: (err) => {
+			console.log(err);
+			
+			alert('Error in use mutation');
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries('create');
@@ -86,9 +93,10 @@ function ReservationForm() {
 							<input
 								type='text'
 								id='first_name'
-								{...register('first_name')}
+								// {...register('first_name')}
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-								placeholder='John'
+								value={data?.user.first_name}
+								readOnly
 							/>
 						</div>
 						<div className='flex flex-col mb-3'>
@@ -98,9 +106,10 @@ function ReservationForm() {
 							<input
 								type='text'
 								id='last_name'
-								{...register('last_name')}
+								// {...register('last_name')}
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-								placeholder='Doe'
+								value={data?.user.last_name}
+								readOnly
 							/>
 						</div>
 					</div>
@@ -111,8 +120,11 @@ function ReservationForm() {
 						<input
 							type='text'
 							id='phone_number'
-							{...register('phone_number')}
+							// {...register('phone_number')}
+							value={data?.user.phone_number}
+							readOnly
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+							
 						/>
 					</div>
 					{/* Email */}
@@ -123,9 +135,10 @@ function ReservationForm() {
 						<input
 							type='email'
 							id='email'
-							{...register('email')}
+							// {...register('email')}
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-							placeholder='name@company.com'
+							value={data?.user.email}
+							readOnly
 						/>
 					</div>
 
@@ -147,25 +160,29 @@ function ReservationForm() {
 					</div>
 					<div className='flex flex-col mb-3'>
 						<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-							Address *
+							Address Line 1 *
 						</label>
 						<input
 							type='text'
-							id='address_line'
-							{...register('address_line')}
+							id='address_line1'
+							//{...register('address_line1')}
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+							value={data?.user.address_line1}
+							readOnly
 						/>
 					</div>
 					{/* Unit Number & Postal Code  */}
 					<div className='flex flex-col mb-3'>
 						<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-							Unit Number
+							Address Line 2
 						</label>
 						<input
 							type='text'
-							id='unit_number'
-							{...register('unit_number')}
+							id='address_line2'
+							// {...register('address_line2')}
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+							value={data?.user.address_line2}
+							readOnly
 						/>
 					</div>
 					{/* Postal Code & City */}
@@ -177,7 +194,9 @@ function ReservationForm() {
 							<input
 								type='text'
 								id='postal_code'
-								{...register('postal_code')}
+								// {...register('postal_code')}
+								value={data?.user.postal_code}
+								readOnly
 								className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>
@@ -188,7 +207,9 @@ function ReservationForm() {
 							<input
 								type='text'
 								id='city'
-								{...register('city')}
+								// {...register('city')}
+								value={data?.user.city}
+								readOnly
 								className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>
@@ -203,7 +224,9 @@ function ReservationForm() {
 							{/* <select value={value} onChange={handleChange}> */}
 							<select
 								id='province'
-								className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+								className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+								value={data?.user.province}
+								disabled>
 								<option value='AB'>AB</option>
 								<option value='BC'>BC</option>
 								<option value='NB'>NB</option>
@@ -226,7 +249,9 @@ function ReservationForm() {
 							<input
 								type='text'
 								id='country'
-								{...register('country')}
+								//{...register('country')}
+								value={data?.user.country}
+								readOnly
 								className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>

@@ -12,7 +12,7 @@ import { useMe } from '../../hooks/useMe';
 interface IForm {
 	first_name: string;
 	last_name: string;
-	phone_number: number;
+	phone_number: string;
 	email: string;
 	password: string;
 	confirm_password: string;

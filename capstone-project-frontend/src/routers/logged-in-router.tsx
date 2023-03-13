@@ -92,8 +92,8 @@ export const LoggedInRouter = () => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
-            {token === null || undefined ? <Header /> : ""}
-            {token?.role === 3 && <Header />}
+            {/* <Header /> */}
+            {token == null || token == undefined || token?.role == 3 ? <Header /> : ""}
             <Routes>
               {clientRoutes.map((route) => (
                 <Route

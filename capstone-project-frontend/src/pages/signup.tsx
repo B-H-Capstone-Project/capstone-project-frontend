@@ -15,8 +15,8 @@ interface ISignUpForm {
 	email: string;
 	password: string;
 	confirm_password: string;
-	address_line: string;
-	unit_number: string;
+	address_line1: string;
+	address_line2: string;
 	postal_code: string;
 	city: string;
 	province: string;
@@ -399,24 +399,24 @@ export const SignUp = () => {
 					{/* Address */}
 					<div>
 						<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-							Address *
+							Address Line1*
 						</label>
 						<input
 							type='text'
 							id='address_line'
-							{...register('address_line')}
+							{...register('address_line1')}
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 						/>
 					</div>
 					{/* Unit Number & Postal Code  */}
 					<div>
 						<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-							Unit Number
+							Address Line2
 						</label>
 						<input
 							type='text'
 							id='unit_number'
-							{...register('unit_number')}
+							{...register('address_line2')}
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 						/>
 					</div>

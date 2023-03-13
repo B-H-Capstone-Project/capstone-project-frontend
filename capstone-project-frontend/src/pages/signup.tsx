@@ -15,8 +15,8 @@ interface ISignUpForm {
 	email: string;
 	password: string;
 	confirm_password: string;
-	address_line: string;
-	unit_number: string;
+	address_line1: string;
+	address_line2: string;
 	postal_code: string;
 	city: string;
 	province: string;
@@ -65,7 +65,7 @@ export const SignUp = () => {
 		<div className='relative w-full h-screen'>
 			<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-15'>
 				<div className='sm:mb-3'>
-					<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
+					<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
 						Sign Up
 					</h1>
 					<p className='text-sm font-light text-gray-500 dark:text-gray-400'>
@@ -157,24 +157,24 @@ export const SignUp = () => {
 					{/* Address */}
 					<div>
 						<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-							Address *
+							Address Line1*
 						</label>
 						<input
 							type='text'
 							id='address_line'
-							{...register('address_line')}
+							{...register('address_line1')}
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 						/>
 					</div>
 					{/* Unit Number & Postal Code  */}
 					<div>
 						<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-							Unit Number
+							Address Line2
 						</label>
 						<input
 							type='text'
 							id='unit_number'
-							{...register('unit_number')}
+							{...register('address_line2')}
 							className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 						/>
 					</div>

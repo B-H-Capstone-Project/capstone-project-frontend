@@ -54,8 +54,9 @@ export const Header = () => {
 			<CssBaseline />
 			<AppBar
 				sx={{
-					bgcolor: 'white',
+					bgcolor: 'inherit',
 				}}
+        position='static'
 				component='nav'
 				color='transparent'
 				elevation={0}>
@@ -95,6 +96,9 @@ export const Header = () => {
 							</div>
 							<div className='text-xs mr-10'>
 								<NavLink to='/our-work'>OUR WORK</NavLink>
+							</div>
+							<div className='text-xs mr-10'>
+								<NavLink to='/reservation'>RESERVATION</NavLink>
 							</div>
 							<div className='text-xs mr-10'>
 								<NavLink to='/contact-us'>CONTACT US</NavLink>

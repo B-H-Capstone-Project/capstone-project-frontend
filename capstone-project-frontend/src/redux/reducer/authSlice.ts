@@ -24,7 +24,6 @@ export interface IToken {
 
 interface IAuthState {
 	loading: boolean;
-	userInfo: User | null; // for user object
 	userToken: IToken | null; // for storing the JWT
 	success: boolean; // for monitoring the registration proces
 	isLoggedIn: boolean;
@@ -34,7 +33,6 @@ interface IAuthState {
 const initialState: IAuthState = {
 	isLoggedIn: Boolean(token),
 	loading: false,
-  userInfo: null,
   userToken: token === null? null : jwt_decode(token), // for storing the JWT
 	error: null,
 	success: false, // for monitoring the registration process.
@@ -67,6 +65,7 @@ export const authSlice = createSlice({
 	reducers: {
 		signOut: (state) => {
 			// ...logout reducer
+      state.userToken = null;
 			state.isLoggedIn = false;
       localStorage.removeItem('token');
 		},

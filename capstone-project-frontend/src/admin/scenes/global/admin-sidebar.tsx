@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
+import { useAppDispatch } from "../../../redux/hook";
+import { signOut } from "../../../redux/reducer/authSlice";
+import { useMe } from "../../../hooks/useMe";
 
 // icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -17,11 +20,10 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import { useMe } from "../../../hooks/useMe";
 
 const Item = ({ title, to, icon, selected, setSelected }: any) => {
-  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -40,11 +42,12 @@ const Item = ({ title, to, icon, selected, setSelected }: any) => {
 };
 
 const AdminSidebar = () => {
-    const { data } = useMe();
+  const { data } = useMe();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const dispatch = useAppDispatch();
 
   return (
     <Box
@@ -66,7 +69,7 @@ const AdminSidebar = () => {
         },
       }}
     >
-      <ProSidebar collapsed={isCollapsed} >
+      <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -83,7 +86,7 @@ const AdminSidebar = () => {
                 justifyContent="space-between"
                 alignItems="center"
                 ml="15px"
-                position= "relative"
+                position="relative"
                 flexDirection="row"
               >
                 <Typography
@@ -102,7 +105,12 @@ const AdminSidebar = () => {
 
           {!isCollapsed && (
             <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center" position= "relative">
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                position="relative"
+              >
                 <img
                   alt="profile-user"
                   width="100px"
@@ -170,6 +178,16 @@ const AdminSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            {/* <NavLink to="/"> */}
+              <Item
+                title="Sign Out"
+                onClick={() => dispatch(signOut())}
+                to="/"
+                icon={<ExitToAppIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            {/* </NavLink> */}
           </Box>
         </Menu>
       </ProSidebar>

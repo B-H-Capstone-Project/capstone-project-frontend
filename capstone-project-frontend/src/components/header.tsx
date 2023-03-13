@@ -22,6 +22,34 @@ import { RootState } from '../redux/store';
 import { useAppDispatch } from '../redux/hook';
 import { signOut } from '../redux/reducer/authSlice';
 
+//customer routes
+const loggedOutNav = [
+	{
+		path: '/our-work',
+		name: 'OUR WORK',
+	},
+	{
+		path: '/contact-us',
+		name: 'CONTACT US',
+	},
+];
+
+//customer routes
+const loggedInNav = [
+	{
+		path: '/our-work',
+		name: 'OUR WORK',
+	},
+	{
+		path: '/contact-us',
+		name: 'CONTACT US',
+	},
+	{
+		path: '/reservation',
+		name: 'RESERVATION',
+	},
+];
+
 export const Header = () => {
 	const [mobileOpen, setMobileOpen] = React.useState(false);
 	const handleDrawerToggle = () => {
@@ -29,19 +57,30 @@ export const Header = () => {
 	};
 	const dispatch = useAppDispatch();
 	const isAuth = useSelector((state: RootState) => state.auth);
-	const navItems = ['About', 'Rewards', 'Contact'];
+	const loggedIn = isAuth.isLoggedIn;
+
 	const drawer = (
 		<Box
 			onClick={handleDrawerToggle}
 			sx={{ textAlign: 'center' }}>
 			<Divider />
 			<List>
-				{navItems.map((item) => (
+				{loggedIn &&
+					loggedInNav.map((item) => (
+						<ListItem
+							key={item.name}
+							disablePadding>
+							<ListItemButton sx={{ textAlign: 'center' }}>
+								<NavLink to={item.path}>{item.name}</NavLink>
+							</ListItemButton>
+						</ListItem>
+					))}
+				{loggedOutNav.map((item) => (
 					<ListItem
-						key={item}
+						key={item.name}
 						disablePadding>
 						<ListItemButton sx={{ textAlign: 'center' }}>
-							<ListItemText primary={item} />
+							<NavLink to={item.path}>{item.name}</NavLink>
 						</ListItemButton>
 					</ListItem>
 				))}
@@ -56,7 +95,7 @@ export const Header = () => {
 				sx={{
 					bgcolor: 'inherit',
 				}}
-        position='static'
+				position='static'
 				component='nav'
 				color='transparent'
 				elevation={0}>
@@ -80,7 +119,6 @@ export const Header = () => {
 						</div>
 						<MenuIcon fontSize='large' />
 					</IconButton>
-
 					<Box
 						sx={{
 							width: '100%',
@@ -91,30 +129,28 @@ export const Header = () => {
 							<NavLink to={'/'}>B&H</NavLink>
 						</div>
 						<div className='flex justify-center items-center'>
-							<div className='text-xs mr-10'>
-								<NavLink to='/about'>ABOUT</NavLink>
-							</div>
-							<div className='text-xs mr-10'>
-								<NavLink to='/our-work'>OUR WORK</NavLink>
-							</div>
-							<div className='text-xs mr-10'>
-								<NavLink to='/reservation'>RESERVATION</NavLink>
-							</div>
-							<div className='text-xs mr-10'>
-								<NavLink to='/contact-us'>CONTACT US</NavLink>
-							</div>
-
+							{loggedIn &&
+								loggedInNav.map((item) => (
+									<div className='text-xs mr-10'>
+										<NavLink to={item.path}>{item.name}</NavLink>
+									</div>
+								))}
+							{loggedOutNav.map((item) => (
+								<div className='text-xs mr-10'>
+									<NavLink to={item.path}>{item.name}</NavLink>
+								</div>
+							))}
 							{!isAuth.isLoggedIn ? (
 								<NavLink to='signin'>
 									<Button
 										variant='contained'
 										size='large'
-                    sx={{
-                      bgcolor: 'black',
-                      '&:hover': {
-                        backgroundColor: '#424242',
-                      },
-                    }}
+										sx={{
+											bgcolor: 'black',
+											'&:hover': {
+												backgroundColor: '#424242',
+											},
+										}}
 										component='label'>
 										SIGN IN
 									</Button>
@@ -129,10 +165,10 @@ export const Header = () => {
 										sx={{
 											fontWeight: '800',
 											fontSize: '0.9rem',
-                      bgcolor: 'black',
-                      '&:hover': {
-                        backgroundColor: '#424242',
-                      },
+											bgcolor: 'black',
+											'&:hover': {
+												backgroundColor: '#424242',
+											},
 										}}>
 										SIGN OUT
 									</Button>
@@ -154,7 +190,7 @@ export const Header = () => {
 						display: { xs: 'block', sm: 'none' },
 						'& .MuiDrawer-paper': {
 							boxSizing: 'border-box',
-							width: '80%',
+							width: '90%',
 						},
 					}}>
 					{drawer}

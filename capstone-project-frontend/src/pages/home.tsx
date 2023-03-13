@@ -372,10 +372,10 @@ export const Home = () => {
 				</div>
 				<div className='w-full text-white h-48 bg-zinc-900 flex flex-col items-center justify-between sm:h-20'>
 					<div className='h-1/2 flex items-end'>
-						<InstagramIcon sx={{ marginRight: '1vw' }} />
+						<InstagramIcon sx={{ marginRight: '2vw' }} />
 						<GoogleIcon />
 					</div>
-					<footer className='flex justify-center items-center'>
+					<footer className='flex justify-center items-center mb-10 sm:mb-1 sm:text-sm'>
 						<p>@ Boss & Hoss Coporation. All Right Reserved</p>
 					</footer>
 				</div>

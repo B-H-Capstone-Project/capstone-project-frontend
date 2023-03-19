@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body {
+  @apply bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100;
+
+}

@@ -66,7 +66,7 @@ const clientRoutes = [
 
 //admin routes
 const adminRoutes = [
-//   { path: "/admin", component: <AdminApp /> },
+  //   { path: "/admin", component: <AdminApp /> },
   { path: "/admin", component: <Dashboard /> },
   { path: "/admin/customers", component: <ManageCustomers /> },
   { path: "/admin/employees", component: <Employees /> },
@@ -92,8 +92,7 @@ export const LoggedInRouter = () => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
-            {/* <Header /> */}
-            {token == null || token == undefined || token?.role == 3 ? <Header /> : ""}
+            {token?.role === 3 && <Header />}
             <Routes>
               {clientRoutes.map((route) => (
                 <Route
@@ -103,14 +102,15 @@ export const LoggedInRouter = () => {
                 />
               ))}
               <Route path="*" element={<NotFound />} />
-              {token?.role === 1 || token?.role === 2 &&
+              {token?.role === 1 ||
+                (token?.role === 2 &&
                   adminRoutes.map((route) => (
                     <Route
                       key={route.path}
                       path={`${route.path}`}
                       element={route.component}
                     />
-                  ))}
+                  )))}
             </Routes>
           </Router>
         </ThemeProvider>

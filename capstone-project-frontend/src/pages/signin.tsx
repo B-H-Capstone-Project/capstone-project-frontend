@@ -8,6 +8,7 @@ import { useAppDispatch } from '../redux/hook';
 import { signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
+import { FormError } from '../components/form-error';
 
 export interface ISignInForm {
 	email: string;
@@ -24,21 +25,17 @@ export const SignIn = () => {
 		mode: 'onBlur',
 	});
 
-	const isAuth = useSelector((state: RootState) => state.auth);
+	const error = useSelector((state: RootState) => state.auth.error);
+  const token = useSelector((state: RootState) => state.auth.userToken);
+	const status = useSelector((state: RootState) => state.auth.status);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
-	const onSubmit = async () => {
+	const onSubmit = () => {
+    //sign in
 		const { email, password } = getValues();
 		dispatch(signIn({ email: email, password: password }));
 
-		if (isAuth.userToken) {
-			if (isAuth.userToken?.role === 1 || isAuth.userToken?.role === 2) {
-				navigate('/admin');
-			}
-		} else {
-			navigate('/');
-		}
 	};
 
 	const handleCallbackResponse = (res: any) => {
@@ -69,9 +66,9 @@ export const SignIn = () => {
 			<Helmet>
 				<title>Sign In | BOSS&HOSS</title>
 			</Helmet>
-			<div className='h-screen m-0 p-0 w-full flex md:flex-col'>
+			<div className='m-0 p-0 w-full flex md:flex-col' style={{height: "94vh"}}>
 				<div className='basis-1/2 bg-red-300 md:hidden'></div>
-				<div className='basis-1/2 mt-10 relative flex justify-center items-center md:basis-4/5 sm:mt-0'>
+				<div className='basis-1/2 -mt-20 relative flex justify-center items-center md:basis-4/5 sm:mt-10'>
 					<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1'>
 						<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-500'>
 							Sign In
@@ -111,6 +108,9 @@ export const SignIn = () => {
 									placeholder='••••••••'
 									className='bg-white-50 border border-white-100 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block px-20 py-2 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
+							</div>
+							<div className='w-full flex justify-center items-center m-2'>
+								{error && <FormError errorMessage={error} />}
 							</div>
 							<div className='w-full p-5 flex items-center justify-center'>
 								<button

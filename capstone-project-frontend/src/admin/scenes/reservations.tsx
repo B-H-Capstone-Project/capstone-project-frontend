@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import FullCalendar, { formatDate, EventApi, EventInput } from "@fullcalendar/react";
+import FullCalendar, { formatDate, EventApi, EventInput, DateSelectArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
@@ -17,14 +17,14 @@ import { tokens } from "../theme";
 import axios from "../../api/axios";
 import ReservationModal from "./reservationsComponents/reservationModal";
 
-export interface IReservation {
+/* export interface IReservation {
   id: number;
   user_id: number;
   address_id: string;
   type: string;
   date: Date;
   description: string;
-}
+} */
 
 export interface IReservationWithUser {
   user_id: number;
@@ -49,10 +49,13 @@ export interface IReservationWithUser {
 const Reservations = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [currentEvents, setCurrentEvents] = useState<IReservationWithUser[]>([]);
+  const [reservations, setReservations] = useState<IReservationWithUser[]>([]);
   const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>();
+  const [existedRes, setExistedRes] = useState<DateSelectArg>();
+  const [isNew, setIsNew] = useState(false);
+
   const handleOpen = () => setOpen(true);
 
   useEffect(() => {
@@ -69,33 +72,34 @@ const Reservations = () => {
     const fetchAllReservations = async () => {
       try {
         const res = await axios.get("http://localhost:8080/reservationsUsers");
-        console.log(res.data.reservations);
-        setCurrentEvents(res.data.reservations);
+        setReservations(res.data.reservations);
       } catch (err) {
         console.log(err);
       }
     };
     fetchAllReservations();
     fecthAllCustomers();
-  }, [setCurrentEvents]);
+  }, [setReservations]);
 
-  const eventsOnCalendar: EventInput[] = currentEvents.map((reservation: IReservationWithUser) => {
-    return {
-      id: reservation.reservation_id.toString(),
-      title: reservation.type,
-      start: reservation.date
-    };
-  });
+  const eventsOnCalendar: EventInput[] = reservations
+  .filter((reservation: IReservationWithUser) => reservation.is_confirmed === 1)
+  .map((reservation: IReservationWithUser) => ({
+    extendedProps: reservation,
+    id: reservation.reservation_id.toString(),
+    title: reservation.type,
+    start: reservation.date
+  }));
 
     const handleDateClick = useCallback((arg: DateClickArg) => {
       setSelectedDate(arg.date.toISOString().slice(0, -8));
     }, []);
 
   const handleEventClick = (selected: any) => {
-
-    console.log('handleEventClick', selected);
-    
-      selected.event.remove();
+    setExistedRes(selected.event._def.extendedProps);
+    console.log(selected.event._def.extendedProps.date.slice(0, -8));
+    setSelectedDate(new Date(selected.event._def.extendedProps.date).toISOString().slice(0, -8));
+    handleOpen();
+      // selected.event.remove();
 
   };
 
@@ -113,9 +117,9 @@ const Reservations = () => {
           borderRadius="4px"
           component="span"
         >
-          <Typography variant="h5">Manage Reservations</Typography>
+          <Typography variant="h5">Pending Reservations</Typography>
           <List>
-            {currentEvents.map((event: IReservationWithUser) => (
+            {reservations.map((event: IReservationWithUser) => (
               
               event.is_confirmed===0 ? (
               <ListItem
@@ -163,17 +167,22 @@ const Reservations = () => {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            select={(selected)=> handleOpen()}
+            select={(selected)=> {
+              // setExistedRes(selected);
+              console.log('selected Event: ',selected);
+              setIsNew(true);
+              handleOpen()}}
             dateClick={handleDateClick}
             eventClick={handleEventClick}
             // eventsSet={(events:IReservation) => setCurrentEvents(events)}
             events={eventsOnCalendar}
+            
             // eventSources={currentEvents}
           />
         </Box>
       </Box>
     </Box>
-    <ReservationModal customers={customers} selectedDate={selectedDate} setSelectedDate={setSelectedDate} open={open} setOpen={setOpen}/> 
+    <ReservationModal customers={customers} selectedDate={selectedDate} setSelectedDate={setSelectedDate} open={open} setOpen={setOpen} isNew={isNew} setIsNew={setIsNew} existedRes={existedRes} setExistedRes={setExistedRes}/>
     </>
   );
 };

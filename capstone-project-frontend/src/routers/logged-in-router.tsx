@@ -92,7 +92,6 @@ export const LoggedInRouter = () => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
-            {token === null || undefined ? <Header /> : ""}
             {token?.role === 3 && <Header />}
             <Routes>
               {clientRoutes.map((route) => (

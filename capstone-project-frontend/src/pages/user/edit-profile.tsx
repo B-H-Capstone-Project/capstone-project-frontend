@@ -52,7 +52,7 @@ export const EditProfile = () => {
       country: 'string',
     }
 	});
-  console.log(userId);
+
 	const { isLoading, mutate } = useMutation(
 		async (updateProfile: IForm) => {
 			return (await axios.put(`/user/${userId}`, updateProfile))

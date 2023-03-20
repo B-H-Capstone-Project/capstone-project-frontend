@@ -18,8 +18,10 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import { useMe } from "../../../hooks/useMe";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected }: any) => {
+  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -37,7 +39,8 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar = () => {
+const AdminSidebar = () => {
+    const { data } = useMe();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -63,7 +66,7 @@ const Sidebar = () => {
         },
       }}
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar collapsed={isCollapsed} >
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -80,8 +83,14 @@ const Sidebar = () => {
                 justifyContent="space-between"
                 alignItems="center"
                 ml="15px"
+                position= "relative"
+                flexDirection="row"
               >
-                <Typography variant="h3" fontWeight="bold" color={colors.grey[100]}>
+                <Typography
+                  variant="h3"
+                  fontWeight="bold"
+                  color={colors.grey[100]}
+                >
                   B&H
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -93,12 +102,12 @@ const Sidebar = () => {
 
           {!isCollapsed && (
             <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
+              <Box display="flex" justifyContent="center" alignItems="center" position= "relative">
                 <img
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  src={data?.user.profile}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -109,10 +118,10 @@ const Sidebar = () => {
                   // fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Admin Name
+                  {data?.user.first_name} {data?.user.last_name}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Admin Role
+                  {data?.user.role === 1 ? "Admin" : "Employee"}
                 </Typography>
               </Box>
             </Box>
@@ -121,7 +130,7 @@ const Sidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
-              to="/admin/dashboard"
+              to="/admin"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -133,14 +142,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-              <Item
+            <Item
               title="Customers"
               to="/admin/customers"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-               <Item
+            <Item
               title="Reservations"
               to="/admin/reservations"
               icon={<CalendarTodayOutlinedIcon />}
@@ -161,7 +170,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-         
           </Box>
         </Menu>
       </ProSidebar>
@@ -169,4 +177,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

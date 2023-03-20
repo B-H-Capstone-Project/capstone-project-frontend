@@ -1,4 +1,6 @@
-import { Box, InputLabel, MenuItem, Modal, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import { Avatar, Box, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Modal, Radio, RadioGroup, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import React, { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form';
@@ -14,6 +16,7 @@ interface ICustomer {
   id: string;
   first_name: string;
   last_name: string;
+  profile:string;
   phone_number: string;
   email: string;
   address_line1: string;
@@ -43,15 +46,18 @@ const ReservationModal = (props: any) => {
         getValues,
         formState: { errors, isValid },
         handleSubmit,
+        reset
       } = useForm<IReservationForm>({
         mode: 'onBlur',
-        defaultValues: {
-          type: props.existedRes?.type,
-          description: props.existedRes?.description,
-        }
+        // defaultValues: {
+        //   type: props.existedRes?.type,
+        //   description: props.existedRes?.description,
+        // }
       });
 
   const [customer, setCustomer] = React.useState<ICustomer>();
+  const [isReadOnly, setIsReadOnly] = React.useState(true);
+  const [dateTime, setDateTime] = React.useState<Dayjs | null>();
   
   const handleChange = (e:SelectChangeEvent<any>) => {
       setCustomer(JSON.parse(e.target.value));
@@ -83,7 +89,9 @@ const ReservationModal = (props: any) => {
           props.setSelectedDate(null);
           props.setOpen(false);
           props.setIsNew(false);
-          // props.setExistedRes(null);
+          setDateTime(null);
+          reset();
+          props.setExistedRes(null);
         }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -111,6 +119,7 @@ const ReservationModal = (props: any) => {
             </Select>
             {customer ? 
             <div>
+              <Avatar alt={customer?.last_name} src={customer?.profile} />
               <span>{customer?.first_name+`, `+customer?.last_name}</span><br/>
               <span>{`Email: `+customer?.email}</span><br/>
               <span>{`Phone Number: `+customer?.phone_number}</span><br/>
@@ -189,9 +198,11 @@ const ReservationModal = (props: any) => {
         </Typography>
       </Box>: 
       <Box sx={style}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Reservation Details
-      </Typography>
+        <FormControl>
+          
+
+        
+        
       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputLabel id="demo-simple-select-standard-label">Customer List</InputLabel>
@@ -206,20 +217,10 @@ const ReservationModal = (props: any) => {
             {props.customers.map((customer:ICustomer) => (
               <MenuItem key={customer.id} value={JSON.stringify(customer)}>{customer.first_name} {customer.last_name}</MenuItem>
               ))}
-          </Select>{/* 
-          {customer ? 
-          <div>
-            <span>{customer?.first_name+`, `+customer?.last_name}</span><br/>
-            <span>{`Email: `+customer?.email}</span><br/>
-            <span>{`Phone Number: `+customer?.phone_number}</span><br/>
-            <span>{customer?.address_line1}</span><br/>
-            <span>{customer?.address_line2}</span><br/>
-            <span>{customer?.postal_code}</span><br/>
-            <span>{customer?.city+`, `+customer?.province+`, `+customer?.country}</span>
-          </div> : null
-        } */}
+          </Select>
         {props.existedRes ? 
         <div>
+          <Avatar alt={customer?.last_name} src={props.existedRes?.profile} />
         <span>{props.existedRes?.first_name+`, `+props.existedRes?.last_name}</span><br/>
         <span>{`Email: `+props.existedRes.email}</span><br/>
         <span>{`Phone Number: `+props.existedRes.phone_number}</span><br/>
@@ -230,61 +231,46 @@ const ReservationModal = (props: any) => {
         <span>{props.existedRes.date}</span>
         {/* type */}
         <div className="flex flex-col">
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Type *
-              </label>
-              <input
-                type="radio"
-                value="Residential"
-                {...register("type", { value: props.existedRes?.type })}
-                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />Residential
-              <input
-                type="radio"
-                value="Commercial"
-                {...register("type", { value: props.existedRes?.type })}
-                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />Commercial
-              <input
-                type="radio"
-                value="Service"
-                {...register("type", { value: props.existedRes?.type })}
-                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />Service 
-              <input
-                type="radio"
-                value="Outdoor Lighting"
-                {...register("type", { value: props.existedRes?.type })}
-                // {...register("description", { value: props.existedRes?.description })}
-                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />Outdoor Lighting
+        <FormLabel id="modal-modal-title">Types *</FormLabel>
+          <RadioGroup {...register("type", { value: props.existedRes?.type })}
+          defaultValue={props.existedRes?.type}>
+            <FormControlLabel value="Residential" control={<Radio />} label="Residential" disabled={isReadOnly}/>
+            <FormControlLabel value="Commercial" control={<Radio />} label="Commercial" disabled={isReadOnly}/>
+            <FormControlLabel value="Service" control={<Radio />} label="Service" disabled={isReadOnly}/>
+            <FormControlLabel value="Outdoor Lighting" control={<Radio />} label="Outdoor Lighting" disabled={isReadOnly}/>
+          </RadioGroup>
+              
             </div>
             {/* Date and Time */}
             <div>
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Date & Time *
-              </label>
-              <input
-                type="datetime-local"
-                id="date"
-                min={new Date().toISOString().slice(0, -8)}
-                // .toISOString().slice(0, -8)
-                // value={props.selectedDate}
-                // value={props.existedRes?.date.slice(0, -8)}
-                {...register("date", { value: props.selectedDate })}
-                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateTimePicker
+                    label="Date & Time *"
+                    renderInput={(props) => <TextField {...props} />}
+                    value={dateTime? dateTime:
+                      props.existedRes?.date.slice(0, -8)}
+                    minDate={dayjs().add(1, 'day')}
+                    onChange={(newValue) => {
+                      setDateTime(newValue);
+                    }}
+                    readOnly={isReadOnly}
+                    // onClose={()=>{setDateTime(props.existedRes?.date.slice(0, -8))}}
+                  />
+                </LocalizationProvider>
+              
             </div>
             {/* Description */}
             <div>
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Description
-              </label>
               <div>
-              <input
-                type="textarea"
+              <TextField
+                label="Description"
                 id="description"
                 // {...register('description')}
+                InputProps={{
+                  readOnly: isReadOnly,
+                }}
+                multiline
+                rows={4}
                 {...register("description", { value: props.existedRes?.description })}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
@@ -303,6 +289,7 @@ const ReservationModal = (props: any) => {
           </div>
         </form>
       </Typography>
+          </FormControl>
     </Box>
       }
     </Modal>

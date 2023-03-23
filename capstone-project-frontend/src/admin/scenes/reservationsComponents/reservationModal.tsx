@@ -5,6 +5,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import React, { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import axios from '../../../api/axios';
+import ICustomer from '../../../types/user';
 
 export interface IReservationForm {
   type: string;
@@ -12,20 +13,7 @@ export interface IReservationForm {
   description: string;
 }
 
-interface ICustomer {
-  id: string;
-  first_name: string;
-  last_name: string;
-  profile:string;
-  phone_number: string;
-  email: string;
-  address_line1: string;
-  address_line2?: string;
-  postal_code: string;
-  city: string;
-  province: string;
-  country: string;
-}
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -49,25 +37,21 @@ const ReservationModal = (props: any) => {
         reset
       } = useForm<IReservationForm>({
         mode: 'onBlur',
-        // defaultValues: {
-        //   type: props.existedRes?.type,
-        //   description: props.existedRes?.description,
-        // }
       });
 
-  const [customer, setCustomer] = React.useState<ICustomer>();
+  const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
   const [isReadOnly, setIsReadOnly] = React.useState(true);
   const [dateTime, setDateTime] = React.useState<Dayjs | null>();
   
   const handleChange = (e:SelectChangeEvent<any>) => {
-      setCustomer(JSON.parse(e.target.value));
+      props.setCustomer(JSON.parse(e.target.value));
     };
 
   const onSubmit = async (data: any) => {
     const { type, date, description } = getValues();
     try {
       const response = await axios.post('http://localhost:8080/reservation', {
-        user_id: customer?.id,
+        user_id: props.customer?.id,
         type,
         date,
         description
@@ -89,6 +73,7 @@ const ReservationModal = (props: any) => {
           props.setSelectedDate(null);
           props.setOpen(false);
           props.setIsNew(false);
+          props.setCustomer(null);
           setDateTime(null);
           reset();
           props.setExistedRes(null);
@@ -97,7 +82,7 @@ const ReservationModal = (props: any) => {
         aria-describedby="modal-modal-description"
     >
       
-      {props.isNew===true ?
+      {/* {props.isNew===true ?
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Add New Reservation
@@ -108,7 +93,7 @@ const ReservationModal = (props: any) => {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={customer}
+              value={props.customer}
             //   (event: SelectChangeEvent<any>, child: ReactNode) => void
               onChange={handleChange}
               label="Age"
@@ -130,7 +115,7 @@ const ReservationModal = (props: any) => {
             </div> : null
           }
             {/* type */}
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                 Type *
               </label>
@@ -160,7 +145,7 @@ const ReservationModal = (props: any) => {
               />Outdoor Lightning
             </div>
             {/* Date and Time */}
-            <div>
+            {/* <div>
               <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                 Date & Time *
               </label>
@@ -174,7 +159,7 @@ const ReservationModal = (props: any) => {
                 />
             </div>
             {/* Description */}
-            <div>
+            {/* <div>
               <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
                 Description
               </label>
@@ -184,6 +169,19 @@ const ReservationModal = (props: any) => {
                 {...register('description')}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
+            </div>
+            <div>
+              <div>
+              <TextField
+                label="Description"
+                id="description"
+                // {...register('description')}
+                multiline
+                rows={4}
+                {...register("description", { value: props.existedRes?.description })}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
             </div>
             <div className="flex justify-center gap-4 mt-2 mb-2">
               <div className='flex justify-start'>
@@ -195,8 +193,8 @@ const ReservationModal = (props: any) => {
               </div>
             </div>
           </form>
-        </Typography>
-      </Box>: 
+        </Typography> */}
+       {/* </Box>:   */}
       <Box sx={style}>
         <FormControl>
           
@@ -209,26 +207,27 @@ const ReservationModal = (props: any) => {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={customer}
+            value={props.customer}
           //   (event: SelectChangeEvent<any>, child: ReactNode) => void
             onChange={handleChange}
             label="Age"
+            inputProps={{ readOnly: isReadOnly }}
           >
             {props.customers.map((customer:ICustomer) => (
               <MenuItem key={customer.id} value={JSON.stringify(customer)}>{customer.first_name} {customer.last_name}</MenuItem>
               ))}
           </Select>
         {props.existedRes ? 
-        <div>
-          <Avatar alt={customer?.last_name} src={props.existedRes?.profile} />
-        <span>{props.existedRes?.first_name+`, `+props.existedRes?.last_name}</span><br/>
-        <span>{`Email: `+props.existedRes.email}</span><br/>
-        <span>{`Phone Number: `+props.existedRes.phone_number}</span><br/>
-        <span>{props.existedRes.address_line1}</span><br/>
-        <span>{props.existedRes.address_line2}</span><br/>
-        <span>{props.existedRes.postal_code}</span><br/>
-        <span>{props.existedRes.city+`, `+props.existedRes.province+`, `+props.existedRes.country}</span><br/>
-        <span>{props.existedRes.date}</span>
+
+              <div>
+          <Avatar alt={props.customer?.last_name} src={props.customer?.profile} />
+          <span>{props.customer?.first_name+`, `+props.customer?.last_name}</span><br/>
+          <span>{`Email: `+props.customer?.email}</span><br/>
+          <span>{`Phone Number: `+props.customer?.phone_number}</span><br/>
+          <span>{props.customer?.address_line1}</span><br/>
+          <span>{props.customer?.address_line2}</span><br/>
+          <span>{props.customer?.postal_code}</span><br/>
+          <span>{props.customer?.city+`, `+props.customer?.province+`, `+props.customer?.country}</span><br/>
         {/* type */}
         <div className="flex flex-col">
         <FormLabel id="modal-modal-title">Types *</FormLabel>
@@ -249,7 +248,7 @@ const ReservationModal = (props: any) => {
                     renderInput={(props) => <TextField {...props} />}
                     value={dateTime? dateTime:
                       props.existedRes?.date.slice(0, -8)}
-                    minDate={dayjs().add(1, 'day')}
+                    minDate={!isReadOnly ? dayjs().add(1, 'day'): null}
                     onChange={(newValue) => {
                       setDateTime(newValue);
                     }}
@@ -276,7 +275,8 @@ const ReservationModal = (props: any) => {
               />
             </div>
             </div>
-      </div> : null
+      </div>        
+         : null
     }
           <div className="flex justify-center gap-4 mt-2 mb-2">
             <div className='flex justify-start'>
@@ -291,7 +291,7 @@ const ReservationModal = (props: any) => {
       </Typography>
           </FormControl>
     </Box>
-      }
+      {/* } */}
     </Modal>
   )
 }

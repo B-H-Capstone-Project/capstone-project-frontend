@@ -25,6 +25,20 @@ import ReservationModal from "./reservationsComponents/reservationModal";
   date: Date;
   description: string;
 } */
+interface ICustomer {
+  id: string;
+  first_name: string;
+  last_name: string;
+  profile:string;
+  phone_number: string;
+  email: string;
+  address_line1: string;
+  address_line2?: string;
+  postal_code: string;
+  city: string;
+  province: string;
+  country: string;
+}
 
 export interface IReservationWithUser {
   user_id: number;
@@ -55,6 +69,7 @@ const Reservations = () => {
   const [selectedDate, setSelectedDate] = useState<string>();
   const [existedRes, setExistedRes] = useState<DateSelectArg>();
   const [isNew, setIsNew] = useState(false);
+  const [customer, setCustomer] = useState<ICustomer>();
 
   const handleOpen = () => setOpen(true);
 
@@ -96,7 +111,21 @@ const Reservations = () => {
 
   const handleEventClick = (selected: any) => {
     setExistedRes(selected.event._def.extendedProps);
-    console.log(selected.event._def.extendedProps.date.slice(0, -8));
+    const existedCustomer: ICustomer = {
+      id: selected.event._def.extendedProps.id,
+      first_name: selected.event._def.extendedProps.first_name,
+      last_name: selected.event._def.extendedProps.last_name,
+      profile:selected.event._def.extendedProps.profile,
+      phone_number: selected.event._def.extendedProps.phone_number,
+      email: selected.event._def.extendedProps.email,
+      address_line1: selected.event._def.extendedProps.address_line1,
+      address_line2: selected.event._def.extendedProps.address_line2,
+      postal_code: selected.event._def.extendedProps.postal_code,
+      city: selected.event._def.extendedProps.city,
+      province: selected.event._def.extendedProps.province,
+      country: selected.event._def.extendedProps.country,
+    }
+    setCustomer(existedCustomer);
     setSelectedDate(new Date(selected.event._def.extendedProps.date).toISOString().slice(0, -8));
     handleOpen();
       // selected.event.remove();
@@ -168,7 +197,6 @@ const Reservations = () => {
             selectMirror={true}
             dayMaxEvents={true}
             select={(selected)=> {
-              // setExistedRes(selected);
               console.log('selected Event: ',selected);
               setIsNew(true);
               handleOpen()}}
@@ -182,7 +210,7 @@ const Reservations = () => {
         </Box>
       </Box>
     </Box>
-    <ReservationModal customers={customers} selectedDate={selectedDate} setSelectedDate={setSelectedDate} open={open} setOpen={setOpen} isNew={isNew} setIsNew={setIsNew} existedRes={existedRes} setExistedRes={setExistedRes}/>
+    <ReservationModal customers={customers} selectedDate={selectedDate} setSelectedDate={setSelectedDate} open={open} setOpen={setOpen} isNew={isNew} setIsNew={setIsNew} existedRes={existedRes} setExistedRes={setExistedRes} customer={customer} setCustomer={setCustomer}/>
     </>
   );
 };

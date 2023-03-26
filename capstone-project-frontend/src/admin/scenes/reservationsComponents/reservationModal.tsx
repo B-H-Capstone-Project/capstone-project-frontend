@@ -4,10 +4,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../../api/axios';
 import ICustomer from '../../../types/user';
 
 export interface IReservationForm {
+  user_id: number;
   type: string;
   date: Date;
   description: string;
@@ -27,17 +29,38 @@ const style = {
   p: 4,
 };
 
+const createRes = async (data: IReservationForm) => {
+	const { data: response } = await axios.post('reservation', data);
+	return response.data;
+};
+
 
 const ReservationModal = (props: any) => {
-    const {
-        register,
-        getValues,
-        formState: { errors, isValid },
-        handleSubmit,
-        reset
-      } = useForm<IReservationForm>({
-        mode: 'onBlur',
-      });
+  const queryClient = useQueryClient();
+	const [error, setError] = useState(null);
+  const {
+      register,
+      getValues,
+      formState: { errors, isValid },
+      handleSubmit,
+      reset
+    } = useForm<IReservationForm>({
+      mode: 'onBlur',
+    });
+
+    const { isLoading, mutate } = useMutation(createRes, {
+      onSuccess: (data) => {
+        console.log(data);
+        const message = 'success';
+        alert(message);
+      },
+      onError: (error: any) => {
+        setError(error.response.data.message);
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries('create');
+      },
+    });
 
   const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
   const [isReadOnly, setIsReadOnly] = React.useState(true);
@@ -48,21 +71,17 @@ const ReservationModal = (props: any) => {
     };
 
   const onSubmit = async (data: any) => {
-    const { type, date, description } = getValues();
-    try {
-      const response = await axios.post('http://localhost:8080/reservation', {
-        user_id: props.customer?.id,
-        type,
-        date,
-        description
-      });
-    } catch (err) {
-      console.log(err);
+    console.log('data: ', data);
+    const newRes = {
+      ...data,
+      user_id: props.customer?.id,
     }
+    mutate(newRes);
     props.setOpen(false);
     props.setIsNew(false);
     props.setSelectedDate(null);
     props.setCustomer(null);
+    setDateTime(null);
     // window.location.reload();
   };
 

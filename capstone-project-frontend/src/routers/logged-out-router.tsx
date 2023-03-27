@@ -17,7 +17,6 @@ export const LoggedOutRouter = () => {
 	return (
 		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
 			<Router>
-				<Header />
 				<Routes>
 					<Route
 						path='/'

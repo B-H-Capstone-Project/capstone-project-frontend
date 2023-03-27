@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // date time picker
-import { Dayjs } from "dayjs";
-import TextField from "@mui/material/TextField";
+import dayjs, { Dayjs } from "dayjs";
+import { TextField, FormControl } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -27,67 +27,77 @@ interface IReservationForm {
   province: string;
   country: string;
   type: string;
-  date: string;
+  date: Date;
   description: string;
 }
 
-const reservation = async (data: IReservationForm) => {
-  const { data: response } = await axios.post(
-    "/reservation/newreservation",
-    data
-  );
-  console.log("---reservation front-----" + JSON.stringify(data));
-  return response.data;
-};
+// const reservation = async (data: IReservationForm) => {
+//   const { data: response } = await axios.post(
+//     "/reservation/newreservation",
+//     data
+//   );
+//   console.log("---reservation front-----" + JSON.stringify(data));
+//   return response.data;
+// };
 
 export const ReservationForm = () => {
+  const today = new Date().toISOString().split("T")[0];
   const queryClient = useQueryClient();
   const { data } = useMe();
   const isAuth = useSelector((state: RootState) => state.auth);
-  const [value, setValue] = React.useState<Dayjs | null>(null);
+  const [dateTime, setDateTime] = React.useState<Dayjs | null>();
+
+  const userId = isAuth.userToken?.id;
   const {
     register,
+    getValues,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<IReservationForm>({
     mode: "onChange",
-    defaultValues: {
-      first_name: data?.user.first_name,
-      last_name: data?.user.last_name,
-      phone_number: data?.user.phone_number,
-      address_line1: data?.user.address_line1,
-      address_line2: data?.user.address_line2,
-      postal_code: data?.user.postal_code,
-      city: data?.user.city,
-      province: data?.user.province,
-      country: data?.user.country,
+    resetOptions: {
+      keepDirtyValues: true,
     },
+    defaultValues: async () => await axios.get(`/user/${userId}`),
   });
 
-  const navigate = useNavigate();
+  const { isLoading, mutate } = useMutation(
+    async (newReservation: IReservationForm) => {
+      await axios.post(`/reservation/newreservation`, newReservation);
+    },
+    {
+      onSuccess: (data) => {
+        console.log("success in" + data);
+        const message = "success";
+        alert(message);
+      },
+      onError: (err) => {
+        console.log(err);
+        alert("Error in use mutation");
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries("create");
+      },
+    }
+  );
 
-  const { isLoading, mutate } = useMutation(reservation, {
-    onSuccess: (data) => {
-      console.log("success in" + data);
-      const message = "success";
-      alert(message);
-    },
-    onError: (err) => {
-      console.log(err);
-      alert("Error in use mutation");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("create");
-    },
-  });
-
-  const onSubmit = async (data: IReservationForm) => {
+  const onSubmit = async (data: any) => {
+    const { type, date, description } = getValues();
     console.log(data);
+    const prevUserInfo = data.data.user;
+    const newUserInfo = prevUserInfo;
+    Object.entries(prevUserInfo).filter(([prevDataKey, prevValue]) => {
+      for (const [dataKey, dataValue] of Object.entries(data)) {
+        if (prevDataKey === dataKey) {
+          newUserInfo[prevDataKey] = dataValue;
+        }
+      }
+    });
     const newReservation = {
       ...data,
     };
+
     mutate(newReservation);
-    //navigate('/');
   };
 
   return (
@@ -98,250 +108,262 @@ export const ReservationForm = () => {
             Request Reservation
           </h1>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* FirstName & LastName */}
-          <div className="w-1/2 flex flex-row gap-4">
-            <div className="flex flex-col mb-3">
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                First Name *
-              </label>
-              <input
-                type="text"
-                id="first_name"
-                {...register("first_name")}
-                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={data?.user.first_name}
-              />
+        <FormControl>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* FirstName & LastName */}
+            <div className="w-1/2 flex flex-row gap-4">
+              <div className="flex flex-col mb-3">
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  First Name *
+                </label>
+                <input
+                  type="text"
+                  id="first_name"
+                  value={data?.user.first_name}
+                  {...register("first_name")}
+                  className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+              <div className="flex flex-col mb-3">
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  Last Name *
+                </label>
+                <input
+                  type="text"
+                  id="last_name"
+                  {...register("last_name")}
+                  className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={data?.user.last_name}
+                />
+              </div>
             </div>
             <div className="flex flex-col mb-3">
               <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Last Name *
+                Phone Number *
               </label>
               <input
                 type="text"
-                id="last_name"
-                {...register("last_name")}
+                id="phone_number"
+                {...register("phone_number")}
+                value={data?.user.phone_number}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            {/* Email */}
+            <div className="flex flex-col mb-3">
+              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                Email *
+              </label>
+              <input
+                type="text"
+                id="email"
+                {...register("email")}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={data?.user.email}
+                readOnly
+              />
+            </div>
+
+            {/* Address */}
+
+            <div className="flex flex-col mb-3">
+              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                Address Line 1 *
+              </label>
+              <input
+                type="text"
+                id="address_line1"
+                {...register("address_line1")}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder={data?.user.address_line1}
+              />
+            </div>
+            {/* Unit Number & Postal Code  */}
+            <div className="flex flex-col mb-3">
+              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                Address Line 2
+              </label>
+              <input
+                type="text"
+                id="address_line2"
+                required
+                {...register("address_line2")}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={data?.user.address_line2}
+              />
+            </div>
+            {/* Postal Code & City */}
+            <div className="flex gap-4 mb-3">
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  Postal Code *
+                </label>
+                <input
+                  type="text"
+                  id="postal_code"
+                  required
+                  {...register("postal_code")}
+                  className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={data?.user.postal_code}
+                />
+              </div>
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  City *
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  required
+                  {...register("city")}
+                  value={data?.user.city}
+                  className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Province & Country */}
+            <div className="flex gap-4 mb-3">
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  Province *
+                </label>
+                {/* <select value={value} onChange={handleChange}> */}
+                <select
+                  id="province"
+                  required
+                  {...register("province")}
+                  value={data?.user.province}
+                  className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option value="AB">AB</option>
+                  <option value="BC">BC</option>
+                  <option value="NB">NB</option>
+                  <option value="NL">NL</option>
+                  <option value="NS">NS</option>
+                  <option value="NT">NT</option>
+                  <option value="NU">NU</option>
+                  <option value="MB">MB</option>
+                  <option value="ON">ON</option>
+                  <option value="PE">PE</option>
+                  <option value="QC">QC</option>
+                  <option value="SK">SK</option>
+                  <option value="YT">YT</option>
+                </select>
+              </div>
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                  Country *
+                </label>
+                <input
+                  type="text"
+                  id="country"
+                  required
+                  {...register("country")}
+                  value={data?.user.country}
+                  className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+            </div>
+            {/* Type */}
+            <label className="block text-sm font-medium text-black-100 dark:text-black">
+              Type *
+            </label>
+            <div className="p-5 flex items-start flex-col">
+              <div className="flex items-center h-5 m-2">
+                <input
+                  id="type"
+                  required
+                  {...register("type")}
+                  value="Residential"
+                  aria-describedby="terms"
+                  type="radio"
+                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
+                />
+                <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
+                  Residential
+                </label>
+                <input
+                  id="type"
+                  required
+                  {...register("type")}
+                  value="Commercial"
+                  aria-describedby="terms"
+                  type="radio"
+                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
+                />
+                <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
+                  Commercial
+                </label>
+                <input
+                  id="type"
+                  required
+                  {...register("type")}
+                  value="Service"
+                  aria-describedby="terms"
+                  type="radio"
+                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
+                />
+                <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
+                  Service
+                </label>
+                <input
+                  id="type"
+                  required
+                  {...register("type")}
+                  value="Outdoor Lighting"
+                  aria-describedby="terms"
+                  type="radio"
+                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
+                />
+                <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
+                  Outdoor Lighting
+                </label>
+              </div>
+            </div>
+            <div className="flex flex-col mb-3">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <input
+                  type="datetime-local"
+                  required
+                  {...register("date")}
+                  min={new Date().toISOString().slice(0, -8)}
+                  // {...register("date")}
+                  //label="date"
+                  // renderInput={(props) => <TextField {...props} />}
+                  // value={dateTime}
+                  // minDate={dayjs().add(1, "day")}
+                  // onChange={(newValue) => {
+                  //   setDateTime(newValue);
+                  //   //console.log(dateTime);
+                  // }}
+                  // onClose={()=>{setDateTime(props.existedRes?.date.slice(0, -8))}}
+                />
+              </LocalizationProvider>
+            </div>
+            <div className="flex flex-col mb-5">
+              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
+                Description
+              </label>
+              <input
+                type="text"
+                id="description"
+                required
+                {...register("description")}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={data?.user.last_name}
               />
             </div>
-          </div>
-          <div className="flex flex-col mb-3">
-            <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-              Phone Number *
-            </label>
-            <input
-              type="text"
-              id="phone_number"
-              {...register("phone_number")}
-              value={data?.user.phone_number}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          </div>
-          {/* Email */}
-          <div className="flex flex-col mb-3">
-            <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-              Email *
-            </label>
-            <input
-              type="text"
-              id="email"
-              {...register("email")}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={data?.user.email}
-              readOnly
-            />
-          </div>
-
-          {/* Address */}
-          <div className="p-5 flex items-start">
-            <div className="flex items-center h-5">
-              <input
-                id="currentAddress"
-                aria-describedby="currentAddress"
-                type="checkbox"
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
-              />
-            </div>
-            <div className=" ml-3 text-sm">
-              <label className="font-light text-gray-500 dark:text-gray-300">
-                Use Current Address
-              </label>
-            </div>
-          </div>
-          <div className="flex flex-col mb-3">
-            <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-              Address Line 1 *
-            </label>
-            <input
-              type="text"
-              id="address_line1"
-              {...register("address_line1")}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={data?.user.address_line1}
-            />
-          </div>
-          {/* Unit Number & Postal Code  */}
-          <div className="flex flex-col mb-3">
-            <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-              Address Line 2
-            </label>
-            <input
-              type="text"
-              id="address_line2"
-              {...register("address_line2")}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={data?.user.address_line2}
-            />
-          </div>
-          {/* Postal Code & City */}
-          <div className="flex gap-4 mb-3">
-            <div className="w-full">
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Postal Code *
-              </label>
-              <input
-                type="text"
-                id="postal_code"
-                {...register("postal_code")}
-                className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                defaultValue={data?.user.postal_code}
-              />
-            </div>
-            <div className="w-full">
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                City *
-              </label>
-              <input
-                type="text"
-                id="city"
-                {...register("city")}
-                value={data?.user.city}
-                className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-            </div>
-          </div>
-
-          {/* Province & Country */}
-          <div className="flex gap-4 mb-3">
-            <div className="w-full">
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Province *
-              </label>
-              {/* <select value={value} onChange={handleChange}> */}
-              <select
-                id="province"
-                {...register("province")}
-                className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            {/* Submit Button */}
+            <div className="flex flex-col">
+              <button
+                type="submit"
+                className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded"
               >
-                <option value="AB">AB</option>
-                <option value="BC">BC</option>
-                <option value="NB">NB</option>
-                <option value="NL">NL</option>
-                <option value="NS">NS</option>
-                <option value="NT">NT</option>
-                <option value="NU">NU</option>
-                <option value="MB">MB</option>
-                <option value="ON">ON</option>
-                <option value="PE">PE</option>
-                <option value="QC">QC</option>
-                <option value="SK">SK</option>
-                <option value="YT">YT</option>
-              </select>
+                Submit
+              </button>
             </div>
-            <div className="w-full">
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Country *
-              </label>
-              <input
-                type="text"
-                id="country"
-                {...register("country")}
-                value={data?.user.country}
-                className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-            </div>
-          </div>
-          {/* Type */}
-          <label className="block text-sm font-medium text-black-100 dark:text-black">
-            Type *
-          </label>
-          <div className="p-5 flex items-start flex-col">
-            <div className="flex items-center h-5 m-2">
-              <input
-                id="type"
-                aria-describedby="terms"
-                type="radio"
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
-              />
-              <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
-                Residential
-              </label>
-              <input
-                id="type"
-                aria-describedby="terms"
-                type="radio"
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
-              />
-              <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
-                Commercial
-              </label>
-              <input
-                id="type"
-                aria-describedby="terms"
-                type="radio"
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
-              />
-              <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
-                Service
-              </label>
-              <input
-                id="type"
-                aria-describedby="terms"
-                type="radio"
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
-              />
-              <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
-                Outdoor Lighting
-              </label>
-            </div>
-          </div>
-          <div className="flex flex-col mb-3">
-            {/* Date / Time */}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-                Date & Time
-              </label>
-              <DateTimePicker
-                renderInput={(props) => <TextField {...props} />}
-                value={value}
-                onChange={(newValue) => {
-                  setValue(newValue);
-                }}
-              />
-            </LocalizationProvider>
-          </div>
-          <div className="flex flex-col mb-5">
-            <label className="block mb-2 text-sm font-medium text-black-100 dark:text-black">
-              Description
-            </label>
-            <input
-              type="text"
-              id="description"
-              {...register("description")}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          </div>
-          {/* Submit Button */}
-          <div className="flex flex-col">
-            <button
-              type="submit"
-              className="  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+          </form>
+        </FormControl>
       </div>
     </div>
   );

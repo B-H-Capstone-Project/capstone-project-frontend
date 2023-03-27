@@ -289,7 +289,7 @@ export const SignUp = () => {
 						<div className='flex justify-center'>
 							<button
 								type='submit'
-								className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
+								className='btn'>
 								Create account
 							</button>
 						</div>

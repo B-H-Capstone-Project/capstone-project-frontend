@@ -370,7 +370,7 @@ export const Home = () => {
 						<p className='mb-3 text-center'>SK Consulting.</p>
 					</div>
 				</div>
-				<div className='w-full text-white h-48 bg-zinc-900 flex flex-col items-center justify-between sm:h-20'>
+				<div className='w-full text-white h-1/2 bg-zinc-900 flex flex-col items-center justify-between sm:h-20'>
 					<div className='h-1/2 flex items-end'>
 						<InstagramIcon sx={{ marginRight: '2vw' }} />
 						<GoogleIcon />

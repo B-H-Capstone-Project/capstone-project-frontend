@@ -9,6 +9,7 @@ import { signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 import { FormError } from '../components/form-error';
+import { Header } from '../components/header';
 
 export interface ISignInForm {
 	email: string;
@@ -72,7 +73,8 @@ export const SignIn = () => {
 			<Helmet>
 				<title>Sign In | BOSS&HOSS</title>
 			</Helmet>
-			<div className='m-0 p-0 w-full flex md:flex-col' style={{height: "94vh"}}>
+      <Header />
+      {!token && <div className='m-0 p-0 w-full flex md:flex-col' style={{height: "92vh"}}>
 				<div className='basis-1/2 bg-red-300 md:hidden'></div>
 				<div className='basis-1/2 -mt-20 relative flex justify-center items-center md:basis-4/5 sm:mt-10'>
 					<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1'>
@@ -135,7 +137,8 @@ export const SignIn = () => {
 						</form>
 					</div>
 				</div>
-			</div>
+			</div>}
+			{token && <div>You already signed in</div>}
 		</>
 	);
 };

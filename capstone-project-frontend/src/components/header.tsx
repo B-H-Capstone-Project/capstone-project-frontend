@@ -134,11 +134,12 @@ export const Header = () => {
 										<NavLink to={item.path}>{item.name}</NavLink>
 									</div>
 								))}
-							{loggedOutNav.map((item) => (
-								<div className='text-xs mr-10'>
-									<NavLink to={item.path}>{item.name}</NavLink>
-								</div>
-							))}
+							{!loggedIn &&
+								loggedOutNav.map((item) => (
+									<div className='text-xs mr-10'>
+										<NavLink to={item.path}>{item.name}</NavLink>
+									</div>
+								))}
 							{!isAuth.isLoggedIn ? (
 								<NavLink to='signin'>
 									<Button
@@ -198,3 +199,7 @@ export const Header = () => {
 		</Box>
 	);
 };
+
+function Row() {
+	return;
+}

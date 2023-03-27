@@ -41,6 +41,10 @@ const clientRoutes = [
     component: <Home />,
   },
   {
+    path: "/signIn",
+    component: <Home />,
+  },
+  {
     path: "/reservation",
     component: <Reservation />,
   },

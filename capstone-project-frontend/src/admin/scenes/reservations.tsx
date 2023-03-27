@@ -126,7 +126,7 @@ const Reservations = () => {
       country: selected.event._def.extendedProps.country,
     }
     setCustomer(existedCustomer);
-    setSelectedDate(new Date(selected.event._def.extendedProps.date).toISOString().slice(0, -8));
+    setSelectedDate(selected.event._def.extendedProps.date.slice(0, -8));
     handleOpen();
       // selected.event.remove();
 
@@ -197,7 +197,6 @@ const Reservations = () => {
             selectMirror={true}
             dayMaxEvents={true}
             select={(selected)=> {
-              console.log('selected Event: ',selected);
               setIsNew(true);
               handleOpen()}}
             dateClick={handleDateClick}

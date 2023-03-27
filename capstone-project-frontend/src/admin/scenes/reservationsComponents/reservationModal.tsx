@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../../api/axios';
 import ICustomer from '../../../types/user';
+import EditIcon from '@mui/icons-material/Edit';
 
 export interface IReservationForm {
   user_id: number;
@@ -34,10 +35,12 @@ const createRes = async (data: IReservationForm) => {
 	return response.data;
 };
 
-
 const ReservationModal = (props: any) => {
   const queryClient = useQueryClient();
 	const [error, setError] = useState(null);
+  const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
+  const [isReadOnly, setIsReadOnly] = React.useState(true);
+  const [dateTime, setDateTime] = React.useState<Dayjs | null>(props.selectedDate);
   const {
       register,
       getValues,
@@ -46,6 +49,10 @@ const ReservationModal = (props: any) => {
       reset
     } = useForm<IReservationForm>({
       mode: 'onBlur',
+      defaultValues: {
+        description: props.existedRes?.description,
+        date: props.selectedDate,
+      }
     });
 
     const { isLoading, mutate } = useMutation(createRes, {
@@ -62,9 +69,6 @@ const ReservationModal = (props: any) => {
       },
     });
 
-  const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
-  const [isReadOnly, setIsReadOnly] = React.useState(true);
-  const [dateTime, setDateTime] = React.useState<Dayjs | null>();
   
   const handleChange = (e:SelectChangeEvent<any>) => {
       props.setCustomer(JSON.parse(e.target.value));
@@ -90,7 +94,7 @@ const ReservationModal = (props: any) => {
     <Modal
         open={props.open}
         onClose={(): void => {
-          props.setSelectedDate(null);
+          // props.setSelectedDate(null);
           props.setOpen(false);
           props.setIsNew(false);
           props.setCustomer(null);
@@ -101,10 +105,11 @@ const ReservationModal = (props: any) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
+        <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={style}>
+        {props.isNew ===false ? <EditIcon onClick={()=>{props.setIsNew(true); setIsReadOnly(false)}}/>: null}
         <FormControl>
       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
           <InputLabel id="demo-simple-select-standard-label">Customer List</InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
@@ -120,6 +125,7 @@ const ReservationModal = (props: any) => {
               ))}
           </Select>
           <div>
+            <div>
             <Avatar alt={props.customer?.last_name} src={props.customer?.profile} />
             <span>{props.customer?.first_name+`, `+props.customer?.last_name}</span><br/>
             <span>{`Email: `+props.customer?.email}</span><br/>
@@ -128,11 +134,12 @@ const ReservationModal = (props: any) => {
             <span>{props.customer?.address_line2}</span><br/>
             <span>{props.customer?.postal_code}</span><br/>
             <span>{props.customer?.city+`, `+props.customer?.province+`, `+props.customer?.country}</span><br/>
+            </div>
         {/* type */}
         <div className="flex flex-col">
         <FormLabel id="modal-modal-title">Types *</FormLabel>
           <RadioGroup 
-          value={props.existedRes?.type}>
+          defaultValue={props.existedRes?.type}>
             <FormControlLabel {...register("type")} value="Residential" control={<Radio />} label="Residential" disabled={!props.isNew ?? isReadOnly}/>
             <FormControlLabel {...register("type")} value="Commercial" control={<Radio />} label="Commercial" disabled={!props.isNew ?? isReadOnly}/>
             <FormControlLabel {...register("type")} value="Service" control={<Radio />} label="Service" disabled={!props.isNew ?? isReadOnly}/>
@@ -147,13 +154,12 @@ const ReservationModal = (props: any) => {
                     {...register("date")}
                     label="Date & Time *"
                     renderInput={(props) => <TextField {...props} />}
-                    value={dateTime? dateTime: props.existedRes?.date.slice(0, -8)}
+                    value={dateTime? dateTime : props.selectedDate}
                     minDate={!isReadOnly ? dayjs().add(1, 'day'): null}
                     readOnly={!props.isNew ?? isReadOnly}
                     onChange={(newValue) => {
                       setDateTime(newValue);
                     }}
-                    // onClose={()=>{setDateTime(props.existedRes?.date.slice(0, -8))}}
                   />
                 </LocalizationProvider>
               
@@ -162,6 +168,7 @@ const ReservationModal = (props: any) => {
             <div>
               <div>
               <TextField
+                {...register("description", { value: props.existedRes?.description })}
                 label="Description"
                 id="description"
                 InputProps={{
@@ -169,7 +176,7 @@ const ReservationModal = (props: any) => {
                 }}
                 multiline
                 rows={4}
-                {...register("description", { value: props.existedRes?.description })}
+                defaultValue={props.existedRes?.description}
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
@@ -184,10 +191,10 @@ const ReservationModal = (props: any) => {
             </button>
             </div>
           </div>
-        </form>
       </Typography>
           </FormControl>
     </Box>
+        </form>
     </Modal>
   )
 }

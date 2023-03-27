@@ -31,11 +31,13 @@ export const SignIn = () => {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
-	const onSubmit = () => {
+	const onSubmit = async () => {
     //sign in
 		const { email, password } = getValues();
-		dispatch(signIn({ email: email, password: password }));
-
+		await dispatch(signIn({ email: email, password: password })).then(() => {
+      console.log(status);
+      console.log(token);
+    });
 	};
 
 	const handleCallbackResponse = (res: any) => {

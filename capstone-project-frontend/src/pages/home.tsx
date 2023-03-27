@@ -10,6 +10,10 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import GoogleIcon from '@mui/icons-material/Google';
+import { useMe } from '../hooks/useMe';
+import { RootState } from '../redux/store';
+import { useSelector } from 'react-redux';
+import { SignIn } from './signin';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -98,8 +102,10 @@ const box = {
 };
 
 export const Home = () => {
+	const token = useSelector((state: RootState) => state.auth.userToken);
 	const [visible, setVisible] = useState(1);
 	const [back, setBack] = useState(false);
+	console.log(token);
 	const nextPlease = () => {
 		setBack(false);
 		setVisible((prev) => (prev === 10 ? 10 : prev + 1));
@@ -123,14 +129,26 @@ export const Home = () => {
 								<h1>Irrigation</h1>
 							</div>
 						</div>
-						<Link to='/reservation'>
-							<button className='py-1.5 px-5 bg-lime-300 rounded-xl text-xl sm:text-sm'>
-								Book a reservation
-								<ArrowForwardIcon
-									sx={{ fontSize: 20, marginRight: -1, marginLeft: 1 }}
-								/>
-							</button>
-						</Link>
+						{!token && (
+							<Link to='/signIn'>
+								<button className='py-1.5 px-5 bg-lime-300 rounded-xl text-xl sm:text-sm'>
+									Book a reservation
+									<ArrowForwardIcon
+										sx={{ fontSize: 20, marginRight: -1, marginLeft: 1 }}
+									/>
+								</button>
+							</Link>
+						)}
+						{token && (
+							<Link to='/reservation'>
+								<button className='py-1.5 px-5 bg-lime-300 rounded-xl text-xl sm:text-sm'>
+									Book a reservation
+									<ArrowForwardIcon
+										sx={{ fontSize: 20, marginRight: -1, marginLeft: 1 }}
+									/>
+								</button>
+							</Link>
+						)}
 					</div>
 				</div>
 				<div className='basis-2/3 flex'>
@@ -353,7 +371,9 @@ export const Home = () => {
 				</div>
 				<div className='h-screen bg-zinc-800 flex justify-center items-center flex-col'>
 					<div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
-						<h3 className='text-3xl font-bold text-center mb-10 sm:text-md'>“</h3>
+						<h3 className='text-3xl font-bold text-center mb-10 sm:text-md'>
+							“
+						</h3>
 						<p className='mb-10 text-3xl text-center sm:text-lg'>
 							Best irrigation company we have worked with, gets the job done
 							right on budget and has fantastic service.
@@ -361,7 +381,9 @@ export const Home = () => {
 						<p className='mb-3 text-center'>CIDEX.</p>
 					</div>
 					<div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
-						<h3 className='text-3xl font-bold text-center mb-10 sm:text-md'>“</h3>
+						<h3 className='text-3xl font-bold text-center mb-10 sm:text-md'>
+							“
+						</h3>
 						<p className='mb-10 text-3xl text-center sm:text-lg'>
 							Boss & Hoss has installed 10+ zone for our high rise condos and
 							has been servicing our buildings and we are extremely happy with

@@ -33,8 +33,6 @@ import Geography from "../admin/scenes/geography";
 import { ColorModeContext, useMode } from "../admin/theme";
 import { EditProfile } from "../pages/user/edit-profile";
 
-// user test
-// let admin = "admin";
 
 //customer routes
 const clientRoutes = [

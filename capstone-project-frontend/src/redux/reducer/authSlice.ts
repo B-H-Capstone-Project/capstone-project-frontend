@@ -23,7 +23,7 @@ interface IAuthState {
 	success: boolean; // for monitoring the registration proces
 	isLoggedIn: boolean;
 	error: string | null;
-  status: string;
+	status: string;
 }
 
 const initialState: IAuthState = {
@@ -32,44 +32,48 @@ const initialState: IAuthState = {
 	userToken: token === null ? null : jwt_decode(token), // for storing the JWT
 	error: null,
 	success: false, // for monitoring the registration process.
-  status: "idle"
+	status: 'idle',
 };
 
 interface IActionWithPayload {
-  type: string;
-  payload?: any;
-  meta?: any;
-  error?: any;
+	type: string;
+	payload?: any;
+	meta?: any;
+	error?: any;
 }
 
 export const signIn = createAsyncThunk(
 	'auth/signin',
-	async ({ email, password }: ISignInForm, {rejectWithValue}) => {
+	async ({ email, password }: ISignInForm, { rejectWithValue }) => {
 		try {
 			const config = {
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			};
-			const response = await axios.post(
-				'/auth/signin',
-				{
-					email,
-					password,
-				},
-				config
-			);
-			localStorage.setItem('token', JSON.stringify(response.data.token));
-			return response.data;
+			return await axios
+				.post(
+					'/auth/signin',
+					{
+						email,
+						password,
+					},
+					config
+				)
+				.then((res) => {
+					if (res.data.token) {
+						localStorage.setItem('token', JSON.stringify(res.data.token));
+					}
+					return res.data;
+				});
 		} catch (error: any) {
-      if (!error.response) {
-        throw error
-      }
-      return  rejectWithValue(error.response.data.message);
-    }
+			if (!error.response) {
+				throw error;
+			}
+			return rejectWithValue(error.response.data.message);
+		}
 	}
 );
-
 
 export const authSlice = createSlice({
 	name: 'authentication',
@@ -85,22 +89,22 @@ export const authSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(signIn.pending, (state) => {
-        state.status = "succeeded";
+				state.status = 'pending';
 				state.loading = true;
-        state.error = null;
+				state.error = null;
 			})
 			.addCase(signIn.fulfilled, (state) => {
-        state.status = "succeeded";
+				state.status = 'succeeded';
 				state.isLoggedIn = true;
 				state.success = true;
 			})
 			.addCase(signIn.rejected, (state, action: IActionWithPayload) => {
-        state.status = "failed"
+				state.status = 'failed';
 				state.error = action.error.message;
-        state.success = false;
-        state.isLoggedIn = false;
-        state.loading = false;
-        state.userToken = null;
+				state.success = false;
+				state.isLoggedIn = false;
+				state.loading = false;
+				state.userToken = null;
 			});
 	},
 });

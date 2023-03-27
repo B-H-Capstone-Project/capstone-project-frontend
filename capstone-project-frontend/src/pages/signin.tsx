@@ -35,9 +35,14 @@ export const SignIn = () => {
     //sign in
 		const { email, password } = getValues();
 		await dispatch(signIn({ email: email, password: password })).then(() => {
-      console.log(status);
-      console.log(token);
-    });
+      if (token?.role === 3) {
+        navigate('/')
+      } else {
+        navigate('/admin')
+      }
+    })
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
 	};
 
 	const handleCallbackResponse = (res: any) => {
@@ -62,7 +67,6 @@ export const SignIn = () => {
 
 		google.accounts.id.prompt();
 	}, []);
-
 	return (
 		<>
 			<Helmet>
@@ -111,8 +115,9 @@ export const SignIn = () => {
 									className='bg-white-50 border border-white-100 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block px-20 py-2 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>
-							<div className='w-full flex justify-center items-center m-2'>
+							<div className='w-full flex justify-center items-center m-2 flex-col'>
 								{error && <FormError errorMessage={error} />}
+                {!token && <FormError errorMessage='You need to sign in to make a reservation' />}
 							</div>
 							<div className='w-full p-5 flex items-center justify-center'>
 								<button

@@ -24,6 +24,7 @@ interface IReservatioForm extends IReservation {
 }
 
 function ReservationForm() {
+  let moment = require("moment"); // require
 	//current day
 	const currentDay = dayjs().format();
 	//days
@@ -77,7 +78,7 @@ function ReservationForm() {
 			province: data.province,
 			country: data.country,
 			city: data.city,
-			date: day?.toString(),
+      date: moment(day?.toISOString()).format("YYYY-MM-DD h:mm:ss"),
 		};
 		const newReservation = {
 			...newReservationData,
@@ -85,7 +86,26 @@ function ReservationForm() {
 		mutate(newReservation);
 	};
 
-	const handleSetValue = () => {};
+	const handleSetValue = () => {
+    let checkBox = document.getElementById(
+      "currentAddress"
+    ) as HTMLInputElement;
+    if (checkBox.checked) {
+      setValue("address_line1", data ? data?.user.address_line1 : "");
+      setValue("address_line2", data ? data?.user.address_line2 : "");
+      setValue("postal_code", data ? data?.user.postal_code : "");
+      setValue("city", data ? data?.user.city : "");
+      setValue("province", data ? data?.user.province : "");
+      setValue("country", data ? data?.user.country : "");
+    } else {
+      setValue("address_line1", "");
+      setValue("address_line2", "");
+      setValue("postal_code", "");
+      setValue("city", "");
+      setValue("province", "");
+      setValue("country", "");
+    }
+  };
 
 	return (
 		<>

@@ -9,7 +9,6 @@ import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 import React, { useState } from 'react';
 import axios from '../api/axios';
-import { Header } from '../components/header';
 
 interface ISignUpForm {
 	first_name: string;
@@ -71,7 +70,6 @@ export const SignUp = () => {
 			<Helmet>
 				<title>Sign Up | BOSS&HOSS</title>
 			</Helmet>
-      <Header />
 			<div
 				className='relative w-full'
 				style={{ height: '140vh' }}>

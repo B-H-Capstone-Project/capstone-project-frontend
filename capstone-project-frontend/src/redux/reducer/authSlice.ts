@@ -93,14 +93,16 @@ export const authSlice = createSlice({
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(signIn.fulfilled, (state) => {
+			.addCase(signIn.fulfilled, (state, action: IActionWithPayload) => {
 				state.status = 'succeeded';
 				state.isLoggedIn = true;
 				state.success = true;
+        state.loading = false;
+        state.userToken = jwt_decode(action.payload.token);
 			})
 			.addCase(signIn.rejected, (state, action: IActionWithPayload) => {
 				state.status = 'failed';
-				state.error = action.error.message;
+				state.error = action.payload;
 				state.success = false;
 				state.isLoggedIn = false;
 				state.loading = false;

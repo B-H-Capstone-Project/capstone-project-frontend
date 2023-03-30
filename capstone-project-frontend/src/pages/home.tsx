@@ -10,11 +10,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import GoogleIcon from '@mui/icons-material/Google';
-import { useMe } from '../hooks/useMe';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
-import { SignIn } from './signin';
-import { Header } from '../components/header';
 
 const container = {
 	hidden: { opacity: 1, scale: 0 },
@@ -106,7 +103,7 @@ export const Home = () => {
 	const token = useSelector((state: RootState) => state.auth.userToken);
 	const [visible, setVisible] = useState(1);
 	const [back, setBack] = useState(false);
-	console.log(token);
+
 	const nextPlease = () => {
 		setBack(false);
 		setVisible((prev) => (prev === 10 ? 10 : prev + 1));
@@ -116,11 +113,11 @@ export const Home = () => {
 		setVisible((prev) => (prev === 1 ? 1 : prev - 1));
 	};
 	return (
-    <><Header /><div>
+    <><div>
       <div className='flex w-full px-5 xl:px-0 max-w-screen-2xl mx-auto h-screen md:flex-col'>
         <div className='p-20 basis-1/3 flex items-center flex-1 h-full w-full md:items-end md:justify-start md:px-0'>
           <div className='md:-mb-20 md:p-5'>
-            <div className='mb-3 flex flex-col font-bold text-7xl sm:text-4xl md:mb-10'>
+            <div className='mb-3 flex flex-col font-bold text-7xl md:text-5xl sm:text-4xl md:mb-10'>
               <div className='flex'>
                 <h1 className='mr-3'>BOSS</h1>
                 <h1 className='mr-3'>B&H</h1>
@@ -290,8 +287,8 @@ export const Home = () => {
         </div>
       </div>
       <div className='h-1/2 bg-zinc-900 flex justify-center flex-col items-center'>
-        <div className='p-20'>
-          <h2 className='text-lime-300 text-center m-5 text-5xl font-bold sm:text-2xl'>
+        <div className='p-20 md:p-0 sm:p-0'>
+          <h2 className='text-lime-300 text-center m-5 text-5xl font-bold sm:text-2xl md:w-full'>
             Our Clients
           </h2>
           <div className='grid grid-rows-4 grid-flow-col'>
@@ -304,7 +301,7 @@ export const Home = () => {
         </div>
       </div>
       <div className='h-screen w-full'>
-        <div className='h-1/2 flex justify-center items-center flex-col sm:h-full sm:m-5'>
+        <div className='h-1/2 flex justify-center items-center flex-col md:h-full sm:m-5'>
           <div className='flex justify-center items-center w-full'>
             <ArrowBackIosIcon
               onClick={prevPlease}
@@ -319,7 +316,7 @@ export const Home = () => {
             <AnimatePresence>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => i === visible ? (
                 <motion.div
-                  className='flex justify-center items-center w-1/2 absolute bg-lime-300 rounded-md p-8 md:w-2/3 sm:flex-col'
+                  className='flex justify-center items-center w-1/2 absolute bg-lime-300 rounded-md p-8 md:w-2/3 md:flex-col'
                   custom={false}
                   key={visible}
                   variants={box}
@@ -330,7 +327,7 @@ export const Home = () => {
                     x: { type: 'spring', stiffness: 300, damping: 30 },
                     opacity: { duration: 0.2 },
                   }}>
-                  <div className='basis-2/3 mr-10 sm:order-last sm:mt-10 sm:mr-5'>
+                  <div className='basis-2/3 mr-10 md:order-last md:mt-10 md:mr-5'>
                     <h3 className='text-3xl font-bold text-center sm:text-md'>
                       “
                     </h3>
@@ -364,22 +361,22 @@ export const Home = () => {
               }} />
           </div>
         </div>
-        <div className='h-screen bg-zinc-800 flex justify-center items-center flex-col'>
+        <div className='h-screen bg-zinc-800 flex justify-center items-center flex-col text-3xl md:text-xl sm:text-md'>
           <div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
-            <h3 className='text-3xl font-bold text-center mb-10 sm:text-md'>
+            <h3 className='font-bold text-center mb-10'>
               “
             </h3>
-            <p className='mb-10 text-3xl text-center sm:text-lg'>
+            <p className='mb-10 text-center sm:m-2'>
               Best irrigation company we have worked with, gets the job done
               right on budget and has fantastic service.
             </p>
             <p className='mb-3 text-center'>CIDEX.</p>
           </div>
           <div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
-            <h3 className='text-3xl font-bold text-center mb-10 sm:text-md'>
+            <h3 className='font-bold text-center mb-10'>
               “
             </h3>
-            <p className='mb-10 text-3xl text-center sm:text-lg'>
+            <p className='mb-10 text-center sm:m-2'>
               Boss & Hoss has installed 10+ zone for our high rise condos and
               has been servicing our buildings and we are extremely happy with
               the quality of work and professionalism they bring.

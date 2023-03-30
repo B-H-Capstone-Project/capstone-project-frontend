@@ -6,8 +6,8 @@ import axios from '../../api/axios';
 import jwt_decode from 'jwt-decode';
 
 // initialize userToken from local storage
-const token = localStorage.getItem('token')
-	? localStorage.getItem('token')
+const token = sessionStorage.getItem('token')
+	? sessionStorage.getItem('token')
 	: null;
 
 export interface IToken {
@@ -42,6 +42,7 @@ interface IActionWithPayload {
 	error?: any;
 }
 
+//sign in authentication
 export const signIn = createAsyncThunk(
 	'auth/signin',
 	async ({ email, password }: ISignInForm, { rejectWithValue }) => {
@@ -62,7 +63,7 @@ export const signIn = createAsyncThunk(
 				)
 				.then((res) => {
 					if (res.data.token) {
-						localStorage.setItem('token', JSON.stringify(res.data.token));
+						sessionStorage.setItem('token', JSON.stringify(res.data.token));
 					}
 					return res.data;
 				});
@@ -75,6 +76,8 @@ export const signIn = createAsyncThunk(
 	}
 );
 
+//signin authentication
+
 export const authSlice = createSlice({
 	name: 'authentication',
 	initialState,
@@ -83,7 +86,7 @@ export const authSlice = createSlice({
 			// ...logout reducer
 			state.userToken = null;
 			state.isLoggedIn = false;
-			localStorage.removeItem('token');
+			sessionStorage.removeItem('token');
 		},
 	},
 	extraReducers: (builder) => {
@@ -110,6 +113,7 @@ export const authSlice = createSlice({
 			});
 	},
 });
+
 
 export const { signOut } = authSlice.actions;
 export default authSlice.reducer;

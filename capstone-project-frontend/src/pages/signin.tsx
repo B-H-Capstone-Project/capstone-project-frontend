@@ -54,7 +54,7 @@ export const SignIn = () => {
 	};
 
 	const handleCallbackResponse = (res: any) => {
-		localStorage.setItem('token', res.credential);
+		sessionStorage.setItem('token', res.credential);
 		navigate('/');
 		// eslint-disable-next-line no-restricted-globals
 		location.reload();

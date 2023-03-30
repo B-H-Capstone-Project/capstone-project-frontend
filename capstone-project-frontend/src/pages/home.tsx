@@ -104,6 +104,7 @@ export const Home = () => {
 	const [visible, setVisible] = useState(1);
 	const [back, setBack] = useState(false);
 
+  console.log(token);
 	const nextPlease = () => {
 		setBack(false);
 		setVisible((prev) => (prev === 10 ? 10 : prev + 1));

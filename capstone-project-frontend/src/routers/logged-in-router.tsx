@@ -14,10 +14,7 @@ import { NotFound } from "../pages/404";
 import { ContactUs } from "../pages/contactUs";
 import { OurWork } from "../pages/our-work";
 import { Reservation } from "../pages/reservation";
-import { ReservationForm } from "../components/reservation-form";
 
-// admin
-import AdminApp from "../admin/AdminApp";
 import Dashboard from "../admin/scenes/dashboard";
 import ManageCustomers from "../admin/scenes/customer/manage-customers";
 import Employees from "../admin/scenes/employees";
@@ -32,7 +29,8 @@ import FAQ from "../admin/scenes/faq";
 import Geography from "../admin/scenes/geography";
 import { ColorModeContext, useMode } from "../admin/theme";
 import { EditProfile } from "../pages/user/edit-profile";
-
+import { SignIn } from "../pages/signin";
+import ReservationForm from "../pages/reservation-form";
 
 //customer routes
 const clientRoutes = [
@@ -42,14 +40,14 @@ const clientRoutes = [
   },
   {
     path: "/signIn",
-    component: <Home />,
+    component: <SignIn />,
   },
   {
     path: "/reservation",
     component: <Reservation />,
   },
   {
-    path: "/reservation/form",
+    path: "/reservation-form",
     component: <ReservationForm />,
   },
   {
@@ -94,7 +92,7 @@ export const LoggedInRouter = () => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
-            {token?.role === 3 && <Header />}
+            <Header />
             <Routes>
               {clientRoutes.map((route) => (
                 <Route

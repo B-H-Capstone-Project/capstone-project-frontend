@@ -3,7 +3,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Header } from '../components/header';
 
 const FORM_ENDPOINT = '';
 
@@ -25,7 +24,6 @@ export const ContactUs = () => {
 	}
 	return (
 		<>
-			<Header />
 			<div>
 				<img
 					className='inline'

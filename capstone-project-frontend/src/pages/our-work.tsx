@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { imgData } from './galleryImg';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { Header } from '../components/header';
 // import slider from "react-slick";
 
 export const OurWork = () => {
@@ -28,7 +27,6 @@ export const OurWork = () => {
 
 	return (
 		<div>
-			<Header />
 			<div className='h-screen'>
 				<div className='flex items-center flex-col h-full justify-center'>
 					<div

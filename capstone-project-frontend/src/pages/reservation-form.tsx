@@ -13,6 +13,8 @@ import { RootState } from "../redux/store";
 import { Helmet } from "react-helmet-async";
 import { IReservation, IReservationInput } from "../types/reservation.dto";
 import { useMe } from "../hooks/useMe";
+import { moveMessagePortToContext } from "worker_threads";
+var moment = require("moment"); // require
 
 interface IReservatioForm extends IReservation {
   residential: string;
@@ -25,7 +27,7 @@ function ReservationForm() {
   //current day
   const currentDay = dayjs().format();
   //days
-  const [day, setDay] = useState<Dayjs | null>(dayjs("2022-04-17T15:30"));
+  const [day, setDay] = useState<Dayjs | null>(dayjs("2023-03-30T15:30"));
   const queryClient = useQueryClient();
   const isAuth = useSelector((state: RootState) => state.auth);
   const userId = isAuth.userToken?.id;
@@ -58,15 +60,14 @@ function ReservationForm() {
       },
     }
   );
-  console.log(day?.toString());
   const onSubmit = async (data: IReservation) => {
     let serviceType = "";
+
     Object.entries(data).filter(([key, value]) => {
       if (value === "on") {
         serviceType = key;
       }
     });
-
     const newReservationData: IReservationInput = {
       type: serviceType,
       description: data.description,
@@ -76,7 +77,7 @@ function ReservationForm() {
       province: data.province,
       country: data.country,
       city: data.city,
-      date: day?.toString(),
+      date: moment(day?.toISOString()).format("YYYY-MM-DD h:mm:ss"),
     };
     const newReservation = {
       ...newReservationData,
@@ -85,7 +86,26 @@ function ReservationForm() {
     mutate(newReservation);
   };
 
-  const handleSetValue = () => {};
+  const handleSetValue = () => {
+    let checkBox = document.getElementById(
+      "currentAddress"
+    ) as HTMLInputElement;
+    if (checkBox.checked) {
+      setValue("address_line1", data ? data?.user.address_line1 : "");
+      setValue("address_line2", data ? data?.user.address_line2 : "");
+      setValue("postal_code", data ? data?.user.postal_code : "");
+      setValue("city", data ? data?.user.city : "");
+      setValue("province", data ? data?.user.province : "");
+      setValue("country", data ? data?.user.country : "");
+    } else {
+      setValue("address_line1", "");
+      setValue("address_line2", "");
+      setValue("postal_code", "");
+      setValue("city", "");
+      setValue("province", "");
+      setValue("country", "");
+    }
+  };
 
   return (
     <>
@@ -108,6 +128,7 @@ function ReservationForm() {
                 type="text"
                 id="address_line1"
                 {...register("address_line1")}
+                required
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
@@ -133,6 +154,7 @@ function ReservationForm() {
                   type="text"
                   id="postal_code"
                   {...register("postal_code")}
+                  required
                   className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
@@ -144,6 +166,7 @@ function ReservationForm() {
                   type="text"
                   id="city"
                   {...register("city")}
+                  required
                   className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
@@ -171,6 +194,7 @@ function ReservationForm() {
                 <select
                   id="province"
                   {...register("province")}
+                  required
                   className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
                   <option value="AB">AB</option>
@@ -196,6 +220,7 @@ function ReservationForm() {
                   type="text"
                   id="country"
                   {...register("country")}
+                  required
                   className="w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
@@ -211,6 +236,7 @@ function ReservationForm() {
                   {...register("residential")}
                   aria-describedby="terms"
                   type="radio"
+                  name="type"
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
                 />
                 <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
@@ -221,6 +247,7 @@ function ReservationForm() {
                   {...register("commercial")}
                   aria-describedby="terms"
                   type="radio"
+                  name="type"
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
                 />
                 <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
@@ -231,6 +258,7 @@ function ReservationForm() {
                   {...register("service")}
                   aria-describedby="terms"
                   type="radio"
+                  name="type"
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
                 />
                 <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
@@ -241,6 +269,7 @@ function ReservationForm() {
                   {...register("outdoorLighting")}
                   aria-describedby="terms"
                   type="radio"
+                  name="type"
                   className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;"
                 />
                 <label className="block m-2 text-sm font-medium text-black-100 dark:text-black">
@@ -266,6 +295,7 @@ function ReservationForm() {
                 type="text"
                 id="description"
                 {...register("description")}
+                required
                 className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-10 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>

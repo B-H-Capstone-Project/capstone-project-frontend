@@ -16,15 +16,6 @@ import Header from "../components/Header";
 import { tokens } from "../theme";
 import axios from "../../api/axios";
 import ReservationModal from "./reservationsComponents/reservationModal";
-
-/* export interface IReservation {
-  id: number;
-  user_id: number;
-  address_id: string;
-  type: string;
-  date: Date;
-  description: string;
-} */
 interface ICustomer {
   id: string;
   first_name: string;
@@ -67,6 +58,7 @@ const Reservations = () => {
   const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>();
+  // const [selectedDate, setSelectedDate] = useState<Dayjs>();
   const [existedRes, setExistedRes] = useState<DateSelectArg>();
   const [isNew, setIsNew] = useState(false);
   const [customer, setCustomer] = useState<ICustomer>();
@@ -107,6 +99,7 @@ const Reservations = () => {
 
     const handleDateClick = useCallback((arg: DateClickArg) => {
       setSelectedDate(arg.date.toISOString().slice(0, -8));
+      // setSelectedDate(dayjs(arg.date.toISOString().slice(0, -8)));
     }, []);
 
   const handleEventClick = (selected: any) => {

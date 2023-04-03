@@ -14,6 +14,7 @@ export interface meQuery_me {
 	address_line2: string;
 	postal_code: string;
 	province: string;
+	city: string;
 	country: string;
 	profile: string;
 	is_active: number;

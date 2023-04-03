@@ -1,9 +1,7 @@
+/** @format */
+
 import React from 'react';
-import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { NotFound } from '../pages/404';
 import { SignIn } from '../pages/signin';
 import { Header } from '../components/header';
@@ -50,5 +48,5 @@ export const LoggedOutRouter = () => {
 				</Routes>
 			</Router>
 		</div>
- 	);
+	);
 };

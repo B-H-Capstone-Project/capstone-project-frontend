@@ -2,75 +2,113 @@
 =======
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 // date time picker
-import { Dayjs } from 'dayjs';
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../api/axios';
 import { RootState } from '../redux/store';
 import { Helmet } from 'react-helmet-async';
+import { IReservation, IReservationInput } from '../types/reservation.dto';
+import { useMe } from '../hooks/useMe';
 
-interface IReservationForm {
-	first_name: string;
-	last_name: string;
-	phone_number: string;
-	email: string;
-	address_line: string;
-	unit_number: string;
-	postal_code: string;
-	city: string;
-	province: string;
-	country: string;
-	description: string;
+
+
+interface IReservatioForm extends IReservation {
+	residential: string;
+	commercial: string;
+	service: string;
+	outdoorLighting: string;
 }
 
-const reservation = async (data: IReservationForm) => {
-	const { data: response } = await axios.post('reservation', data);
-	return response.data;
-};
-
 function ReservationForm() {
+  let moment = require("moment"); // require
+	//current day
+	const currentDay = dayjs().format();
+	//days
+	const [day, setDay] = useState<Dayjs | null>(dayjs(('2022-04-17T15:30')));
 	const queryClient = useQueryClient();
 	const isAuth = useSelector((state: RootState) => state.auth);
-	const [value, setValue] = React.useState<Dayjs | null>(null);
+	const userId = isAuth.userToken?.id;
+	//User Info
+	const { data } = useMe();
 	const {
 		register,
 		formState: { errors, isValid },
 		handleSubmit,
-	} = useForm<IReservationForm>({
+		setValue,
+	} = useForm<IReservatioForm>({
 		mode: 'onChange',
 	});
 
-	const navigate = useNavigate();
+	const { isLoading, mutate } = useMutation(
+		async (newReservation: IReservationInput) => {
+			return (await axios.post(`/reservation/${userId}`, newReservation)).data;
+		},
+		{
+			onSuccess: (data) => {
+				const message = 'success';
+				alert(message);
+			},
+			onError: () => {
+				alert('there was an error');
+			},
+			onSettled: () => {
+				queryClient.invalidateQueries('create');
+			},
+		}
+	);
+  console.log(day?.toString());
+	const onSubmit = async (data: IReservation) => {
+		let serviceType = '';
+		Object.entries(data).filter(([key, value]) => {
+			if (value === 'on') {
+				serviceType = key;
+			}
+		});
 
-	const { isLoading, mutate } = useMutation(reservation, {
-		onSuccess: (data) => {
-			console.log(data);
-			const message = 'success';
-			alert(message);
-		},
-		onError: () => {
-			alert('there was an error');
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries('create');
-		},
-	});
-
-	const onSubmit = async (data: IReservationForm) => {
+		const newReservationData: IReservationInput = {
+			type: serviceType,
+			description: data.description,
+			address_line1: data.address_line1,
+			address_line2: data.address_line2,
+			postal_code: data.postal_code.toUpperCase(),
+			province: data.province,
+			country: data.country,
+			city: data.city,
+      date: moment(day?.toISOString()).format("YYYY-MM-DD h:mm:ss"),
+		};
 		const newReservation = {
-			...data,
+			...newReservationData,
 		};
 		mutate(newReservation);
-		//navigate('/');
 	};
+
+	const handleSetValue = () => {
+    let checkBox = document.getElementById(
+      "currentAddress"
+    ) as HTMLInputElement;
+    if (checkBox.checked) {
+      setValue("address_line1", data ? data?.user.address_line1 : "");
+      setValue("address_line2", data ? data?.user.address_line2 : "");
+      setValue("postal_code", data ? data?.user.postal_code : "");
+      setValue("city", data ? data?.user.city : "");
+      setValue("province", data ? data?.user.province : "");
+      setValue("country", data ? data?.user.country : "");
+    } else {
+      setValue("address_line1", "");
+      setValue("address_line2", "");
+      setValue("postal_code", "");
+      setValue("city", "");
+      setValue("province", "");
+      setValue("country", "");
+    }
+  };
+
 	return (
 		<>
 			<Helmet>
@@ -78,90 +116,22 @@ function ReservationForm() {
 			</Helmet>
 			<div
 				className='relative p-10'
-				style={{ height: '150vh' }}>
-				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-xl shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-15'>
-					<div className='mb-10'>
-						<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
-							Request Reservation
-						</h1>
-					</div>
+				style={{ height: '120vh' }}>
+				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-xl shadow dark:border py-8 px-10 m-10 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-0'>
+					<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
+						Request Reservation
+					</h1>
 					<form onSubmit={handleSubmit(onSubmit)}>
-						{/* FirstName & LastName */}
-						<div className='w-1/2 flex flex-row gap-4'>
-							<div className='flex flex-col mb-3'>
-								<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-									First Name *
-								</label>
-								<input
-									type='text'
-									id='first_name'
-									{...register('first_name')}
-									className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									placeholder='John'
-								/>
-							</div>
-							<div className='flex flex-col mb-3'>
-								<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-									Last Name *
-								</label>
-								<input
-									type='text'
-									id='last_name'
-									{...register('last_name')}
-									className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									placeholder='Doe'
-								/>
-							</div>
-						</div>
-						<div className='flex flex-col mb-3'>
-							<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-								Phone Number *
-							</label>
-							<input
-								type='text'
-								id='phone_number'
-								{...register('phone_number')}
-								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-							/>
-						</div>
-						{/* Email */}
-						<div className='flex flex-col mb-3'>
-							<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-								Email *
-							</label>
-							<input
-								type='email'
-								id='email'
-								{...register('email')}
-								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-								placeholder='name@company.com'
-							/>
-						</div>
-
 						{/* Address */}
-						<div className='p-5 flex items-start'>
-							<div className='flex items-center h-5'>
-								<input
-									id='currentAddress'
-									aria-describedby='currentAddress'
-									type='checkbox'
-									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
-								/>
-							</div>
-							<div className=' ml-3 text-sm'>
-								<label className='font-light text-gray-500 dark:text-gray-300'>
-									Use Current Address
-								</label>
-							</div>
-						</div>
+						<div className='p-5 flex items-start'></div>
 						<div className='flex flex-col mb-3'>
 							<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
 								Address *
 							</label>
 							<input
 								type='text'
-								id='address_line'
-								{...register('address_line')}
+								id='address_line1'
+								{...register('address_line1')}
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>
@@ -172,8 +142,8 @@ function ReservationForm() {
 							</label>
 							<input
 								type='text'
-								id='unit_number'
-								{...register('unit_number')}
+								id='address_line2'
+								{...register('address_line2')}
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>
@@ -202,7 +172,19 @@ function ReservationForm() {
 								/>
 							</div>
 						</div>
+						<div className='h-5 mb-3'>
+							<input
+								id='currentAddress'
+								aria-describedby='currentAddress'
+								type='checkbox'
+								onClick={handleSetValue}
+								className='mr-2 w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800'
+							/>
 
+							<label className='font-light text-gray-500 dark:text-gray-300'>
+								Use Current Address
+							</label>
+						</div>
 						{/* Province & Country */}
 						<div className='flex gap-4 mb-3'>
 							<div className='w-full'>
@@ -212,6 +194,7 @@ function ReservationForm() {
 								{/* <select value={value} onChange={handleChange}> */}
 								<select
 									id='province'
+									{...register('province')}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'>
 									<option value='AB'>AB</option>
 									<option value='BC'>BC</option>
@@ -244,10 +227,11 @@ function ReservationForm() {
 						<label className='block text-sm font-medium text-black-100 dark:text-black'>
 							Type *
 						</label>
-						<div className='p-5 flex items-start flex-col'>
+						<div className='flex items-start flex-col mb-5'>
 							<div className='flex items-center h-5 m-2'>
 								<input
-									id='type'
+									id='residential'
+									{...register('residential')}
 									aria-describedby='terms'
 									type='radio'
 									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
@@ -256,7 +240,8 @@ function ReservationForm() {
 									Residential
 								</label>
 								<input
-									id='type'
+									id='commercial'
+									{...register('commercial')}
 									aria-describedby='terms'
 									type='radio'
 									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
@@ -265,7 +250,8 @@ function ReservationForm() {
 									Commercial
 								</label>
 								<input
-									id='type'
+									id='service'
+									{...register('service')}
 									aria-describedby='terms'
 									type='radio'
 									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
@@ -274,7 +260,8 @@ function ReservationForm() {
 									Service
 								</label>
 								<input
-									id='type'
+									id='outdoorLighting'
+									{...register('outdoorLighting')}
 									aria-describedby='terms'
 									type='radio'
 									className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800;'
@@ -287,15 +274,10 @@ function ReservationForm() {
 						<div className='flex flex-col mb-3'>
 							{/* Date / Time */}
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
-								<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-									Date & Time
-								</label>
 								<DateTimePicker
-									renderInput={(props) => <TextField {...props} />}
-									value={value}
-									onChange={(newValue) => {
-										setValue(newValue);
-									}}
+									label='Controlled picker'
+									defaultValue={day}
+									onChange={(chosenDay) => setDay(chosenDay)}
 								/>
 							</LocalizationProvider>
 						</div>
@@ -307,14 +289,14 @@ function ReservationForm() {
 								type='text'
 								id='description'
 								{...register('description')}
-								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-10 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>
 						{/* Submit Button */}
-						<div className='flex flex-col'>
+						<div className='flex flex-col justify-center items-center'>
 							<button
 								type='submit'
-								className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
+								className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded w-1/2'>
 								Submit
 							</button>
 						</div>

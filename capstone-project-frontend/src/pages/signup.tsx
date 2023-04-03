@@ -93,8 +93,10 @@ export const SignUp = () => {
 	});
 
 	const onSubmit = (data: ISignUpForm) => {
+    const postal_code = data.postal_code.toUpperCase();
 		const newUser = {
-			...data,
+      ...data,
+      postal_code: postal_code,
 		};
 		mutate(newUser);
 >>>>>>> 0e94a7509d37b27584e02a3cdb878473dd21c365
@@ -478,28 +480,41 @@ export const SignUp = () => {
 						</div>
 
 						{/* Province & Country */}
-						<div className='w-1/2 flex flex-row gap-4'>
-							<div className='flex flex-col'>
+						<div className='flex gap-4 mb-3'>
+							<div className='w-full'>
 								<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
 									Province *
 								</label>
-								<input
-									type='text'
-									{...register('province')}
+								{/* <select value={value} onChange={handleChange}> */}
+								<select
 									id='province'
-									className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-								/>
+									{...register('province')}
+									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+									<option value='AB'>AB</option>
+									<option value='BC'>BC</option>
+									<option value='NB'>NB</option>
+									<option value='NL'>NL</option>
+									<option value='NS'>NS</option>
+									<option value='NT'>NT</option>
+									<option value='NU'>NU</option>
+									<option value='MB'>MB</option>
+									<option value='ON'>ON</option>
+									<option value='PE'>PE</option>
+									<option value='QC'>QC</option>
+									<option value='SK'>SK</option>
+									<option value='YT'>YT</option>
+								</select>
 							</div>
-
-							<div className='flex flex-col'>
+							<div className='w-full'>
 								<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
 									Country *
 								</label>
 								<input
 									type='text'
 									id='country'
+                  value="Canada"
 									{...register('country')}
-									className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>
 						</div>
@@ -526,7 +541,7 @@ export const SignUp = () => {
 						<div className='flex justify-center'>
 							<button
 								type='submit'
-								className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
+								className='btn'>
 								Create account
 							</button>
 						</div>

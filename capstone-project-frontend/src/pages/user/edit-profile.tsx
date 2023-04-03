@@ -43,10 +43,10 @@ export const EditProfile = () => {
 		},
 		defaultValues: async () => await axios.get(`/user/${userId}`),
 	});
-  console.log(data);
+	console.log(data);
 	const { isLoading, mutate } = useMutation(
 		async (updateProfile: IForm) => {
-      console.log(updateProfile);
+			console.log(updateProfile);
 			return (await axios.put(`/user/${userId}`, updateProfile)).data;
 		},
 		{
@@ -87,7 +87,7 @@ export const EditProfile = () => {
 			</Helmet>
 			<div
 				className='relative w-full'
-				style={{ height: '140vh' }}>
+				style={{ height: '120vh' }}>
 				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-10'>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						{/* FirstName & LastName */}
@@ -140,7 +140,7 @@ export const EditProfile = () => {
 								{...register('email', {
 									disabled: true,
 								})}
-								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
+								className='mb-2 bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								value={data?.user.email}
 							/>
 						</div>
@@ -270,10 +270,10 @@ export const EditProfile = () => {
 								/>
 							</div>
 						</div>
-						<div className='flex justify-center'>
+						<div className='p-5 flex items-start justify-center'>
 							<button
 								type='submit'
-								className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded'>
+								className='btn '>
 								Update account
 							</button>
 						</div>

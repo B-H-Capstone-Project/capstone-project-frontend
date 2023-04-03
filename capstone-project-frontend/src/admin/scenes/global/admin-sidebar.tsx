@@ -10,18 +10,28 @@ import { useMe } from "../../../hooks/useMe";
 
 // icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+
+
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  img: {
+    width: "90px",
+    height: "90px",
+    objectFit: "cover",
+    borderRadius: "50%",
+    margin: "0",
+    padding: "0",
+    alignItem: "center",
+    justifyContent: "center",
+  }
+});
+
 
 const Item = ({ title, to, icon, selected, setSelected }: any) => {
   const theme = useTheme();
@@ -42,6 +52,7 @@ const Item = ({ title, to, icon, selected, setSelected }: any) => {
 };
 
 const AdminSidebar = () => {
+  const classes = useStyles();
   const { data } = useMe();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -69,7 +80,7 @@ const AdminSidebar = () => {
         },
       }}
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar width="100%" collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -77,7 +88,6 @@ const AdminSidebar = () => {
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
-              color: colors.grey[100],
             }}
           >
             {!isCollapsed && (
@@ -89,12 +99,10 @@ const AdminSidebar = () => {
                 position="relative"
                 flexDirection="row"
               >
-                <Typography
-                  variant="h3"
-                  fontWeight="bold"
-                  color={colors.grey[100]}
-                >
-                  B&H
+                <Typography variant="h3" fontWeight="bold" color={colors.grey[0]}>
+                  <NavLink to="/admin">
+                    B&H
+                  </NavLink>
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -112,30 +120,33 @@ const AdminSidebar = () => {
                 position="relative"
               >
                 <img
-                  alt="profile-user"
+                  alt=""
+                  className={classes.img}
                   width="100px"
                   height="100px"
                   src={data?.user.profile}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
+                  style={{
+                    cursor: "pointer",
+                    borderRadius: "50%",
+                  }}
                 />
               </Box>
               <Box textAlign="center">
                 <Typography
-                  variant="h3"
+                  variant="h4"
                   color={colors.grey[100]}
-                  // fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
                   {data?.user.first_name} {data?.user.last_name}
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
+                <Typography variant="h6" color={colors.greenAccent[500]}>
                   {data?.user.role === 1 ? "Admin" : "Employee"}
                 </Typography>
               </Box>
             </Box>
           )}
 
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+          <Box paddingLeft={isCollapsed ? undefined : ""}>
             <Item
               title="Dashboard"
               to="/admin"
@@ -146,7 +157,7 @@ const AdminSidebar = () => {
             <Item
               title="Employees"
               to="/admin/employees"
-              icon={<PeopleOutlinedIcon />}
+              icon={<AdminPanelSettingsIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -164,29 +175,15 @@ const AdminSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Contacts Info"
-              to="/admin/contacts"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Profile Form"
-              to="/admin/form"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
             {/* <NavLink to="/"> */}
-              <Item
-                title="Sign Out"
-                onClick={() => dispatch(signOut())}
-                to="/"
-                icon={<ExitToAppIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
+            <Item
+              title="Sign Out"
+              onClick={() => dispatch(signOut())}
+              to="/"
+              icon={<ExitToAppIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             {/* </NavLink> */}
           </Box>
         </Menu>

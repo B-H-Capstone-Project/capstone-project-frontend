@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import axios from "../../../api/axios";
 import { useMutation, useQueryClient } from "react-query";
 
-const modalStyle = {
+const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -58,7 +58,7 @@ const CustomerModal = (props: any) => {
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<ICustomer>({
-    mode: "onChange", 
+    mode: "onChange",
     defaultValues: {
       role: 3,
     },
@@ -70,7 +70,7 @@ const CustomerModal = (props: any) => {
       const message = "success";
       alert(message);
       handleClose();
-      window.location.replace("/admin/customers");
+      window.location.replace("/admin/employees");
     },
     onError: () => {
       alert("there was an error");
@@ -88,8 +88,13 @@ const CustomerModal = (props: any) => {
   };
 
   return (
-    <Modal open={props.open} onClose={():void => {props.setOpen(false)}}>
-      <Box sx={modalStyle}>
+    <Modal
+      open={props.open}
+      onClose={(): void => {
+        props.setOpen(false);
+      }}
+    >
+      <Box sx={style}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Typography
             id="modal-modal-title"
@@ -224,27 +229,30 @@ const CustomerModal = (props: any) => {
             }}
             {...register("country")}
           />
-
-              <TextField
-              id="outlined-required"
-              label="Role"
-              sx={{
-                margin: "0.5rem",
-                width: "300px",
-              }}
-              defaultValue="Customer"
-            />
           <FormControl
             sx={{
               margin: "0.5rem",
               width: "300px",
             }}
           >
-            <InputLabel id="demo-simple-select-label">Active</InputLabel>
+            <InputLabel >Role</InputLabel>
             <Select
               required
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              {...register("role")}
+            >
+              <MenuItem value={1}>Admin</MenuItem>
+              <MenuItem value={2}>Employee</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl
+            sx={{
+              margin: "0.5rem",
+              width: "300px",
+            }}
+          >
+            <InputLabel >Active</InputLabel>
+            <Select
+              required
               {...register("is_active")}
             >
               <MenuItem value={1}>Active</MenuItem>

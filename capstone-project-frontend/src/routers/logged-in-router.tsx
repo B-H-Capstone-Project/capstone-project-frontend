@@ -1,6 +1,5 @@
 /** @format */
 
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useMe } from "../hooks/useMe";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -17,10 +16,9 @@ import { Reservation } from "../pages/reservation";
 import ReservationForm from "../components/reservation-form";
 
 // admin
-import AdminApp from "../admin/AdminApp";
 import Dashboard from "../admin/scenes/dashboard";
 import ManageCustomers from "../admin/scenes/customer/manage-customers";
-import Employees from "../admin/scenes/employees";
+import ManageEmployees from "../admin/scenes/employee/manage-employees";
 import Reservations from "../admin/scenes/reservations";
 import Invoices from "../admin/scenes/invoices";
 import Contacts from "../admin/scenes/contacts";
@@ -66,10 +64,9 @@ const clientRoutes = [
 
 //admin routes
 const adminRoutes = [
-//   { path: "/admin", component: <AdminApp /> },
   { path: "/admin", component: <Dashboard /> },
   { path: "/admin/customers", component: <ManageCustomers /> },
-  { path: "/admin/employees", component: <Employees /> },
+  { path: "/admin/employees", component: <ManageEmployees /> },
   { path: "/admin/reservations", component: <Reservations /> },
   { path: "/admin/contacts", component: <Contacts /> },
   { path: "/admin/invoices", component: <Invoices /> },

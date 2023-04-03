@@ -3,7 +3,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/hook';
 import { signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
@@ -15,6 +15,7 @@ export interface ISignInForm {
 }
 
 export const SignIn = () => {
+	const token = useSelector((state: RootState) => state.auth.userToken);
 	const {
 		register,
 		getValues,
@@ -31,13 +32,7 @@ export const SignIn = () => {
 	const onSubmit = async () => {
 		const { email, password } = getValues();
 		dispatch(signIn({ email: email, password: password }));
-		if (isAuth.userToken) {
-			if (isAuth.userToken?.role === 1 || isAuth.userToken?.role === 2) {
-				navigate('/admin');
-			}
-		} else {
-			navigate('/');
-		}
+		navigate('/');
 	};
 
 	const handleCallbackResponse = (res: any) => {
@@ -55,10 +50,10 @@ export const SignIn = () => {
 			callback: handleCallbackResponse,
 		});
 
-		google.accounts.id.renderButton(document.getElementById('signinDiv')!, {
-			theme: 'outline',
-			size: 'large',
-		});
+		// google.accounts.id.renderButton(document.getElementById('signinDiv')!, {
+		// 	theme: 'outline',
+		// 	size: 'large',
+		// });
 
 		google.accounts.id.prompt();
 	}, []);

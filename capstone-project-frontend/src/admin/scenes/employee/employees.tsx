@@ -1,4 +1,4 @@
-import Customer from "./customer";
+import Employee from "./employee";
 
 // table
 import Box from "@mui/material/Box";
@@ -7,7 +7,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-export default function Customers({customers}:any) {
+
+export default function Employees({employees}:any) {
   return (
     <>
       <Table sx={{width: "1250px", borderBottom: "solid 0.5px rgb(196, 196, 196)"}}>
@@ -29,11 +30,11 @@ export default function Customers({customers}:any) {
           </TableRow>
         </TableHead>
       </Table>
-      <Box>
-        {customers.map((c:any) => (
-          <Customer key={c.id} customerprop={c} />
-        ))}
-      </Box>
+            <Box>
+        {employees.map((e:any) => (
+          <Employee key={e.id} employeeprop={e} />
+          ))}
+          </Box>
     </>
   );
 }

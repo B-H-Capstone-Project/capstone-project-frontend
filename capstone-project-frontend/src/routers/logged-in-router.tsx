@@ -83,7 +83,7 @@ const adminRoutes = [
 export const LoggedInRouter = () => {
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const token = isAuth.userToken;
-
+  console.log(token);
 	return (
 		<div>
 			<Router>
@@ -101,7 +101,7 @@ export const LoggedInRouter = () => {
 						element={<NotFound />}
 					/>
 					{token?.role === 1 ||
-						(token?.role === 2 &&
+						(token?.role === 3 &&
 							adminRoutes.map((route) => (
 								<Route
 									key={route.path}

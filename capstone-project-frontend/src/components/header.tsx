@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	CssBaseline,
 	AppBar,
@@ -13,6 +13,7 @@ import {
 	ListItem,
 	ListItemButton,
 	ListItemText,
+	Collapse,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -21,13 +22,14 @@ import { NavLink } from 'react-router-dom';
 import { RootState } from '../redux/store';
 import { useAppDispatch } from '../redux/hook';
 import { signOut } from '../redux/reducer/authSlice';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Fade from '@mui/material/Fade';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandLess from '@mui/icons-material/ExpandLess';
 
 //customer routes
 const loggedOutNav = [
-	{
-		path: '/our-work',
-		name: 'OUR WORK',
-	},
 	{
 		path: '/contact-us',
 		name: 'CONTACT US',
@@ -37,53 +39,74 @@ const loggedOutNav = [
 //customer routes
 const loggedInNav = [
 	{
-		path: '/our-work',
-		name: 'OUR WORK',
-	},
-	{
-		path: '/contact-us',
-		name: 'CONTACT US',
-	},
-	{
 		path: '/reservation',
 		name: 'RESERVATION',
 	},
 ];
 
 export const Header = () => {
-	const [mobileOpen, setMobileOpen] = React.useState(false);
+	const [openMobieMenu, setOpenMobileMenu] = useState(false);
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+	const [mobileOpen, setMobileOpen] = useState(false);
 	const handleDrawerToggle = () => {
 		setMobileOpen((prevState) => !prevState);
+	};
+	const handleClickOurWork = () => {
+		setOpenMobileMenu(!openMobieMenu);
 	};
 	const dispatch = useAppDispatch();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const loggedIn = isAuth.isLoggedIn;
 
 	const drawer = (
-		<Box
-			onClick={handleDrawerToggle}
-			sx={{ textAlign: 'center' }}>
+		<Box>
 			<Divider />
-			<List>
-				{loggedIn &&
-					loggedInNav.map((item) => (
-						<ListItem
-							key={item.name}
+			<List component='nav'>
+				<ListItem
+					key='CONTACT US'
+					disablePadding
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+					}}>
+					<ListItemButton sx={{ textAlign: 'center' }}>
+						<NavLink to='/contact-us'>CONTACT US</NavLink>
+					</ListItemButton>
+					<ListItemButton onClick={handleClickOurWork}>
+						<ListItemText primary='OUR WORK' />
+						{openMobieMenu ? <ExpandLess /> : <ExpandMore />}
+					</ListItemButton>
+					<Collapse
+						in={openMobieMenu}
+						timeout='auto'>
+						<List
+							component='div'
 							disablePadding>
-							<ListItemButton sx={{ textAlign: 'center' }}>
+							<ListItemButton>
+								<ListItemText primary='Residential Irrigation' />
+							</ListItemButton>
+							<ListItemButton>
+								<ListItemText primary='Commercial Irrigation' />
+							</ListItemButton>
+							<ListItemButton>
+								<ListItemText primary='Outdoor Irrigation' />
+							</ListItemButton>
+						</List>
+					</Collapse>
+					{loggedIn &&
+						loggedInNav.map((item) => (
+							<ListItemButton>
 								<NavLink to={item.path}>{item.name}</NavLink>
 							</ListItemButton>
-						</ListItem>
-					))}
-				{loggedOutNav.map((item) => (
-					<ListItem
-						key={item.name}
-						disablePadding>
-						<ListItemButton sx={{ textAlign: 'center' }}>
-							<NavLink to={item.path}>{item.name}</NavLink>
-						</ListItemButton>
-					</ListItem>
-				))}
+						))}
+				</ListItem>
 			</List>
 		</Box>
 	);
@@ -100,13 +123,8 @@ export const Header = () => {
 				color='transparent'
 				elevation={0}>
 				<Toolbar>
-					<IconButton
-						color='inherit'
-						aria-label='open drawer'
-						edge='start'
-						onClick={handleDrawerToggle}
+					<Box
 						sx={{
-							mr: 2,
 							display: {
 								sm: 'none',
 								xs: 'flex',
@@ -114,11 +132,17 @@ export const Header = () => {
 								justifyContent: 'space-between',
 							},
 						}}>
-						<div className='text-3xl font-bold'>
+						<div className='text-3xl font-bold mt-2'>
 							<NavLink to={'/'}>B&H</NavLink>
 						</div>
-						<MenuIcon fontSize='large' />
-					</IconButton>
+						<IconButton
+							color='inherit'
+							aria-label='open drawer'
+							edge='start'
+							onClick={handleDrawerToggle}>
+							<MenuIcon fontSize='large' />
+						</IconButton>
+					</Box>
 					<Box
 						sx={{
 							width: '100%',
@@ -129,15 +153,49 @@ export const Header = () => {
 							<NavLink to={'/'}>B&H</NavLink>
 						</div>
 						<div className='flex justify-center items-center'>
+							<div className='text-xs mr-10'>
+								<Button
+									sx={{ color: 'black' }}
+									id='fade-button'
+									aria-controls={open ? 'fade-menu' : undefined}
+									aria-haspopup='true'
+									aria-expanded={open ? 'true' : undefined}
+									onClick={handleClick}>
+									OUR WORK
+								</Button>
+								<Menu
+									id='fade-menu'
+									MenuListProps={{
+										'aria-labelledby': 'fade-button',
+									}}
+									anchorEl={anchorEl}
+									open={open}
+									onClose={handleClose}
+									TransitionComponent={Fade}>
+									<MenuItem onClick={handleClose}>
+										<NavLink to='/our-work'>Residential Irrigation</NavLink>
+									</MenuItem>
+									<MenuItem onClick={handleClose}>
+										<NavLink to='/our-work'>Commercial Irrigation</NavLink>
+									</MenuItem>
+									<MenuItem onClick={handleClose}>
+										<NavLink to='/our-work'>Outdoor Irrigation</NavLink>
+									</MenuItem>
+								</Menu>
+							</div>
 							{loggedIn &&
 								loggedInNav.map((item) => (
 									<div className='text-xs mr-10'>
-										<NavLink to={item.path}>{item.name}</NavLink>
+										<Button>
+											<NavLink to={item.path}>{item.name}</NavLink>
+										</Button>
 									</div>
 								))}
 							{loggedOutNav.map((item) => (
 								<div className='text-xs mr-10'>
-									<NavLink to={item.path}>{item.name}</NavLink>
+									<Button sx={{ color: 'black' }}>
+										<NavLink to={item.path}>{item.name}</NavLink>
+									</Button>
 								</div>
 							))}
 							{!isAuth.isLoggedIn ? (
@@ -150,6 +208,7 @@ export const Header = () => {
 											'&:hover': {
 												backgroundColor: '#424242',
 											},
+                      color: 'white'
 										}}
 										component='label'>
 										SIGN IN
@@ -169,6 +228,7 @@ export const Header = () => {
 											'&:hover': {
 												backgroundColor: '#424242',
 											},
+											color: 'white',
 										}}>
 										SIGN OUT
 									</Button>

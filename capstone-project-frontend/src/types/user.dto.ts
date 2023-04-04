@@ -5,19 +5,20 @@ export interface meQuery {
 }
 export interface meQuery_me {
 	id: number;
+  created_date: string;
 	email: string;
 	password: string;
 	first_name: string;
 	last_name: string;
-  city: string;
 	phone_number: string;
 	address_line1: string;
 	address_line2: string;
 	postal_code: string;
 	province: string;
-	city: string;
 	country: string;
 	profile: string;
+  city: string;
 	is_active: number;
 	role: number;
 }
+

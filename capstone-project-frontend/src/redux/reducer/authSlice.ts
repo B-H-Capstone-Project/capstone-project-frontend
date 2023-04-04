@@ -6,8 +6,8 @@ import axios from '../../api/axios';
 import jwt_decode from 'jwt-decode';
 
 // initialize userToken from local storage
-const token = localStorage.getItem('token')
-	? localStorage.getItem('token')
+const token = sessionStorage.getItem('token')
+	? sessionStorage.getItem('token')
 	: null;
 
 export interface IToken {
@@ -23,7 +23,7 @@ interface IAuthState {
 	success: boolean; // for monitoring the registration proces
 	isLoggedIn: boolean;
 	error: string | null;
-  status: string;
+	status: string;
 }
 
 const initialState: IAuthState = {
@@ -32,78 +32,88 @@ const initialState: IAuthState = {
 	userToken: token === null ? null : jwt_decode(token), // for storing the JWT
 	error: null,
 	success: false, // for monitoring the registration process.
-  status: "idle"
+	status: 'idle',
 };
 
 interface IActionWithPayload {
-  type: string;
-  payload?: any;
-  meta?: any;
-  error?: any;
+	type: string;
+	payload?: any;
+	meta?: any;
+	error?: any;
 }
 
+//sign in authentication
 export const signIn = createAsyncThunk(
 	'auth/signin',
-	async ({ email, password }: ISignInForm, {rejectWithValue}) => {
+	async ({ email, password }: ISignInForm, { rejectWithValue }) => {
 		try {
 			const config = {
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			};
-			const response = await axios.post(
-				'/auth/signin',
-				{
-					email,
-					password,
-				},
-				config
-			);
-			localStorage.setItem('token', JSON.stringify(response.data.token));
-			return response.data;
+			return await axios
+				.post(
+					'/auth/signin',
+					{
+						email,
+						password,
+					},
+					config
+				)
+				.then((res) => {
+					if (res.data.token) {
+						sessionStorage.setItem('token', JSON.stringify(res.data.token));
+					}
+					return res.data;
+				});
 		} catch (error: any) {
-      if (!error.response) {
-        throw error
-      }
-      return  rejectWithValue(error.response.data.message);
-    }
+			if (!error.response) {
+				throw error;
+			}
+			return rejectWithValue(error.response.data.message);
+		}
 	}
 );
 
+//signin authentication
 
 export const authSlice = createSlice({
 	name: 'authentication',
 	initialState,
 	reducers: {
 		signOut: (state) => {
-			// …logout reducer
+			// ...logout reducer
 			state.userToken = null;
 			state.isLoggedIn = false;
-			localStorage.removeItem('token');
+			sessionStorage.removeItem('token');
 		},
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(signIn.pending, (state) => {
-        state.status = "pending";
+				state.status = 'pending';
 				state.loading = true;
-        state.error = null;
+				state.error = null;
 			})
-			.addCase(signIn.fulfilled, (state) => {
-        state.status = "succeeded";
+			.addCase(signIn.fulfilled, (state, action: IActionWithPayload) => {
+				state.status = 'succeeded';
 				state.isLoggedIn = true;
 				state.success = true;
+        state.loading = false;
+        state.userToken = jwt_decode(action.payload.token);
 			})
 			.addCase(signIn.rejected, (state, action: IActionWithPayload) => {
-        state.status = "failed"
-				state.error = action.error.message;
-        state.success = false;
-        state.isLoggedIn = false;
-        state.loading = false;
-        state.userToken = null;
+				state.status = 'failed';
+				state.error = action.payload;
+				state.success = false;
+				state.isLoggedIn = false;
+				state.loading = false;
+				state.userToken = null;
 			});
 	},
 });
+
 
 export const { signOut } = authSlice.actions;
 export default authSlice.reducer;

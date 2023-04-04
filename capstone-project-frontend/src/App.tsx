@@ -7,7 +7,7 @@ import { RootState } from './redux/store';
 
 function App() {
 	const isAuth = useSelector((state: RootState) => state.auth);
-	return (isAuth.isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
+  return (isAuth.isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
 }
 
 

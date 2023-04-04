@@ -1,8 +1,6 @@
 /** @format */
 
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
@@ -65,7 +63,6 @@ const clientRoutes = [
 
 //admin routes
 const adminRoutes = [
-	//   { path: "/admin", component: <AdminApp /> },
 	{ path: '/admin', component: <Dashboard /> },
 	{ path: '/admin/customers', component: <ManageCustomers /> },
 	{ path: '/admin/employees', component: <ManageEmployees /> },

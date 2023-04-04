@@ -10,6 +10,7 @@ import { SignUp } from '../pages/signup';
 import VerifyEmail from '../components/verifyEmail';
 import { ContactUs } from '../pages/contactUs';
 import { OurWork } from '../pages/our-work';
+import { ResetPassword } from '../pages/user/reset-password';
 
 export const LoggedOutRouter = () => {
 	return (
@@ -30,11 +31,15 @@ export const LoggedOutRouter = () => {
 						element={<SignIn />}
 					/>
 					<Route
+						path='/reset-password'
+						element={<ResetPassword />}
+					/>
+					<Route
 						path='/verify-email'
 						element={<VerifyEmail />}
 					/>
 					<Route
-						path='/our-work'
+						path='our-work/:id'
 						element={<OurWork />}
 					/>
 					<Route

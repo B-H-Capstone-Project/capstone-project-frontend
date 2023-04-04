@@ -9,7 +9,6 @@ export interface meQuery_me {
 	password: string;
 	first_name: string;
 	last_name: string;
-  city: string;
 	phone_number: string;
 	address_line1: string;
 	address_line2: string;

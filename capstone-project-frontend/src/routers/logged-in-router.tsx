@@ -17,7 +17,7 @@ import { Reservation } from '../pages/reservation';
 
 import Dashboard from '../admin/scenes/dashboard';
 import ManageCustomers from '../admin/scenes/customer/manage-customers';
-import Employees from '../admin/scenes/employees';
+import ManageEmployees from '../admin/scenes/employee/manage-employees';
 import Reservations from '../admin/scenes/reservations';
 import Invoices from '../admin/scenes/invoices';
 import Contacts from '../admin/scenes/contacts';
@@ -69,7 +69,7 @@ const adminRoutes = [
 	//   { path: "/admin", component: <AdminApp /> },
 	{ path: '/admin', component: <Dashboard /> },
 	{ path: '/admin/customers', component: <ManageCustomers /> },
-	{ path: '/admin/employees', component: <Employees /> },
+	{ path: '/admin/employees', component: <ManageEmployees /> },
 	{ path: '/admin/reservations', component: <Reservations /> },
 	{ path: '/admin/contacts', component: <Contacts /> },
 	{ path: '/admin/invoices', component: <Invoices /> },
@@ -106,14 +106,14 @@ export const LoggedInRouter = () => {
 								element={<NotFound />}
 							/>
 							{token?.role === 1 ||
-								(token?.role === 2 &&
+								token?.role === 2 &&
 									adminRoutes.map((route) => (
 										<Route
 											key={route.path}
 											path={`${route.path}`}
 											element={route.component}
 										/>
-									)))}
+									))}
 						</Routes>
 					</Router>
 				</ThemeProvider>

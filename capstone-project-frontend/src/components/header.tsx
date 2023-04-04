@@ -14,19 +14,17 @@ import {
 	ListItemButton,
 	ListItemText,
 	Collapse,
+	Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { RootState } from '../redux/store';
-import { useAppDispatch } from '../redux/hook';
-import { signOut } from '../redux/reducer/authSlice';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
+import { HeaderMenu } from './headerMenu';
+import { useMe } from '../hooks/useMe';
 
 //customer routes
 const loggedOutNav = [
@@ -36,24 +34,9 @@ const loggedOutNav = [
 	},
 ];
 
-//customer routes
-const loggedInNav = [
-	{
-		path: '/reservation',
-		name: 'RESERVATION',
-	},
-];
-
 export const Header = () => {
+	const { data } = useMe();
 	const [openMobieMenu, setOpenMobileMenu] = useState(false);
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const open = Boolean(anchorEl);
-	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const handleDrawerToggle = () => {
 		setMobileOpen((prevState) => !prevState);
@@ -61,7 +44,7 @@ export const Header = () => {
 	const handleClickOurWork = () => {
 		setOpenMobileMenu(!openMobieMenu);
 	};
-	const dispatch = useAppDispatch();
+
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const loggedIn = isAuth.isLoggedIn;
 
@@ -76,10 +59,12 @@ export const Header = () => {
 						display: 'flex',
 						flexDirection: 'column',
 					}}>
-					<ListItemButton sx={{ textAlign: 'center' }}>
+					<ListItemButton sx={{ width: '100%', textAlign: 'left' }}>
 						<NavLink to='/contact-us'>CONTACT US</NavLink>
 					</ListItemButton>
-					<ListItemButton onClick={handleClickOurWork}>
+					<ListItemButton
+						onClick={handleClickOurWork}
+						sx={{ width: '100%', textAlign: 'left' }}>
 						<ListItemText primary='OUR WORK' />
 						{openMobieMenu ? <ExpandLess /> : <ExpandMore />}
 					</ListItemButton>
@@ -87,25 +72,25 @@ export const Header = () => {
 						in={openMobieMenu}
 						timeout='auto'>
 						<List
-							component='div'
+							component='ul'
 							disablePadding>
 							<ListItemButton>
-								<ListItemText primary='Residential Irrigation' />
+								<Link to='/our-work/residential-irrigation'>
+									<ListItemText primary='Residential Irrigation' />
+								</Link>
 							</ListItemButton>
 							<ListItemButton>
-								<ListItemText primary='Commercial Irrigation' />
+								<Link to='/our-work/commercial-irrigation'>
+									<ListItemText primary='Commercial Irrigation' />
+								</Link>
 							</ListItemButton>
 							<ListItemButton>
-								<ListItemText primary='Outdoor Irrigation' />
+								<Link to='/our-work/outdoor-irrigation'>
+									<ListItemText primary='Outdoor Irrigation' />
+								</Link>
 							</ListItemButton>
 						</List>
 					</Collapse>
-					{loggedIn &&
-						loggedInNav.map((item) => (
-							<ListItemButton>
-								<NavLink to={item.path}>{item.name}</NavLink>
-							</ListItemButton>
-						))}
 				</ListItem>
 			</List>
 		</Box>
@@ -129,11 +114,10 @@ export const Header = () => {
 								sm: 'none',
 								xs: 'flex',
 								width: '100%',
-								justifyContent: 'space-between',
 							},
 						}}>
-						<div className='text-3xl font-bold mt-2'>
-							<NavLink to={'/'}>B&H</NavLink>
+						<div className='text-3xl font-bold mt-2 mr-2'>
+							<Link to={'/'}>B&H</Link>
 						</div>
 						<IconButton
 							color='inherit'
@@ -147,95 +131,69 @@ export const Header = () => {
 						sx={{
 							width: '100%',
 							display: { xs: 'none', sm: 'flex' },
-							justifyContent: 'space-between',
 						}}>
-						<div className='text-3xl font-bold'>
-							<NavLink to={'/'}>B&H</NavLink>
+						<div className='text-3xl font-bold mr-10'>
+							<Link to={'/'}>B&H</Link>
 						</div>
 						<div className='flex justify-center items-center'>
-							<div className='text-xs mr-10'>
-								<Button
-									sx={{ color: 'black' }}
-									id='fade-button'
-									aria-controls={open ? 'fade-menu' : undefined}
-									aria-haspopup='true'
-									aria-expanded={open ? 'true' : undefined}
-									onClick={handleClick}>
-									OUR WORK
-								</Button>
-								<Menu
-									id='fade-menu'
-									MenuListProps={{
-										'aria-labelledby': 'fade-button',
-									}}
-									anchorEl={anchorEl}
-									open={open}
-									onClose={handleClose}
-									TransitionComponent={Fade}>
-									<MenuItem onClick={handleClose}>
-										<NavLink to='/our-work'>Residential Irrigation</NavLink>
-									</MenuItem>
-									<MenuItem onClick={handleClose}>
-										<NavLink to='/our-work'>Commercial Irrigation</NavLink>
-									</MenuItem>
-									<MenuItem onClick={handleClose}>
-										<NavLink to='/our-work'>Outdoor Irrigation</NavLink>
-									</MenuItem>
-								</Menu>
-							</div>
-							{loggedIn &&
-								loggedInNav.map((item) => (
-									<div className='text-xs mr-10'>
-										<Button>
-											<NavLink to={item.path}>{item.name}</NavLink>
-										</Button>
-									</div>
-								))}
+							<HeaderMenu
+								title='OUR WORK'
+								list={[
+									{
+										name: 'Residential Irrigation',
+										path: '/our-work/residential-irrigation',
+									},
+									{
+										name: 'Commercial Irrigation',
+										path: '/our-work/commercial-irrigation',
+									},
+									{
+										name: 'Outdoor Irrigation',
+										path: '/our-work/outdoor-irrigation',
+									},
+								]}
+							/>
 							{loggedOutNav.map((item) => (
-								<div className='text-xs mr-10'>
+								<div className='text-xs mr-5'>
 									<Button sx={{ color: 'black' }}>
-										<NavLink to={item.path}>{item.name}</NavLink>
+										<Link to={item.path}>{item.name}</Link>
 									</Button>
 								</div>
 							))}
-							{!isAuth.isLoggedIn ? (
-								<NavLink to='signin'>
-									<Button
-										variant='contained'
-										size='large'
-										sx={{
-											bgcolor: 'black',
-											'&:hover': {
-												backgroundColor: '#424242',
-											},
-                      color: 'white'
-										}}
-										component='label'>
-										SIGN IN
-									</Button>
-								</NavLink>
-							) : (
-								<NavLink to='/'>
-									<Button
-										onClick={() => dispatch(signOut())}
-										variant='contained'
-										size='large'
-										component='label'
-										sx={{
-											fontWeight: '800',
-											fontSize: '0.9rem',
-											bgcolor: 'black',
-											'&:hover': {
-												backgroundColor: '#424242',
-											},
-											color: 'white',
-										}}>
-										SIGN OUT
-									</Button>
-								</NavLink>
-							)}
 						</div>
 					</Box>
+					{!isAuth.isLoggedIn ? (
+						<Link to='signin'>
+							<Button
+								variant='contained'
+								size='large'
+								sx={{
+									backgroundColor: 'black',
+									'&:hover': {
+										backgroundColor: '#424242',
+									},
+								}}
+								component='label'>
+								SIGNIN
+							</Button>
+						</Link>
+					) : (
+						<>
+							<HeaderMenu
+								title='user'
+								list={[
+									{
+										name: 'Edit Profile',
+										path: '/edit-profile',
+									},
+									{
+										name: 'Reservation',
+										path: '/reservation',
+									},
+								]}
+							/>
+						</>
+					)}
 				</Toolbar>
 			</AppBar>
 			<Box component='nav'>
@@ -246,11 +204,16 @@ export const Header = () => {
 					ModalProps={{
 						keepMounted: true, // Better open performance on mobile.
 					}}
-					sx={{
-						display: { xs: 'block', sm: 'none' },
-						'& .MuiDrawer-paper': {
-							boxSizing: 'border-box',
-							width: '90%',
+					PaperProps={{
+						sx: {
+							backgroundColor: '#000',
+							opacity: '0.8',
+							color: '#fff',
+							display: { xs: 'block', sm: 'none' },
+							'& .MuiDrawer-paper': {
+								boxSizing: 'border-box',
+								width: '60%',
+							},
 						},
 					}}>
 					{drawer}

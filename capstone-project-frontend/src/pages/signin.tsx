@@ -9,7 +9,7 @@ import { IToken, signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 import { FormError } from '../components/form-error';
-import { Header } from '../components/header';
+import bcrypt from 'bcryptjs';
 import jwtDecode from 'jwt-decode';
 
 export interface ISignInForm {
@@ -26,7 +26,8 @@ export const SignIn = () => {
 	} = useForm<ISignInForm>({
 		mode: 'onBlur',
 	});
-
+	// Generate a salt with 10 rounds
+	const salt = bcrypt.genSaltSync(10);
 	const error = useSelector((state: RootState) => state.auth.error);
 	const token = useSelector((state: RootState) => state.auth.userToken);
 	const auth = useSelector((state: RootState) => state.auth);
@@ -36,25 +37,27 @@ export const SignIn = () => {
 	const onSubmit = async () => {
 		//sign in
 		const { email, password } = getValues();
+		// Hash the password using the salt
+		//const hashedPassword = bcrypt.hashSync(password, salt);
 		const result = await dispatch(signIn({ email: email, password: password }));
 		if (!result.error) {
 			const decodedToken: IToken = jwtDecode(result.payload.token);
-			console.log(decodedToken);
 			if (decodedToken.role === 3) {
 				navigate('/reservation');
 				// eslint-disable-next-line no-restricted-globals
 				location.reload();
 			}
 			if (decodedToken.role === 1 || decodedToken.role === 2) {
-				navigate('/admin');
 				// eslint-disable-next-line no-restricted-globals
 				location.reload();
+				navigate('/admin');
 			}
 		}
 	};
-
+	//google
 	const handleCallbackResponse = (res: any) => {
 		sessionStorage.setItem('token', res.credential);
+		console.log(res);
 		navigate('/');
 		// eslint-disable-next-line no-restricted-globals
 		location.reload();
@@ -129,12 +132,15 @@ export const SignIn = () => {
 										<FormError errorMessage='You need to sign in to make a reservation' />
 									)}
 								</div>
-								<div className='w-full p-5 flex items-center justify-center'>
+								<div className='w-full p-5 flex items-center justify-center flex-col'>
 									<button
 										type='submit'
-										className='inline-block px-10 py-3 mb-4 bg-lime-500 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-lime-700 hover:shadow-lg focus:bg-lime-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'>
+										className='inline-block px-10 py-3 bg-lime-500 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-lime-700 hover:shadow-lg focus:bg-lime-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'>
 										Let's get started
 									</button>
+									<Link to='/reset-password' className='text-sm font-light text-gray-500 dark:text-gray-400 mt-5 mb-5'>
+										Forgot your password?
+									</Link>
 								</div>
 								<div className='w-full flex items-center justify-center'>
 									<div id='signinDiv'></div>

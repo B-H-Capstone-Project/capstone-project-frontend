@@ -13,8 +13,7 @@ import { RootState } from '../redux/store';
 import { Helmet } from 'react-helmet-async';
 import { IReservation, IReservationInput } from '../types/reservation.dto';
 import { useMe } from '../hooks/useMe';
-
-
+import { useNavigate } from 'react-router-dom';
 
 interface IReservatioForm extends IReservation {
 	residential: string;
@@ -24,11 +23,12 @@ interface IReservatioForm extends IReservation {
 }
 
 function ReservationForm() {
-  let moment = require("moment"); // require
+	const navigate = useNavigate();
+	let moment = require('moment'); // require
 	//current day
 	const currentDay = dayjs().format();
 	//days
-	const [day, setDay] = useState<Dayjs | null>(dayjs(('2022-04-17T15:30')));
+	const [day, setDay] = useState<Dayjs | null>(dayjs(currentDay));
 	const queryClient = useQueryClient();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const userId = isAuth.userToken?.id;
@@ -50,7 +50,7 @@ function ReservationForm() {
 		{
 			onSuccess: (data) => {
 				const message = 'success';
-				alert(message);
+				navigate('/reservation');
 			},
 			onError: () => {
 				alert('there was an error');
@@ -60,8 +60,9 @@ function ReservationForm() {
 			},
 		}
 	);
-  console.log(day?.toString());
+
 	const onSubmit = async (data: IReservation) => {
+    console.log(data);
 		let serviceType = '';
 		Object.entries(data).filter(([key, value]) => {
 			if (value === 'on') {
@@ -78,34 +79,34 @@ function ReservationForm() {
 			province: data.province,
 			country: data.country,
 			city: data.city,
-      date: moment(day?.toISOString()).format("YYYY-MM-DD h:mm:ss"),
+			date: moment(day?.toISOString()).format('YYYY-MM-DD hh:mm:ss'),
 		};
-		const newReservation = {
+ 		const newReservation = {
 			...newReservationData,
 		};
-		mutate(newReservation);
+		mutate(newReservation); 
 	};
 
 	const handleSetValue = () => {
-    let checkBox = document.getElementById(
-      "currentAddress"
-    ) as HTMLInputElement;
-    if (checkBox.checked) {
-      setValue("address_line1", data ? data?.user.address_line1 : "");
-      setValue("address_line2", data ? data?.user.address_line2 : "");
-      setValue("postal_code", data ? data?.user.postal_code : "");
-      setValue("city", data ? data?.user.city : "");
-      setValue("province", data ? data?.user.province : "");
-      setValue("country", data ? data?.user.country : "");
-    } else {
-      setValue("address_line1", "");
-      setValue("address_line2", "");
-      setValue("postal_code", "");
-      setValue("city", "");
-      setValue("province", "");
-      setValue("country", "");
-    }
-  };
+		let checkBox = document.getElementById(
+			'currentAddress'
+		) as HTMLInputElement;
+		if (checkBox.checked) {
+			setValue('address_line1', data ? data?.user.address_line1 : '');
+			setValue('address_line2', data ? data?.user.address_line2 : '');
+			setValue('postal_code', data ? data?.user.postal_code : '');
+			setValue('city', data ? data?.user.city : '');
+			setValue('province', data ? data?.user.province : '');
+			setValue('country', data ? data?.user.country : '');
+		} else {
+			setValue('address_line1', '');
+			setValue('address_line2', '');
+			setValue('postal_code', '');
+			setValue('city', '');
+			setValue('province', '');
+			setValue('country', '');
+		}
+	};
 
 	return (
 		<>
@@ -129,7 +130,7 @@ function ReservationForm() {
 							<input
 								type='text'
 								id='address_line1'
-								{...register('address_line1')}
+								{...register('address_line1', {required: true})}
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>
@@ -154,7 +155,7 @@ function ReservationForm() {
 								<input
 									type='text'
 									id='postal_code'
-									{...register('postal_code')}
+									{...register('postal_code', {required: true})}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>
@@ -165,7 +166,7 @@ function ReservationForm() {
 								<input
 									type='text'
 									id='city'
-									{...register('city')}
+									{...register('city', {required: true})}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>
@@ -192,7 +193,7 @@ function ReservationForm() {
 								{/* <select value={value} onChange={handleChange}> */}
 								<select
 									id='province'
-									{...register('province')}
+									{...register('province', {required: true})}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'>
 									<option value='AB'>AB</option>
 									<option value='BC'>BC</option>
@@ -216,7 +217,7 @@ function ReservationForm() {
 								<input
 									type='text'
 									id='country'
-									{...register('country')}
+									{...register('country', {required: true})}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>

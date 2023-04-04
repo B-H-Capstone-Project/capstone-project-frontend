@@ -21,7 +21,7 @@ export const ReservationTableRow: React.FC<IReservationTableRow> = ({
 	is_confirmed,
 }) => {
 	const [open, setOpen] = React.useState(false);
-	console.log(date);
+  console.log(date + "-------------");
 	return (
 		<React.Fragment>
 			<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -49,7 +49,7 @@ export const ReservationTableRow: React.FC<IReservationTableRow> = ({
 							.split(':')
 							.map((value, index) => {
 								if (index === 0) {
-									return +value / 12 > 1 ? "AM "+(+value % 12)+ ' : ' : "PM "+(+value % 12)+ ' : ';
+									return +value+6 / 12 > 1 ? "PM "+((+value+6) % 12)+ ' : ' : "AM "+((+value+6) % 12)+ ' : ';
 								}
 								if (index === 1) {
 									return value;
@@ -57,9 +57,10 @@ export const ReservationTableRow: React.FC<IReservationTableRow> = ({
 							})}
         </TableCell>
 				<TableCell align='left'>{type}</TableCell>
-				<TableCell align='left'>{description}</TableCell>
 				<TableCell align='left'>
-					{is_confirmed === 2 ? 'Confirmed' : 'Pending'}
+					{is_confirmed === 1 && 'Pending'}
+					{is_confirmed === 2 && 'Confirmed'}
+					{is_confirmed === 3 && 'Done'}
 				</TableCell>
 			</TableRow>
 			{/** open detail  */}

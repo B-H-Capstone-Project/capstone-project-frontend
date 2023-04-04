@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useMe } from '../hooks/useMe';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
@@ -82,42 +81,36 @@ const adminRoutes = [
 ];
 
 export const LoggedInRouter = () => {
-	const [theme, colorMode]: any = useMode();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const token = isAuth.userToken;
 
 	return (
-		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
-			<ColorModeContext.Provider value={colorMode}>
-				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<Router>
-						<Header />
-						<Routes>
-							{clientRoutes.map((route) => (
+		<div>
+			<Router>
+				<Header />
+				<Routes>
+					{clientRoutes.map((route) => (
+						<Route
+							key={route.path}
+							path={`${route.path}`}
+							element={route.component}
+						/>
+					))}
+					<Route
+						path='*'
+						element={<NotFound />}
+					/>
+					{token?.role === 1 ||
+						(token?.role === 2 &&
+							adminRoutes.map((route) => (
 								<Route
 									key={route.path}
 									path={`${route.path}`}
 									element={route.component}
 								/>
-							))}
-							<Route
-								path='*'
-								element={<NotFound />}
-							/>
-							{token?.role === 1 ||
-								(token?.role === 2 &&
-									adminRoutes.map((route) => (
-										<Route
-											key={route.path}
-											path={`${route.path}`}
-											element={route.component}
-										/>
-									)))}
-						</Routes>
-					</Router>
-				</ThemeProvider>
-			</ColorModeContext.Provider>
+							)))}
+				</Routes>
+			</Router>
 		</div>
 	);
 };

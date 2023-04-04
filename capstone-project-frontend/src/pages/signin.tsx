@@ -31,7 +31,6 @@ export const SignIn = () => {
 	const salt = bcrypt.genSaltSync(10);
 	const error = useSelector((state: RootState) => state.auth.error);
 	const token = useSelector((state: RootState) => state.auth.userToken);
-	const auth = useSelector((state: RootState) => state.auth);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
@@ -40,7 +39,7 @@ export const SignIn = () => {
 		const { email, password } = getValues();
 		// Hash the password using the salt
 		//const hashedPassword = bcrypt.hashSync(password, salt);
-		const result = await dispatch(signIn({ email: email, password: password }));
+		const result = await dispatch(signIn({ email: email, password: password }));∂ß
 		if (!result.error) {
 			const decodedToken: IToken = jwtDecode(result.payload.token);
 			if (decodedToken.role === 3) {

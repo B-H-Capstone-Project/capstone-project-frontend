@@ -4,7 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 
-// modal
+//modal
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -19,7 +19,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
-// update
+//update
 import { useMutation, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
 
@@ -82,10 +82,10 @@ const modalStyle = {
   p: 4,
 };
 
-export default function Customer({ customerprop }: any) {
+export default function Employee({ employeeprop }: any) {
   const classes = useStyles();
   const queryClient = useQueryClient();
-  const customerId = customerprop.id;
+  const employeeId = employeeprop.id;
 
   const {
     register,
@@ -95,28 +95,28 @@ export default function Customer({ customerprop }: any) {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      first_name: customerprop.first_name,
-      last_name: customerprop.last_name,
-      phone_number: customerprop.phone_number,
-      password: customerprop.password,
-      confirm_password: customerprop.password,
-      address_line1: customerprop.address_line1,
-      address_line2: customerprop.address_line2,
-      postal_code: customerprop.postal_code,
-      city: customerprop.city,
-      province: customerprop.province,
-      country: customerprop.country,
-      role: customerprop.role,
-      is_active: customerprop.is_active,
+      first_name: employeeprop.first_name,
+      last_name: employeeprop.last_name,
+      phone_number: employeeprop.phone_number,
+      password: employeeprop.password,
+      confirm_password: employeeprop.password,
+      address_line1: employeeprop.address_line1,
+      address_line2: employeeprop.address_line2,
+      postal_code: employeeprop.postal_code,
+      city: employeeprop.city,
+      province: employeeprop.province,
+      country: employeeprop.country,
+      role: employeeprop.role,
+      is_active: employeeprop.is_active,
     },
   });
 
   const { isLoading, mutate } = useMutation(
-    async (updateCustomer) => {
+    async (updateEmployee) => {
       return (
         await axios.put(
-          `http://localhost:8080/user/${customerId}`,
-          updateCustomer
+          `http://localhost:8080/user/${employeeId}`,
+          updateEmployee
         )
       ).data;
     },
@@ -124,7 +124,7 @@ export default function Customer({ customerprop }: any) {
       onSuccess: (data) => {
         const message = "success";
         alert(message);
-        window.location.replace("/admin/customers");
+        window.location.replace("/admin/employees");
       },
       onError: () => {
         alert("there was an error");
@@ -137,10 +137,10 @@ export default function Customer({ customerprop }: any) {
 
   const onSubmit = (data: any) => {
     console.log(data);
-    const updateCustomer: any = {
+    const updateEmployee: any = {
       ...data,
     };
-    mutate(updateCustomer);
+    mutate(updateEmployee);
   };
 
   //modal
@@ -153,13 +153,13 @@ export default function Customer({ customerprop }: any) {
     console.log(e);
     e.preventDefault();
     try {
-      axios.delete(`http://localhost:8080/user/${customerprop.id}`, {
-        data: { userId: customerprop.id },
+      axios.delete(`http://localhost:8080/user/${employeeprop.id}`, {
+        data: { userId: employeeprop.id },
       });
       const message = "success";
       alert(message);
       handleClose();
-      window.location.replace("/admin/customers");
+      window.location.replace("/admin/employees");
     } catch (err) {
       console.log("err : " + err);
     }
@@ -181,7 +181,7 @@ export default function Customer({ customerprop }: any) {
               }}
             >
               <Box sx={{ width: "14px", border: "none" }}>
-                {customerprop.id}
+                {employeeprop.id}
               </Box>
             </TableCell>
             <TableCell
@@ -207,13 +207,13 @@ export default function Customer({ customerprop }: any) {
               >
                 <img
                   className={classes.img}
-                  src={customerprop.profile}
-                  alt={customerprop.first_name}
+                  src={employeeprop.profile}
+                  alt={employeeprop.first_name}
                 />
               </Box>
             </TableCell>
             <TableCell sx={{ width: "200px", border: "none" }}>
-              {customerprop.email}
+              {employeeprop.email}
             </TableCell>
             <TableCell
               sx={{
@@ -223,7 +223,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.first_name} {customerprop.last_name}
+              {employeeprop.first_name} {employeeprop.last_name}
             </TableCell>
             <TableCell
               sx={{
@@ -233,7 +233,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.phone_number}
+              {employeeprop.phone_number}
             </TableCell>
             <TableCell
               sx={{
@@ -243,9 +243,9 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.address_line1}
+              {employeeprop.address_line1}
               <br></br>
-              {customerprop.address_line2}
+              {employeeprop.address_line2}
             </TableCell>
             <TableCell
               sx={{
@@ -255,7 +255,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.city}
+              {employeeprop.city}
             </TableCell>
             <TableCell
               sx={{
@@ -265,7 +265,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.province}
+              {employeeprop.province}
             </TableCell>
             <TableCell
               sx={{
@@ -275,7 +275,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.postal_code}
+              {employeeprop.postal_code}
             </TableCell>
             <TableCell
               sx={{
@@ -285,7 +285,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.country}
+              {employeeprop.country}
             </TableCell>
             <TableCell
               sx={{
@@ -295,7 +295,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.role == 3 && "Customer"}
+              {employeeprop.role == 1 ? "Admin" : "Employee"}
             </TableCell>
             <TableCell
               sx={{
@@ -305,7 +305,7 @@ export default function Customer({ customerprop }: any) {
                 border: "none",
               }}
             >
-              {customerprop.is_active == true ? "Active" : "In Active"}
+              {employeeprop.is_active == true ? "Active" : "In Active"}
             </TableCell>
             <TableCell
               sx={{
@@ -366,7 +366,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "617px",
               }}
-              defaultValue={customerprop.email}
+              defaultValue={employeeprop.email}
               InputProps={{
                 readOnly: true,
               }}
@@ -400,7 +400,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.first_name}
+              placeholder={employeeprop.first_name}
               {...register("first_name")}
             />
             <TextField
@@ -411,7 +411,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.last_name}
+              placeholder={employeeprop.last_name}
               {...register("last_name")}
             />
             <TextField
@@ -423,7 +423,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "617px",
               }}
-              placeholder={customerprop.phone_number}
+              placeholder={employeeprop.phone_number}
               {...register("phone_number")}
             />
             <TextField
@@ -434,7 +434,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.address_line1}
+              placeholder={employeeprop.address_line1}
               {...register("address_line1")}
             />
             <TextField
@@ -445,7 +445,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.address_line2}
+              placeholder={employeeprop.address_line2}
               {...register("address_line2")}
             />
             <TextField
@@ -456,7 +456,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.city}
+              placeholder={employeeprop.city}
               {...register("city")}
             />
             <TextField
@@ -467,7 +467,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.province}
+              placeholder={employeeprop.province}
               {...register("province")}
             />
             <TextField
@@ -478,7 +478,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.postal_code}
+              placeholder={employeeprop.postal_code}
               {...register("postal_code")}
             />
             <TextField
@@ -489,12 +489,12 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.country}
+              placeholder={employeeprop.country}
               {...register("country")}
             />
             <Select
               required
-              placeholder={customerprop.role}
+              placeholder={employeeprop.role}
               sx={{
                 margin: "0.5rem",
                 width: "300px",
@@ -513,7 +513,7 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.is_active}
+              placeholder={employeeprop.is_active}
               {...register("is_active")}
             >
               <MenuItem value={1}>Active</MenuItem>

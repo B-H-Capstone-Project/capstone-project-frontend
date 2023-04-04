@@ -22,6 +22,7 @@
     "@mui/icons-material": "^5.11.9",
     "@mui/lab": "^5.0.0-alpha.124",
     "@mui/material": "^5.11.9",
+    "@mui/styles": "^5.11.12",
     "@mui/x-data-grid": "^5.17.2",
     "@mui/x-data-grid-generator": "^5.17.25",
     "@mui/x-data-grid-pro": "^5.17.25",
@@ -32,6 +33,7 @@
     "@nivo/geo": "^0.80.0",
     "@nivo/line": "^0.79.1",
     "@nivo/pie": "^0.80.0",
+    "@react-google-maps/api": "^2.18.1",
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -104,6 +106,8 @@
     ]
   },
   "devDependencies": {
+    "@types/google.maps": "^3.52.4",
+    "@types/googlemaps": "^3.43.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/node": "^18.14.4",
     "@types/react-router-hash-link": "^2.4.5",

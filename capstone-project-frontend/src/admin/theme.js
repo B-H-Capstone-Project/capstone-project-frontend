@@ -6,6 +6,7 @@ export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
         grey: {
+          0: "#000000",
           100: "#e0e0e0",
           200: "#c2c2c2",
           300: "#a3a3a3",

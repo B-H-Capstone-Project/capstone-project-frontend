@@ -3,7 +3,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/hook';
 import { IToken, signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
@@ -18,6 +18,7 @@ export interface ISignInForm {
 }
 
 export const SignIn = () => {
+	const token = useSelector((state: RootState) => state.auth.userToken);
 	const {
 		register,
 		getValues,
@@ -71,10 +72,10 @@ export const SignIn = () => {
 			callback: handleCallbackResponse,
 		});
 
-		google.accounts.id.renderButton(document.getElementById('signinDiv')!, {
-			theme: 'outline',
-			size: 'large',
-		});
+		// google.accounts.id.renderButton(document.getElementById('signinDiv')!, {
+		// 	theme: 'outline',
+		// 	size: 'large',
+		// });
 
 		google.accounts.id.prompt();
 	}, []);

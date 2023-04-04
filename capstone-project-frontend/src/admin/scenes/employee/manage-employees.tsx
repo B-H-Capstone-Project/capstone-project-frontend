@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Customers from "./customers";
+import Employees from "./employees";
 import Header from "../../components/Header";
 import AdminSidebar from "../global/admin-sidebar";
 import AdminHeader from "../global/admin-header";
@@ -8,33 +8,33 @@ import AdminHeader from "../global/admin-header";
 //modal
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CustomerModal from "./create-customer-modal";
+import EmployeeModal from "./create-employee-modal";
 
-const ManageCustomers = () => {
-  const [customers, setCustomers] = useState([]);
+const ManageEmployees = () => {
+  const [employees, setEmployees] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    const fetchAllCustomers = async () => {
+    const fetchAllEmployees = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/users/customer");
-        setCustomers(res.data.users);
+        const res = await axios.get("http://localhost:8080/users/employee");
+        setEmployees(res.data.users);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchAllCustomers();
+    fetchAllEmployees();
   }, []);
 
   return (
     <>
-      <Box sx={{ display: "flex", width: "100%"}}>
+      <Box sx={{ display: "flex", width: "100%" }}>
         <AdminSidebar />
-        <Box sx={{ display: "flex", flexDirection: "column"}}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <AdminHeader />
-          <Box sx={{ margin: "20px"}}>
+          <Box sx={{ margin: "20px" }}>
             <Box
               sx={{
                 display: "flex",
@@ -43,14 +43,13 @@ const ManageCustomers = () => {
                 gap: "30vw",
               }}
             >
-              <Header title="Manage Customers" subtitle="" />
+              <Header title="Manage Employees" subtitle="" />
               <Box sx={{ display: "flex" }}>
                 <Button
                   onClick={handleOpen}
                   variant="contained"
                   size="large"
                   sx={{
-                    marginRight: "5px",
                     bgcolor: "black",
                     "&:hover": {
                       backgroundColor: "#424242",
@@ -63,13 +62,14 @@ const ManageCustomers = () => {
               </Box>
             </Box>
             <Box sx={{ width: "1250px" }}>
-              <Customers customers={customers} />
+              <Employees employees={employees} />
             </Box>
           </Box>
-          <CustomerModal open={open} setOpen={setOpen} onClose={handleClose} />
+          <EmployeeModal open={open} setOpen={setOpen} onClose={handleClose} />
         </Box>
       </Box>
     </>
   );
 };
-export default ManageCustomers;
+
+export default ManageEmployees;

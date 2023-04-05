@@ -1,15 +1,14 @@
-/** @format */
-
 import React from 'react';
 import { LoggedInRouter } from './routers/logged-in-router';
 import { LoggedOutRouter } from './routers/logged-out-router';
-import { LOCAL_STORAGE_TOKEN } from  '../src/constant'
+import { useSelector } from 'react-redux';
+import { RootState } from './redux/store';
+
 
 function App() {
-	const token = localStorage.getItem('token');
-  const loggedIn = Boolean(token);
-  console.log(loggedIn);
-	return loggedIn?  <LoggedInRouter /> : <LoggedOutRouter />;
+	const isAuth = useSelector((state: RootState) => state.auth);
+  return (isAuth.isLoggedIn? <LoggedInRouter /> : <LoggedOutRouter />);
 }
+
 
 export default App;

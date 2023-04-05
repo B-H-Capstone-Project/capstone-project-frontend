@@ -1,8 +1,6 @@
 {
 	"compilerOptions": {
-		"types": [
-      "node"
-    ],
+		"types": ["node", "google-one-tap", "google.accounts"],
 		"target": "es5",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
@@ -17,7 +15,7 @@
 		"resolveJsonModule": true,
 		"isolatedModules": false,
 		"noEmit": true,
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
 	},
-	"include": ["src", "tailwind.config.ts"]
+	"include": ["src", "tailwind.config.ts", "index.d.ts"]
 }

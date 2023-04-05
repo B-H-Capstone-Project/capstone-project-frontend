@@ -52,6 +52,7 @@ export const signIn = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 			};
+      console.log(password);
 			return await axios
 				.post(
 					'/auth/signin',

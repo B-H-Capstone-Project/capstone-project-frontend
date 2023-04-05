@@ -1,46 +1,126 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { mockTransactions } from "../data/mockData";
+
+// Icon
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+
+// Component
 import Header from "../components/Header";
 import LineChart from "../components/LineChart";
-import GeographyChart from "../components/GeographyChart";
-import BarChart from "../components/BarChart";
 import StatBox from "../components/StatBox";
-import ProgressCircle from "../components/ProgressCircle";
 import AdminSidebar from "./global/admin-sidebar";
 import AdminHeader from "./global/admin-header";
 
-const Dashboard:any = () => {
-  const theme:any = useTheme();
-  const colors:any = tokens(theme.palette.mode);
+// Google Maps
+import Map from "../components/Map";
+import { useJsApiLoader } from "@react-google-maps/api";
 
-  return (
-    <Box display="flex">
+const Dashboard: any = () => {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
+  });
+
+
+  const theme: any = useTheme();
+  const colors: any = tokens(theme.palette.mode);
+
+  const [employees, setEmployees] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [reservations, setReservations] = useState([]);
+  const [pendingReservations, setPendingReservations] = useState([]);
+
+  // %
+  const [employeesPercentage, setEmployeesPercentage] = useState([]);
+  const [customersPercentage, setCustomersPercentage] = useState([]);
+  const [reservationsPercentage, setReservationsPercentage] = useState([]);
+  const [pendingReservationsPercentage, setPendingReservationsPercentage] =
+    useState([]);
+
+  const [employeeCount, setEmployeeCount] = useState(0);
+  const [customerCount, setCustomerCount] = useState(0);
+  const [reservationCount, setReservationCount] = useState(0);
+  const [pendingReservationCount, setPendingReservationCount] = useState(0);
+
+  useEffect(() => {
+    const fetchNewEmployees = async () => {
+      try {
+        // New Employees
+        const resEmployee = await axios.get(
+          "http://localhost:8080/users/newemployee"
+        );
+        setEmployees(resEmployee.data.users);
+        const employeeCount = resEmployee.data.users.length;
+        setEmployeeCount(employeeCount);
+        // % New Employees
+        const resEmployeesPercentage = await axios.get(
+          "http://localhost:8080/users/newemployee/percentage"
+        );
+        setEmployeesPercentage(resEmployeesPercentage.data.employeesPercentage);
+
+        // New Customers
+        const resCustomer = await axios.get(
+          "http://localhost:8080/users/newcustomer"
+        );
+        setCustomers(resCustomer.data.users);
+        const customerCount = resCustomer.data.users.length;
+        setCustomerCount(customerCount);
+        // % New Customers
+        const resCustomersPercentage = await axios.get(
+          "http://localhost:8080/users/newcustomer/percentage"
+        );
+        setCustomersPercentage(resCustomersPercentage.data.customersPercentage);
+
+        // New Reservations
+        const resReservation = await axios.get(
+          "http://localhost:8080/newreservations"
+        );
+        setReservations(resCustomer.data.reservations);
+        const reservationCount = resReservation.data.reservations.length;
+        setReservationCount(reservationCount);
+        // % New Reservation
+        const resReservationPercentage = await axios.get(
+          "http://localhost:8080/newreservations/percentage"
+        );
+        setReservationsPercentage(
+          resReservationPercentage.data.reservationPercentage
+        );
+
+        // Pending Reservations
+        const resPendingReservation = await axios.get(
+          "http://localhost:8080/newpendingreservations"
+        );
+        setPendingReservations(resPendingReservation.data.reservations);
+        const pendingReservationCount =
+          resPendingReservation.data.reservations.length;
+        setPendingReservationCount(pendingReservationCount);
+        // % Pending Reservations
+        const resPendingReservationPercentage = await axios.get(
+          "http://localhost:8080/newpendingreservations/percentage"
+        );
+        setPendingReservationsPercentage(
+          resPendingReservationPercentage.data.reservationPercentage
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchNewEmployees();
+  }, []);
+
+  return isLoaded? (
+    <Box display="flex" height="100%">
       <AdminSidebar />
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" width="100%" height="100%">
         <AdminHeader />
         <Box m="20px" className="content">
-          <Box display="flex" >
-            <Header title="Today's" subtitle="Summary" />
-            <Box>
-              <Button
-                sx={{
-                  backgroundColor: colors.blueAccent[700],
-                  color: colors.grey[100],
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  padding: "10px 20px",
-                }}
-              >
-                <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-                Download Reports
-              </Button>
-            </Box>
+          <Box display="flex">
+            <Header title="Weekly" subtitle="Report" />
           </Box>
 
           {/* GRID & CHARTS */}
@@ -48,59 +128,21 @@ const Dashboard:any = () => {
             display="grid"
             gridTemplateColumns="repeat(12, 1fr)"
             gridAutoRows="140px"
-            gap="20px"
+            gap="10px"
+            height="100%"
           >
-            {/* ROW 1 */}
+            {/* ROW 1 - New Datas StatBox */}
             <Box
               gridColumn="span 3"
-              // backgroundColor={colors.primary[400]}
+              // backgroundColor="white"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
               <StatBox
-                title="12,361"
-                subtitle="Emails Sent"
-                progress="0.75"
-                increase="+14%"
-                icon={
-                  <EmailIcon
-                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                  />
-                }
-              />
-            </Box>
-            <Box
-              gridColumn="span 3"
-              // backgroundColor={colors.primary[400]}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <StatBox
-                title="431,225"
-                subtitle="Sales Obtained"
-                progress="0.50"
-                increase="+21%"
-                icon={
-                  <PointOfSaleIcon
-                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                  />
-                }
-              />
-            </Box>
-            <Box
-              gridColumn="span 3"
-              // backgroundColor={colors.primary[400]}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <StatBox
-                title="32,441"
-                subtitle="New Clients"
-                progress="0.30"
-                increase="+5%"
+                title={employeeCount}
+                subtitle="New Employees"
+                increase={`${employeesPercentage} from last week`}
                 icon={
                   <PersonAddIcon
                     sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -108,6 +150,7 @@ const Dashboard:any = () => {
                 }
               />
             </Box>
+
             <Box
               gridColumn="span 3"
               // backgroundColor={colors.primary[400]}
@@ -116,12 +159,49 @@ const Dashboard:any = () => {
               justifyContent="center"
             >
               <StatBox
-                title="1,325,134"
-                subtitle="Traffic Received"
-                progress="0.80"
-                increase="+43%"
+                title={customerCount}
+                subtitle="New Customers"
+                increase={`${customersPercentage} from last week`}
                 icon={
-                  <TrafficIcon
+                  <PersonAddIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              />
+            </Box>
+
+            <Box
+              gridColumn="span 3"
+              // backgroundColor={colors.primary[400]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <StatBox
+                title={reservationCount}
+                subtitle="New Reservations"
+                increase={`${reservationsPercentage} from last week`}
+                icon={
+                  <CalendarTodayOutlinedIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              />
+            </Box>
+
+            <Box
+              gridColumn="span 3"
+              // backgroundColor={colors.primary[400]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <StatBox
+                title={pendingReservationCount}
+                subtitle="Pending Reservations"
+                increase={`${pendingReservationsPercentage} from last week`}
+                icon={
+                  <CalendarTodayOutlinedIcon
                     sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
                   />
                 }
@@ -147,14 +227,7 @@ const Dashboard:any = () => {
                     fontWeight="600"
                     color={colors.grey[100]}
                   >
-                    Revenue Generated
-                  </Typography>
-                  <Typography
-                    variant="h3"
-                    fontWeight="bold"
-                    color={colors.greenAccent[500]}
-                  >
-                    $59,342.32
+                    Data Generated
                   </Typography>
                 </Box>
                 <Box>
@@ -223,75 +296,15 @@ const Dashboard:any = () => {
                 </Box>
               ))}
             </Box>
-
-            {/* ROW 3 */}
-            <Box
-              gridColumn="span 4"
-              gridRow="span 2"
-              // backgroundColor={colors.primary[400]}
-              p="30px"
-              
-            >
-              <Typography variant="h5" fontWeight="600">
-                Campaign
-              </Typography>
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                mt="25px"
-              >
-                <ProgressCircle size="125" />
-                <Typography
-                  variant="h5"
-                  color={colors.greenAccent[500]}
-                  sx={{ mt: "15px" }}
-                >
-                  $48,352 revenue generated
-                </Typography>
-                <Typography>
-                  Includes extra misc expenditures and costs
-                </Typography>
-              </Box>
-            </Box>
-            <Box
-              gridColumn="span 4"
-              gridRow="span 2"
-              // backgroundColor={colors.primary[400]}
-            >
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                sx={{ padding: "30px 30px 0 30px" }}
-              >
-                Sales Quantity
-              </Typography>
-              <Box height="250px" mt="-20px">
-                <BarChart isDashboard={true} />
-              </Box>
-            </Box>
-            <Box
-              gridColumn="span 4"
-              gridRow="span 2"
-              // backgroundColor={colors.primary[400]}
-              padding="30px"
-            >
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                sx={{ marginBottom: "15px" }}
-              >
-                Geography Based Traffic
-              </Typography>
-              <Box height="200px">
-                <GeographyChart isDashboard={true} />
-              </Box>
-            </Box>
+          </Box>
+          <Box>
+            Google Maps
+            <Map />
           </Box>
         </Box>
       </Box>
     </Box>
-  );
+  ): null;
 };
 
 export default Dashboard;

@@ -7,14 +7,15 @@ import { SignIn } from '../pages/signin';
 import { Header } from '../components/header';
 import { Home } from '../pages/home';
 import { SignUp } from '../pages/signup';
-import VerifyEmail from '../components/verifyEmail';
 import { ContactUs } from '../pages/contactUs';
 import { OurWork } from '../pages/our-work';
+import { Footer } from '../components/footer';
 import { ResetPassword } from '../pages/user/reset-password';
+import { ForgotPassword } from '../pages/user/forgot-password';
 
 export const LoggedOutRouter = () => {
 	return (
-		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
+		<div>
 			<Router>
 				<Header />
 				<Routes>
@@ -35,8 +36,8 @@ export const LoggedOutRouter = () => {
 						element={<ResetPassword />}
 					/>
 					<Route
-						path='/verify-email'
-						element={<VerifyEmail />}
+						path='/forgot-password'
+						element={<ForgotPassword />}
 					/>
 					<Route
 						path='our-work/:id'
@@ -51,6 +52,7 @@ export const LoggedOutRouter = () => {
 						element={<NotFound />}
 					/>
 				</Routes>
+				<Footer />
 			</Router>
 		</div>
 	);

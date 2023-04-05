@@ -14,6 +14,8 @@ import { Helmet } from 'react-helmet-async';
 import { IReservation, IReservationInput } from '../types/reservation.dto';
 import { useMe } from '../hooks/useMe';
 import { useNavigate } from 'react-router-dom';
+import { TextField } from '@mui/material';
+import { FormError } from '../components/form-error';
 
 interface IReservatioForm extends IReservation {
 	residential: string;
@@ -62,7 +64,7 @@ function ReservationForm() {
 	);
 
 	const onSubmit = async (data: IReservation) => {
-    console.log(data);
+		console.log(data);
 		let serviceType = '';
 		Object.entries(data).filter(([key, value]) => {
 			if (value === 'on') {
@@ -81,10 +83,10 @@ function ReservationForm() {
 			city: data.city,
 			date: moment(day?.toISOString()).format('YYYY-MM-DD hh:mm:ss'),
 		};
- 		const newReservation = {
+		const newReservation = {
 			...newReservationData,
 		};
-		mutate(newReservation); 
+		mutate(newReservation);
 	};
 
 	const handleSetValue = () => {
@@ -108,6 +110,8 @@ function ReservationForm() {
 		}
 	};
 
+  console.log(errors);
+
 	return (
 		<>
 			<Helmet>
@@ -130,7 +134,7 @@ function ReservationForm() {
 							<input
 								type='text'
 								id='address_line1'
-								{...register('address_line1', {required: true})}
+								{...register('address_line1', { required: true })}
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 						</div>
@@ -155,7 +159,7 @@ function ReservationForm() {
 								<input
 									type='text'
 									id='postal_code'
-									{...register('postal_code', {required: true})}
+									{...register('postal_code', { required: true })}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>
@@ -166,7 +170,7 @@ function ReservationForm() {
 								<input
 									type='text'
 									id='city'
-									{...register('city', {required: true})}
+									{...register('city', { required: true })}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>
@@ -193,7 +197,7 @@ function ReservationForm() {
 								{/* <select value={value} onChange={handleChange}> */}
 								<select
 									id='province'
-									{...register('province', {required: true})}
+									{...register('province', { required: true })}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'>
 									<option value='AB'>AB</option>
 									<option value='BC'>BC</option>
@@ -217,7 +221,7 @@ function ReservationForm() {
 								<input
 									type='text'
 									id='country'
-									{...register('country', {required: true})}
+									{...register('country', { required: true })}
 									className='w-full bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								/>
 							</div>
@@ -284,18 +288,21 @@ function ReservationForm() {
 							<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
 								Description
 							</label>
-							<input
+							<TextField
 								type='text'
 								id='description'
-								{...register('description')}
+								{...register('description', { maxLength: 50 })}
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-10 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
+							{errors.description?.type === 'maxLength' && (
+								<FormError errorMessage={"It is over the limit of words"} />
+							)}
 						</div>
 						{/* Submit Button */}
 						<div className='flex flex-col justify-center items-center'>
 							<button
 								type='submit'
-								className='  bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded w-1/2'>
+								className='btn w-1/2'>
 								Submit
 							</button>
 						</div>

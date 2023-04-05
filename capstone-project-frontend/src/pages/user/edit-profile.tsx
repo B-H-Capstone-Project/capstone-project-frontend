@@ -143,25 +143,6 @@ export const EditProfile = () => {
 								value={data?.user.email}
 							/>
 						</div>
-						<div className='mb-3'>
-							<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-								Confirm password *
-							</label>
-							<input
-								type='password'
-								id='confirm-password'
-								{...register('confirm_password', {
-									required: true,
-									validate: (value) => value === getValues('password'),
-								})}
-								placeholder='••••••••'
-								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-							/>
-							{errors.confirm_password &&
-								errors.confirm_password.type === 'validate' && (
-									<FormError errorMessage='Passwords do not match.' />
-								)}
-						</div>
 
 						{/* Address */}
 						<div className='mb-3'>

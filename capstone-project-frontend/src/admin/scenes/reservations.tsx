@@ -17,7 +17,7 @@ import { tokens } from "../theme";
 import axios from "../../api/axios";
 import ReservationModal from "./reservationsComponents/reservationModal";
 interface ICustomer {
-  id: string;
+  user_id: string;
   first_name: string;
   last_name: string;
   profile:string;
@@ -33,6 +33,7 @@ interface ICustomer {
 
 export interface IReservationWithUser {
   user_id: number;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
@@ -105,7 +106,7 @@ const Reservations = () => {
   const handleEventClick = (selected: any) => {
     setExistedRes(selected.event._def.extendedProps);
     const existedCustomer: ICustomer = {
-      id: selected.event._def.extendedProps.id,
+      user_id: selected.event._def.extendedProps.id,
       first_name: selected.event._def.extendedProps.first_name,
       last_name: selected.event._def.extendedProps.last_name,
       profile:selected.event._def.extendedProps.profile,
@@ -132,7 +133,7 @@ const Reservations = () => {
 
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
-        <Box
+        {/* <Box
           flex="1 1 20%"
           // backgroundColor={colors.primary[400]}
           p="15px"
@@ -143,7 +144,7 @@ const Reservations = () => {
           <List>
             {reservations.map((event: IReservationWithUser) => (
               
-              event.is_confirmed===0 ? (
+              event.is_confirmed===1 ? (
               <ListItem
                 key={event.reservation_id}
                 sx={{
@@ -167,7 +168,7 @@ const Reservations = () => {
               </ListItem>) : null
             ))}
           </List>
-        </Box>
+        </Box> */}
 
         {/* CALENDAR */}
         <Box flex="1 1 100%" ml="15px">
@@ -190,6 +191,7 @@ const Reservations = () => {
             selectMirror={true}
             dayMaxEvents={true}
             select={(selected)=> {
+              // when click new reservation
               setIsNew(true);
               handleOpen()}}
             dateClick={handleDateClick}

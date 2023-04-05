@@ -22,21 +22,14 @@ const style = {
   p: 4,
 };
 
-
-
-/* const updateRes = async (data: IReservationForm) => {
-	const { data: response } = await axios.put(`reservation/${props.customer?.id}`, data);
-	return response.data;
-}; */
-
 const provinces = ['AB','BC','NB','NL','NS','NT','NU','MB','ON','PE','QC','SK','YT'];
-
 
 const ReservationModal = (props: any) => {
   const queryClient = useQueryClient();
 	const [error, setError] = useState(null);
   const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
-  const [isReadOnly, setIsReadOnly] = React.useState(true);
+  // const [isReadOnly, setIsReadOnly] = React.useState(true);
+  const [isReadOnly, setIsReadOnly] = React.useState(props.isNew===true ? false : true);
   // const [dateTime, setDateTime] = React.useState<Dayjs | null>(props.selectedDate);
   const [dateTime, setDateTime] = React.useState<Dayjs | null>(null);
   const [province, setProvince] = React.useState(null);
@@ -56,7 +49,8 @@ const ReservationModal = (props: any) => {
     props.setOpen(false);
     props.setIsNew(false);
     props.setCustomer(null);
-    props.setExistedRes(null);  
+    props.setExistedRes(null); 
+    setIsReadOnly(true);
     setDateTime(null);
     setProvince(null);
     reset();
@@ -69,6 +63,13 @@ const ReservationModal = (props: any) => {
       reset
     } = useForm<IReservationForm>({
       mode: 'onChange',
+      resetOptions: {
+        keepDirtyValues: true,
+      },
+      defaultValues: {
+        user_id: props.customer?.id,
+        type: props.existedRes?.type,
+      }
     });
 
     const createRes = async (data: IReservationForm) => {
@@ -76,8 +77,16 @@ const ReservationModal = (props: any) => {
       return response.data;
     };
 
-    const { isLoading, mutate } = useMutation(createRes, {
+    const updateRes = async (data: IReservationForm) => {
+      const { data: response } = await axios.put(`reservation/${props.existedRes?.reservation_id}`, data);
+      return response.data;
+    };
+    
+
+    const { isLoading, mutate } = useMutation(props.isNew ? createRes: updateRes, {
+      
       onSuccess: (data) => {
+        console.log(props.isNew);
         console.log(data);
         const message = 'success';
         alert(message);
@@ -90,27 +99,32 @@ const ReservationModal = (props: any) => {
       },
     });
 
-
-  
   const handleChange = (e:SelectChangeEvent<any>) => {
+    console.log(JSON.parse(e.target.value));
       props.setCustomer(JSON.parse(e.target.value));
     };
 
-    const handleProvinceChange = (e:SelectChangeEvent<any>) => {
-      setProvince(e.target.value);
-    }
-
-    
-
-    
+  const handleProvinceChange = (e:SelectChangeEvent<any>) => {
+    setProvince(e.target.value);
+  }
 
   const onSubmit = async (data: any) => {
-    const newRes = {
-      ...data,
-      date: props.selectedDate,
-      user_id: props.customer?.id,
+    if(props.isNew) {
+      const newRes = {
+        ...data,
+        date: props.selectedDate,
+        user_id: props.customer.id,
+      }
+      mutate(newRes);
+    } else {
+      const updateRes = {
+        ...data,
+        date: props.selectedDate,
+        user_id: props.customer.id,
+      }
+      console.log('update res: ', updateRes);
+      mutate(updateRes);
     }
-    mutate(newRes);
     makeReset();
     // window.location.reload();
   };
@@ -125,18 +139,24 @@ const ReservationModal = (props: any) => {
     >
         <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={style}>
-        <EditIcon onClick={()=>{props.setIsNew(true); setIsReadOnly(false)}}/>
+        {props.isNew===false? <EditIcon onClick={()=>{/* props.setIsNew(); */ console.log('isNew: ', props.isNew); setIsReadOnly(false)}}/>:null}
+        
         <FormControl>
       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           <InputLabel id="demo-simple-select-standard-label">Customer List</InputLabel>
           <Select
+            {...register('user_id', {value: customer?.id, required: true})}
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
             onChange={handleChange}
-            value={customer}
+            // value={customer?.id}
+            // defaultValue={props.extestedRes?.user_id}
+            // defaultValue={customer?.id}
+            defaultValue={JSON.stringify(customer)}
+            
           //   (event: SelectChangeEvent<any>, child: ReactNode) => void
             label="Age"
-            inputProps={{ readOnly: !props.isNew ?? isReadOnly }}
+            inputProps={{ readOnly: isReadOnly }}
           >
             {props.customers.map((customer:ICustomer) => (
               <MenuItem key={customer.id} value={JSON.stringify(customer)}>{customer.first_name} {customer.last_name}</MenuItem>
@@ -151,13 +171,14 @@ const ReservationModal = (props: any) => {
             </div>
             {/* AddressLine1 */}
             <TextField
-              {...register('address_line1')}
+              required
+              {...register('address_line1', {required: "This is required"})}
               label="Address Line1"
               id="address_line1"
               InputProps={{
-                readOnly: !props.isNew ?? isReadOnly,
+                readOnly: isReadOnly,
               }}
-              defaultValue={props.existedRes?.description}
+              defaultValue={props.existedRes?.address_line1}
               className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
             {/* AddressLine2 */}
@@ -166,43 +187,47 @@ const ReservationModal = (props: any) => {
               label="Address Line2"
               id="address_line1"
               InputProps={{
-                readOnly: !props.isNew ?? isReadOnly,
+                readOnly: isReadOnly,
               }}
-              // defaultValue={props.existedRes?.description}
+              defaultValue={props.existedRes?.address_line2}
               className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
             {/* Postal Code */}
             <TextField
-              {...register('postal_code')}
+            required
+              {...register('postal_code',{ required: true})}
               label="Postal Code"
               id="postal_code"
               InputProps={{
-                readOnly: !props.isNew ?? isReadOnly,
+                readOnly: isReadOnly,
               }}
-              // defaultValue={props.existedRes?.description}
+              defaultValue={props.existedRes?.postal_code}
               className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
             {/* city */}
           <TextField
+          required
               {...register('city')}
               label="City"
               id="city"
               InputProps={{
-                readOnly: !props.isNew ?? isReadOnly,
+                readOnly: isReadOnly,
               }}
-              // defaultValue={props.existedRes?.description}
+              defaultValue={props.existedRes?.city}
               className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
             {/* Province */}
             <Select
+            required
             {...register('province')}
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
             onChange={handleProvinceChange}
+            defaultValue={props.existedRes?.province}
             value={province}
           //   (event: SelectChangeEvent<any>, child: ReactNode) => void
             label="Province"
-            inputProps={{ readOnly: !props.isNew ?? isReadOnly }}
+            inputProps={{ readOnly: isReadOnly }}
           >
             {provinces.map((province: string) => (
               <MenuItem key={province} value={province}>{province}</MenuItem>
@@ -210,13 +235,14 @@ const ReservationModal = (props: any) => {
           </Select>
           {/* country */}
           <TextField
+          required
               {...register('country')}
               label="Country"
               id="country"
               InputProps={{
-                readOnly: !props.isNew ?? isReadOnly,
+                readOnly: isReadOnly,
               }}
-              // defaultValue={props.existedRes?.description}
+              defaultValue={props.existedRes?.country}
               className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
 
@@ -225,10 +251,10 @@ const ReservationModal = (props: any) => {
         <FormLabel id="modal-modal-title">Types *</FormLabel>
           <RadioGroup 
           defaultValue={props.existedRes?.type}>
-            <FormControlLabel {...register("type")} value="Residential" control={<Radio />} label="Residential" disabled={!props.isNew ?? isReadOnly}/>
-            <FormControlLabel {...register("type")} value="Commercial" control={<Radio />} label="Commercial" disabled={!props.isNew ?? isReadOnly}/>
-            <FormControlLabel {...register("type")} value="Service" control={<Radio />} label="Service" disabled={!props.isNew ?? isReadOnly}/>
-            <FormControlLabel {...register("type")} value="Outdoor Lighting" control={<Radio />} label="Outdoor Lighting" disabled={!props.isNew ?? isReadOnly}/>
+            <FormControlLabel {...register("type", {required: "This is required"})} value="Residential" control={<Radio />} label="Residential" disabled={isReadOnly}/>
+            <FormControlLabel {...register("type", {required: "This is required"})} value="Commercial" control={<Radio />} label="Commercial" disabled={isReadOnly}/>
+            <FormControlLabel {...register("type", {required: "This is required"})} value="Service" control={<Radio />} label="Service" disabled={isReadOnly}/>
+            <FormControlLabel {...register("type", {required: "This is required"})} value="Outdoor Lighting" control={<Radio />} label="Outdoor Lighting" disabled={isReadOnly}/>
           </RadioGroup>
               
             </div>
@@ -241,7 +267,7 @@ const ReservationModal = (props: any) => {
                       {...props}/>}
                     value={props.selectedDate}
                     minDate={dayjs().add(1, 'day')}
-                    readOnly={!props.isNew ?? isReadOnly}
+                    readOnly={isReadOnly}
                     onChange={(chosenDay:any) => props.setSelectedDate(chosenDay)}
                   />
                 </LocalizationProvider>
@@ -251,11 +277,11 @@ const ReservationModal = (props: any) => {
             <div>
               <div>
               <TextField
-                {...register("description", { value: props.existedRes?.description })}
+                {...register("description", { value: props.existedRes?.description})}
                 label="Description"
                 id="description"
                 InputProps={{
-                  readOnly: !props.isNew ?? isReadOnly,
+                  readOnly: isReadOnly,
                 }}
                 multiline
                 rows={4}

@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { GoogleMap, InfoWindow, MarkerF, useLoadScript} from "@react-google-maps/api";
+import { GoogleMap, MarkerF} from "@react-google-maps/api";
 import axios from "axios";
 
 const libraries:any = ["places"];
 const mapContainerStyle = {
-  // height: "500px",
-  // width: "100%",
   width: "1200px",
   height: "400px",
 };
@@ -20,10 +18,10 @@ const options = {
   zoomControl: true,
 };
 
-const containerStyle = {
-  width: "1200px",
-  height: "400px",
-};
+// const containerStyle = {
+//   width: "1200px",
+//   height: "400px",
+// };
 
 const center = {
   lat: 51.0447,
@@ -36,19 +34,14 @@ const [addresses, setAddresses] = useState([]);
 useEffect(() => {
   const fetchAllAddresses = async() => {
     try{ 
-      const res = await axios.get("http://localhost:8080/reservations");
-      setAddresses(res.data.reservations);
+      const res = await axios.get("http://localhost:8080/reservations/address");
+      setAddresses(res.data.newAddresses);
+      // console.log(JSON.stringify(res.data.newAddresses));
     }catch(err){
       console.log(err);
     }
   };
   fetchAllAddresses();}, []);
-  // axios
-  //   .get("http://localhost:8080/reservations")
-  //   .then((res) => setAddresses(res.data.reservations))
-  //   .catch((err) => console.log(err));
-  //   console.log(JSON.stringify())
-// }, []);
 
 const [markers, setMarkers] = useState<MarkerProps[]>([]);
 
@@ -61,19 +54,18 @@ useEffect(() => {
     },
   })
   );
-  console.log("promises: " + JSON.stringify(promises));
   
   Promise.all(promises)
   .then((responses) => {
     const results:any = responses.map((response) => response.data.results[0]);
-    console.log("results: " + results);
+    // console.log("results: " + JSON.stringify(results));
 
     const newMarkers:any = results.map((result:any) => ({
       lat: result.geometry.location.lat,
       lng: result.geometry.location.lng,
       address: result.formatted_address,
     }));
-    console.log("newMarkers: " + newMarkers);
+    // console.log("newMarkers: " + JSON.stringify(newMarkers));
     setMarkers(newMarkers);
   })
   .catch((err) => console.log(err));
@@ -83,7 +75,6 @@ useEffect(() => {
   return (
     <GoogleMap mapContainerStyle={mapContainerStyle} zoom={10} center={center} options={options}>
       {markers.map((marker:MarkerProps) => (
-        // <MarkerF key={marker.address} position={{ lat:any : marker.lat, lng: marker.lng }} />
         <MarkerF key={marker.address} position={{ lat: marker.lat, lng: marker.lng }} />
       ))}
     </GoogleMap>

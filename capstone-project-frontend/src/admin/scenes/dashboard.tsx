@@ -6,6 +6,7 @@ import { tokens } from "../theme";
 // Icon
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import { ClipLoader } from "react-spinners";
 
 // Component
 import Title from "../components/title";
@@ -17,6 +18,7 @@ import Map from "../components/Map";
 import { useJsApiLoader } from "@react-google-maps/api";
 
 const Dashboard: any = () => {
+  const [loading, setLoading] = useState<any>();
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
@@ -42,73 +44,74 @@ const Dashboard: any = () => {
   const [reservationCount, setReservationCount] = useState(0);
   const [pendingReservationCount, setPendingReservationCount] = useState(0);
 
+  const fetchNewEmployees = async () => {
+    try {
+      // New Employees
+      const resEmployee = await axios.get(
+        "http://localhost:8080/users/newemployee"
+      );
+      setEmployees(resEmployee.data.users);
+      const employeeCount = resEmployee.data.users.length;
+      setEmployeeCount(employeeCount);
+      // % New Employees
+      const resEmployeesPercentage = await axios.get(
+        "http://localhost:8080/users/newemployee/percentage"
+      );
+      setEmployeesPercentage(resEmployeesPercentage.data.employeesPercentage);
+
+      // New Customers
+      const resCustomer = await axios.get(
+        "http://localhost:8080/users/newcustomer"
+      );
+      setCustomers(resCustomer.data.users);
+      const customerCount = resCustomer.data.users.length;
+      setCustomerCount(customerCount);
+      // % New Customers
+      const resCustomersPercentage = await axios.get(
+        "http://localhost:8080/users/newcustomer/percentage"
+      );
+      setCustomersPercentage(resCustomersPercentage.data.customersPercentage);
+
+      // New Reservations
+      const resReservation = await axios.get(
+        "http://localhost:8080/newreservations"
+      );
+      setReservations(resCustomer.data.reservations);
+      const reservationCount = resReservation.data.reservations.length;
+      setReservationCount(reservationCount);
+      // % New Reservation
+      const resReservationPercentage = await axios.get(
+        "http://localhost:8080/newreservations/percentage"
+      );
+      setReservationsPercentage(
+        resReservationPercentage.data.reservationPercentage
+      );
+
+      // Pending Reservations
+      const resPendingReservation = await axios.get(
+        "http://localhost:8080/newpendingreservations"
+      );
+      setPendingReservations(resPendingReservation.data.reservations);
+      const pendingReservationCount =
+        resPendingReservation.data.reservations.length;
+      setPendingReservationCount(pendingReservationCount);
+      // % Pending Reservations
+      const resPendingReservationPercentage = await axios.get(
+        "http://localhost:8080/newpendingreservations/percentage"
+      );
+      setPendingReservationsPercentage(
+        resPendingReservationPercentage.data.reservationPercentage
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(true);
+  };
   useEffect(() => {
-    const fetchNewEmployees = async () => {
-      try {
-        // New Employees
-        const resEmployee = await axios.get(
-          "http://localhost:8080/users/newemployee"
-        );
-        setEmployees(resEmployee.data.users);
-        const employeeCount = resEmployee.data.users.length;
-        setEmployeeCount(employeeCount);
-        // % New Employees
-        const resEmployeesPercentage = await axios.get(
-          "http://localhost:8080/users/newemployee/percentage"
-        );
-        setEmployeesPercentage(resEmployeesPercentage.data.employeesPercentage);
-
-        // New Customers
-        const resCustomer = await axios.get(
-          "http://localhost:8080/users/newcustomer"
-        );
-        setCustomers(resCustomer.data.users);
-        const customerCount = resCustomer.data.users.length;
-        setCustomerCount(customerCount);
-        // % New Customers
-        const resCustomersPercentage = await axios.get(
-          "http://localhost:8080/users/newcustomer/percentage"
-        );
-        setCustomersPercentage(resCustomersPercentage.data.customersPercentage);
-
-        // New Reservations
-        const resReservation = await axios.get(
-          "http://localhost:8080/newreservations"
-        );
-        setReservations(resCustomer.data.reservations);
-        const reservationCount = resReservation.data.reservations.length;
-        setReservationCount(reservationCount);
-        // % New Reservation
-        const resReservationPercentage = await axios.get(
-          "http://localhost:8080/newreservations/percentage"
-        );
-        setReservationsPercentage(
-          resReservationPercentage.data.reservationPercentage
-        );
-
-        // Pending Reservations
-        const resPendingReservation = await axios.get(
-          "http://localhost:8080/newpendingreservations"
-        );
-        setPendingReservations(resPendingReservation.data.reservations);
-        const pendingReservationCount =
-          resPendingReservation.data.reservations.length;
-        setPendingReservationCount(pendingReservationCount);
-        // % Pending Reservations
-        const resPendingReservationPercentage = await axios.get(
-          "http://localhost:8080/newpendingreservations/percentage"
-        );
-        setPendingReservationsPercentage(
-          resPendingReservationPercentage.data.reservationPercentage
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchNewEmployees();
   }, []);
 
-  return isLoaded ? (
+  return isLoaded && loading ? (
     <Box display="flex" height="100%">
       <AdminSidebar />
       <Box display="flex" flexDirection="column" width="100%" height="100%">
@@ -207,7 +210,22 @@ const Dashboard: any = () => {
       </Box>
     </Box>
   ) : (
-    <div>Loading...</div>
+    <Box
+      style={{
+        backgroundColor: '#EDFAD6',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "100%",
+        height: "100%"
+      }}
+    >
+      <ClipLoader color={"black"} size={150} />
+    </Box>
   );
 };
 

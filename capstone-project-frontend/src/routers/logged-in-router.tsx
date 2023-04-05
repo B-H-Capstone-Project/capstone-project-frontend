@@ -1,9 +1,6 @@
 /** @format */
 
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useMe } from '../hooks/useMe';
-import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
@@ -17,7 +14,7 @@ import { Reservation } from '../pages/reservation';
 
 import Dashboard from '../admin/scenes/dashboard';
 import ManageCustomers from '../admin/scenes/customer/manage-customers';
-import Employees from '../admin/scenes/employees';
+import ManageEmployees from '../admin/scenes/employee/manage-employees';
 import Reservations from '../admin/scenes/reservations';
 import Invoices from '../admin/scenes/invoices';
 import Contacts from '../admin/scenes/contacts';
@@ -66,10 +63,9 @@ const clientRoutes = [
 
 //admin routes
 const adminRoutes = [
-	//   { path: "/admin", component: <AdminApp /> },
 	{ path: '/admin', component: <Dashboard /> },
 	{ path: '/admin/customers', component: <ManageCustomers /> },
-	{ path: '/admin/employees', component: <Employees /> },
+	{ path: '/admin/employees', component: <ManageEmployees /> },
 	{ path: '/admin/reservations', component: <Reservations /> },
 	{ path: '/admin/contacts', component: <Contacts /> },
 	{ path: '/admin/invoices', component: <Invoices /> },
@@ -82,42 +78,36 @@ const adminRoutes = [
 ];
 
 export const LoggedInRouter = () => {
-	const [theme, colorMode]: any = useMode();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const token = isAuth.userToken;
-
+  console.log(token);
 	return (
-		<div className='bg-gradient-to-t from-slate-100 via-lime-100 to-slate-100'>
-			<ColorModeContext.Provider value={colorMode}>
-				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<Router>
-						<Header />
-						<Routes>
-							{clientRoutes.map((route) => (
+		<div>
+			<Router>
+				<Header />
+				<Routes>
+					{clientRoutes.map((route) => (
+						<Route
+							key={route.path}
+							path={`${route.path}`}
+							element={route.component}
+						/>
+					))}
+					<Route
+						path='*'
+						element={<NotFound />}
+					/>
+					{token?.role === 1 ||
+						(token?.role === 3 &&
+							adminRoutes.map((route) => (
 								<Route
 									key={route.path}
 									path={`${route.path}`}
 									element={route.component}
 								/>
-							))}
-							<Route
-								path='*'
-								element={<NotFound />}
-							/>
-							{token?.role === 1 ||
-								(token?.role === 2 &&
-									adminRoutes.map((route) => (
-										<Route
-											key={route.path}
-											path={`${route.path}`}
-											element={route.component}
-										/>
-									)))}
-						</Routes>
-					</Router>
-				</ThemeProvider>
-			</ColorModeContext.Provider>
+							)))}
+				</Routes>
+			</Router>
 		</div>
 	);
 };

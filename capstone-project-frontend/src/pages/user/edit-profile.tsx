@@ -3,7 +3,6 @@
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../api/axios';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
@@ -143,29 +142,6 @@ export const EditProfile = () => {
 								className='mb-2 bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 								value={data?.user.email}
 							/>
-						</div>
-
-						{/* Password & Confirm password */}
-						<div className='mb-3'>
-							<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>
-								Password *
-							</label>
-							<input
-								type='password'
-								id='password'
-								{...register('password', {
-									required: true,
-									minLength: 10,
-								})}
-								placeholder='••••••••'
-								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
-							/>
-							{errors.password?.message && (
-								<FormError errorMessage={errors.password.message} />
-							)}
-							{errors.password?.type === 'minLength' && (
-								<FormError errorMessage='Password must be more than 8 chars.' />
-							)}
 						</div>
 						<div className='mb-3'>
 							<label className='block mb-2 text-sm font-medium text-black-100 dark:text-black'>

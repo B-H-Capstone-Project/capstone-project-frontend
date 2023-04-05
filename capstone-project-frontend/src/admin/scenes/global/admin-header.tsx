@@ -1,7 +1,7 @@
-import React from 'react'
 import { Box, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
+import { NavLink } from "react-router-dom";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -10,16 +10,20 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 
-
 const AdminHeader = () => {
   const theme = useTheme();
-  const colors:any = tokens(theme.palette.mode);
+  const colors: any = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <Box display="flex" justifyContent="space-between" position= "relative" p={2}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      position="relative"
+      p={2}
+    >
       {/* SEARCH BAR */}
-      <Box
+      {/* <Box
         display="flex"
         borderRadius="3px"
         // backgroundColor={colors.primary[400]}
@@ -28,10 +32,10 @@ const AdminHeader = () => {
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
         </IconButton>
-      </Box>
+      </Box> */}
 
-     {/* ICONS */}
-     <Box display="flex">
+      {/* ICONS */}
+      <Box display="flex" marginLeft="88%">
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
@@ -46,7 +50,9 @@ const AdminHeader = () => {
           <SettingsOutlinedIcon />
         </IconButton>
         <IconButton>
-          <PersonOutlinedIcon />
+          <NavLink to="/edit-profile">
+            <PersonOutlinedIcon />
+          </NavLink>
         </IconButton>
       </Box>
     </Box>

@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme";
-import { useAppDispatch } from "../../../redux/hook";
-import { signOut } from "../../../redux/reducer/authSlice";
-import { useMe } from "../../../hooks/useMe";
+// import { tokens } from "../theme";
+import { useAppDispatch } from "../../redux/hook";
+import { signOut } from "../../redux/reducer/authSlice";
+import { useMe } from "../../hooks/useMe";
 
 // icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
 
 import { makeStyles } from "@mui/styles";
 
@@ -29,19 +28,27 @@ const useStyles = makeStyles({
     padding: "0",
     alignItem: "center",
     justifyContent: "center",
-  }
+  },
+
+  menuitem: {
+    color: "white",
+  },
+
+  prosidebar: {
+    width: "100%",
+    height: "800px",
+    backgroundColor: "black"
+  },
 });
 
-
 const Item = ({ title, to, icon, selected, setSelected }: any) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const classes = useStyles();
+  // const theme = useTheme();
+  // const colors = tokens(theme.palette.mode);
   return (
     <MenuItem
+      className={classes.menuitem}
       active={selected === title}
-      style={{
-        color: colors.grey[100],
-      }}
       onClick={() => setSelected(title)}
       icon={icon}
     >
@@ -55,7 +62,7 @@ const AdminSidebar = () => {
   const classes = useStyles();
   const { data } = useMe();
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  // const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const dispatch = useAppDispatch();
@@ -64,7 +71,7 @@ const AdminSidebar = () => {
     <Box
       sx={{
         "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
+          // background: `${colors.grey[0]} !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -80,30 +87,32 @@ const AdminSidebar = () => {
         },
       }}
     >
-      <ProSidebar width="100%" collapsed={isCollapsed}>
+      <ProSidebar
+        className={classes.prosidebar}
+        width="100%"
+        collapsed={isCollapsed}
+      >
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{
-              margin: "10px 0 20px 0",
-            }}
+            style={
+              {
+                // display: flex,
+                // margin: "10px 0px 10px 0px",
+              }
+            }
           >
             {!isCollapsed && (
               <Box
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                ml="15px"
+                // ml="15px"
                 position="relative"
                 flexDirection="row"
               >
-                <Typography variant="h3" fontWeight="bold" color={colors.grey[0]}>
-                  <NavLink to="/admin">
-                    B&H
-                  </NavLink>
-                </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
@@ -111,26 +120,8 @@ const AdminSidebar = () => {
             )}
           </MenuItem>
 
-          {!isCollapsed && (
+          {/* {!isCollapsed && (
             <Box mb="25px">
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                position="relative"
-              >
-                <img
-                  alt=""
-                  className={classes.img}
-                  width="100px"
-                  height="100px"
-                  src={data?.user.profile}
-                  style={{
-                    cursor: "pointer",
-                    borderRadius: "50%",
-                  }}
-                />
-              </Box>
               <Box textAlign="center">
                 <Typography
                   variant="h4"
@@ -144,7 +135,7 @@ const AdminSidebar = () => {
                 </Typography>
               </Box>
             </Box>
-          )}
+          )} */}
 
           <Box paddingLeft={isCollapsed ? undefined : ""}>
             <Item

@@ -1,7 +1,14 @@
 import { Typography, Box, useTheme } from "@mui/material";
+import { string } from "yup";
 import { tokens } from "../theme";
 
-const Header = ({ title, subtitle }) => {
+interface TitleProps {
+  title: string;
+  subtitle: string;
+}
+
+
+const Title: React.FC<TitleProps> = ({ title, subtitle }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -21,4 +28,4 @@ const Header = ({ title, subtitle }) => {
   );
 };
 
-export default Header;
+export default Title;

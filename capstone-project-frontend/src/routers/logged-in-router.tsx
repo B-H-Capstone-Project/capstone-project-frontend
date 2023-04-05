@@ -15,15 +15,6 @@ import { Reservation } from "../pages/reservation";
 import Dashboard from "../admin/scenes/dashboard";
 import ManageCustomers from "../admin/scenes/customer/manage-customers";
 import ManageEmployees from "../admin/scenes/employee/manage-employees";
-import Reservations from "../admin/scenes/reservations";
-import Invoices from "../admin/scenes/invoices";
-import Contacts from "../admin/scenes/contacts";
-import Bar from "../admin/scenes/bar";
-import Form from "../admin/scenes/form";
-import Pie from "../admin/scenes/pie";
-import Line from "../admin/scenes/line";
-import FAQ from "../admin/scenes/faq";
-import Geography from "../admin/scenes/geography";
 import { ColorModeContext, useMode } from "../admin/theme";
 import { EditProfile } from "../pages/user/edit-profile";
 import { SignIn } from "../pages/signin";
@@ -66,15 +57,6 @@ const adminRoutes = [
   { path: "/admin", component: <Dashboard /> },
   { path: "/admin/customers", component: <ManageCustomers /> },
   { path: "/admin/employees", component: <ManageEmployees /> },
-  { path: "/admin/reservations", component: <Reservations /> },
-  { path: "/admin/contacts", component: <Contacts /> },
-  { path: "/admin/invoices", component: <Invoices /> },
-  { path: "/admin/form", component: <Form /> },
-  { path: "/admin/bar", component: <Bar /> },
-  { path: "/admin/pie", component: <Pie /> },
-  { path: "/admin/line", component: <Line /> },
-  { path: "/admin/faq", component: <FAQ /> },
-  { path: "/admin/geography", component: <Geography /> },
 ];
 
 export const LoggedInRouter = () => {

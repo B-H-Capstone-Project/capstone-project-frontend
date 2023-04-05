@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockTransactions } from "../data/mockData";
 
 // Icon
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 
 // Component
-import Header from "../components/Header";
-import LineChart from "../components/LineChart";
+import Title from "../components/title";
 import StatBox from "../components/StatBox";
-import AdminSidebar from "./global/admin-sidebar";
-import AdminHeader from "./global/admin-header";
+import AdminSidebar from "../components/admin-sidebar";
 
 // Google Maps
 import Map from "../components/Map";
@@ -25,7 +21,6 @@ const Dashboard: any = () => {
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
   });
-
 
   const theme: any = useTheme();
   const colors: any = tokens(theme.palette.mode);
@@ -113,14 +108,13 @@ const Dashboard: any = () => {
     fetchNewEmployees();
   }, []);
 
-  return isLoaded? (
+  return isLoaded ? (
     <Box display="flex" height="100%">
       <AdminSidebar />
       <Box display="flex" flexDirection="column" width="100%" height="100%">
-        <AdminHeader />
         <Box m="20px" className="content">
           <Box display="flex">
-            <Header title="Weekly" subtitle="Report" />
+            <Title title="Weekly" subtitle="Report" />
           </Box>
 
           {/* GRID & CHARTS */}
@@ -134,7 +128,6 @@ const Dashboard: any = () => {
             {/* ROW 1 - New Datas StatBox */}
             <Box
               gridColumn="span 3"
-              // backgroundColor="white"
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -153,7 +146,6 @@ const Dashboard: any = () => {
 
             <Box
               gridColumn="span 3"
-              // backgroundColor={colors.primary[400]}
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -172,7 +164,6 @@ const Dashboard: any = () => {
 
             <Box
               gridColumn="span 3"
-              // backgroundColor={colors.primary[400]}
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -191,7 +182,6 @@ const Dashboard: any = () => {
 
             <Box
               gridColumn="span 3"
-              // backgroundColor={colors.primary[400]}
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -207,104 +197,18 @@ const Dashboard: any = () => {
                 }
               />
             </Box>
-
-            {/* ROW 2 */}
-            <Box
-              gridColumn="span 8"
-              gridRow="span 2"
-              // backgroundColor={colors.primary[400]}
-            >
-              <Box
-                mt="25px"
-                p="0 30px"
-                display="flex "
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Box>
-                  <Typography
-                    variant="h5"
-                    fontWeight="600"
-                    color={colors.grey[100]}
-                  >
-                    Data Generated
-                  </Typography>
-                </Box>
-                <Box>
-                  <IconButton>
-                    <DownloadOutlinedIcon
-                      sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                    />
-                  </IconButton>
-                </Box>
-              </Box>
-              <Box height="250px" m="-20px 0 0 0">
-                <LineChart isDashboard={true} />
-              </Box>
+            {/* Row 3 */}
+            <Box gridColumn="span 8" gridRow="span 2">
+              Google Maps
+              <Map />
             </Box>
-            <Box
-              gridColumn="span 4"
-              gridRow="span 2"
-              // backgroundColor={colors.primary[400]}
-              overflow="auto"
-            >
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                // borderBottom={`4px solid ${colors.primary[500]}`}
-                // colors={colors.grey[100]}
-                p="15px"
-              >
-                <Typography
-                  color={colors.grey[100]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  Recent Transactions
-                </Typography>
-              </Box>
-              {mockTransactions.map((transaction, i) => (
-                <Box
-                  key={`${transaction.txId}-${i}`}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  // borderBottom={`4px solid ${colors.primary[500]}`}
-                  p="15px"
-                >
-                  <Box>
-                    <Typography
-                      color={colors.greenAccent[500]}
-                      variant="h5"
-                      fontWeight="600"
-                    >
-                      {transaction.txId}
-                    </Typography>
-                    <Typography color={colors.grey[100]}>
-                      {transaction.user}
-                    </Typography>
-                  </Box>
-                  <Box color={colors.grey[100]}>{transaction.date}</Box>
-                  <Box
-                    // backgroundColor={colors.greenAccent[500]}
-                    p="5px 10px"
-                    borderRadius="4px"
-                  >
-                    ${transaction.cost}
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-          <Box>
-            Google Maps
-            <Map />
           </Box>
         </Box>
       </Box>
     </Box>
-  ): null;
+  ) : (
+    <div>Loading...</div>
+  );
 };
 
 export default Dashboard;

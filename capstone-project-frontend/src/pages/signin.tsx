@@ -18,7 +18,6 @@ export interface ISignInForm {
 }
 
 export const SignIn = () => {
-	const token = useSelector((state: RootState) => state.auth.userToken);
 	const {
 		register,
 		getValues,
@@ -41,19 +40,19 @@ export const SignIn = () => {
 		// Hash the password using the salt
 		//const hashedPassword = bcrypt.hashSync(password, salt);
 		const result = await dispatch(signIn({ email: email, password: password }));
-		if (!result.error) {
-			const decodedToken: IToken = jwtDecode(result.payload.token);
-			if (decodedToken.role === 3) {
-				navigate('/reservation');
-				// eslint-disable-next-line no-restricted-globals
-				location.reload();
-			}
-			if (decodedToken.role === 1 || decodedToken.role === 2) {
-				// eslint-disable-next-line no-restricted-globals
-				location.reload();
-				navigate('/admin');
-			}
-		}
+		// if (!result.error) {
+		// 	const decodedToken: IToken = jwtDecode(result.payload.token);
+		// 	if (decodedToken.role === 3) {
+		// 		navigate('/reservation');
+		// 		// eslint-disable-next-line no-restricted-globals
+		// 		location.reload();
+		// 	}
+		// 	if (decodedToken.role === 1 || decodedToken.role === 2) {
+		// 		// eslint-disable-next-line no-restricted-globals
+		// 		location.reload();
+		// 		navigate('/admin');
+		// 	}
+		// }
 	};
 	//google
 	const handleCallbackResponse = (res: any) => {

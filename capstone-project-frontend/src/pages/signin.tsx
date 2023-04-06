@@ -136,10 +136,10 @@ export const SignIn = () => {
 							<button
 								type='submit'
 								className='inline-block px-10 py-3 bg-lime-500 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-lime-700 hover:shadow-lg focus:bg-lime-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'>
-								Let's get started
+								Let's get startedz
 							</button>
 							<Link
-								to='/reset-password'
+								to='/forgot-password'
 								className='text-sm font-light text-gray-500 dark:text-gray-400 mt-5 mb-5'>
 								Forgot your password?
 							</Link>

@@ -19,6 +19,7 @@ import AdminHeader from "./global/admin-header";
 // Google Maps
 import Map from "../components/Map";
 import { useJsApiLoader } from "@react-google-maps/api";
+import { Loading } from "../../components/loading";
 
 const Dashboard: any = () => {
   const { isLoaded } = useJsApiLoader({
@@ -304,7 +305,7 @@ const Dashboard: any = () => {
         </Box>
       </Box>
     </Box>
-  ): null;
+  ): <Loading />;
 };
 
 export default Dashboard;

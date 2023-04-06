@@ -10,7 +10,6 @@ import { Header } from '../components/header';
 import { NotFound } from '../pages/404';
 import { ContactUs } from '../pages/contactUs';
 import { OurWork } from '../pages/our-work';
-import { Reservation } from '../pages/reservation';
 
 import Dashboard from '../admin/scenes/dashboard';
 import ManageCustomers from '../admin/scenes/customer/manage-customers';
@@ -26,7 +25,9 @@ import FAQ from '../admin/scenes/faq';
 import Geography from '../admin/scenes/geography';
 import { EditProfile } from '../pages/user/edit-profile';
 import { SignIn } from '../pages/signin';
-import ReservationForm from '../pages/reservation-form';
+
+import ReservationForm from '../pages/reservation/reservation-form';
+import { Reservation } from '../pages/reservation/reservation';
 import { Footer } from '../components/footer';
 
 //customer routes

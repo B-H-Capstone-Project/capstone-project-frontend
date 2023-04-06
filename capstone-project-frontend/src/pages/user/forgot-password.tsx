@@ -28,12 +28,12 @@ export const ForgotPassword = () => {
 	const { isLoading, mutate } = useMutation(
 		async (email: string) => {
       console.log(email);
-			return (await axios.post(`/reset-password/${userId}`, email)).data;
+			return (await axios.post(`/reset-password`, {email})).data;
 		},
 		{
 			onSuccess: (data) => {
 				const message = 'success';
-        alert('success');
+        		alert('success');
 			},
 			onError: () => {
 				alert('there was an error');

@@ -8,6 +8,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { FormError } from '../../components/form-error';
+import bcrypt from 'bcryptjs';
+import { useParams } from 'react-router';
 
 interface IResetPassword {
   password: string;
@@ -15,6 +17,7 @@ interface IResetPassword {
 }
 
 export const ResetPassword = () => {
+	const {token} = useParams();
   const {
 		register,
 		getValues,
@@ -23,13 +26,15 @@ export const ResetPassword = () => {
 	} = useForm<IResetPassword>({
     mode: 'onChange'
   });
-	const isAuth = useSelector((state: RootState) => state.auth);
-	const userId = isAuth.userToken?.id;
+	// const isAuth = useSelector((state: RootState) => state.auth);
+	// const userId = isAuth.userToken?.id;
 	const queryClient = useQueryClient();
   
 	const { isLoading, mutate } = useMutation(
 		async (password: string) => {
-			return (await axios.post(`/reset-password/${userId}`, password)).data;
+			const salt = bcrypt.genSaltSync(10);
+			const hashedPassword = bcrypt.hashSync(password, salt);
+			return (await axios.post(`/reset-password/${token}`, {password: hashedPassword})).data;
 		},
 		{
 			onSuccess: (data) => {

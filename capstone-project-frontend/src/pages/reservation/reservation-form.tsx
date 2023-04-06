@@ -8,14 +8,14 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { useMutation, useQueryClient } from 'react-query';
-import axios from '../api/axios';
-import { RootState } from '../redux/store';
+import axios from '../../api/axios';
+import { RootState } from '../../redux/store';
 import { Helmet } from 'react-helmet-async';
-import { IReservation, IReservationInput } from '../types/reservation.dto';
-import { useMe } from '../hooks/useMe';
+import { IReservation, IReservationInput } from '../../types/reservation.dto';
+import { useMe } from '../../hooks/useMe';
 import { useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material';
-import { FormError } from '../components/form-error';
+import { FormError } from '../../components/form-error';
 
 interface IReservatioForm extends IReservation {
 	residential: string;

@@ -88,6 +88,10 @@ export const authSlice = createSlice({
 			state.userToken = null;
 			state.isLoggedIn = false;
 			sessionStorage.removeItem('token');
+      // eslint-disable-next-line no-restricted-globals
+      window.location.replace(
+        "http://localhost:3000"
+      );
 		},
 	},
 	extraReducers: (builder) => {

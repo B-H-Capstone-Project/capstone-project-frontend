@@ -20,5 +20,6 @@ export interface meQuery_me {
   city: string;
 	is_active: number;
 	role: number;
+  is_verified: number;
 }
 

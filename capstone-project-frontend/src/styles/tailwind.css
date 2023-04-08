@@ -10,5 +10,5 @@ body {
 }
 
 .btn {
-  @apply bg-lime-500 active:bg-lime-500 hover:bg-lime-500 focus:bg-lime-500 text-white font-bold py-2 px-4 rounded;
+  @apply bg-stone-900 active:bg-stone-900 hover:bg-stone-600 focus:bg-stone-600 text-white font-bold py-2 px-4 rounded;
 }

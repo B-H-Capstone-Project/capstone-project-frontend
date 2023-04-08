@@ -114,7 +114,7 @@ const Reservations = () => {
   return (
     <>
     <Box m="20px">
-      <Header title="Reservations" subtitle="Full Calendar Interactive Page" />
+      <Header title="Reservations" subtitle="Manage Reservations" />
 
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}

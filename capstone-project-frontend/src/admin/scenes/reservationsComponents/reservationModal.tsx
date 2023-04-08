@@ -1,4 +1,4 @@
-import { Avatar, Box, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Modal, Radio, RadioGroup, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import { Avatar, Box, createTheme, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Modal, Radio, RadioGroup, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 // import { DateField } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../../api/axios';
 import EditIcon from '@mui/icons-material/Edit';
 import IReservationForm from '../../../types/reservation';
+import { ThemeProvider } from '@mui/styles';
 
 interface ICustomer {
   id: number;
@@ -27,8 +28,16 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 4, 
 };
+
+const textFieldStyle = {
+  mb: 1
+}
+
+const theme = createTheme({
+  spacing: 10,
+});
 
 const provinces = ['AB','BC','NB','NL','NS','NT','NU','MB','ON','PE','QC','SK','YT'];
 
@@ -140,6 +149,7 @@ const ReservationModal = (props: any) => {
             onChange={handleChange}
             defaultValue={props.customer ? JSON.stringify(props.customer) : ''}
             label="Customer"
+            className='w-1/2 mb-2'
           >
             {props.customers.map((customer:ICustomer) => (
               <MenuItem key={customer.id} value={JSON.stringify(customer)}>{customer.first_name} {customer.last_name}</MenuItem>
@@ -148,7 +158,7 @@ const ReservationModal = (props: any) => {
 
         </>: null}
           <div>
-            <div>
+            <div className='mb-4'>
             <Avatar alt={props.customer?.last_name} src={props.customer?.profile} />
             <span>{props.customer?.first_name+`, `+props.customer?.last_name}</span><br/>
             <span>{`Email: `+props.customer?.email}</span><br/>
@@ -156,6 +166,7 @@ const ReservationModal = (props: any) => {
             </div>
             {/* AddressLine1 */}
             <TextField
+              sx={textFieldStyle}
               required
               {...register('address_line1', {required: "This is required"})}
               label="Address Line1"
@@ -164,10 +175,11 @@ const ReservationModal = (props: any) => {
                 readOnly: isReadOnly,
               }}
               defaultValue={props.existedRes?.address_line1}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
             />
             {/* AddressLine2 */}
             <TextField
+              sx={textFieldStyle}
               {...register('address_line2')}
               label="Address Line2"
               id="address_line1"
@@ -175,60 +187,70 @@ const ReservationModal = (props: any) => {
                 readOnly: isReadOnly,
               }}
               defaultValue={props.existedRes?.address_line2}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
             />
-            {/* Postal Code */}
+            <div className='w-full'>
+              {/* Postal Code */}
+              <TextField
+              sx={{...textFieldStyle}}
+              required
+                {...register('postal_code',{ required: true})}
+                label="Postal Code"
+                id="postal_code"
+                InputProps={{
+                  readOnly: isReadOnly,
+                }}
+                defaultValue={props.existedRes?.postal_code}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-1/2 bg-white-700 border-white-600 dark:placeholder-white-400 m-2 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
+              />
+              {/* city */}
             <TextField
             required
-              {...register('postal_code',{ required: true})}
-              label="Postal Code"
-              id="postal_code"
-              InputProps={{
-                readOnly: isReadOnly,
-              }}
-              defaultValue={props.existedRes?.postal_code}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-            {/* city */}
-          <TextField
-          required
-              {...register('city')}
-              label="City"
-              id="city"
-              InputProps={{
-                readOnly: isReadOnly,
-              }}
-              defaultValue={props.existedRes?.city}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-            {/* Province */}
+            sx={textFieldStyle}
+                {...register('city')}
+                label="City"
+                id="city"
+                InputProps={{
+                  readOnly: isReadOnly,
+                }}
+                defaultValue={props.existedRes?.city}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-1/2 bg-white-700 border-white-600 dark:placeholder-white-400 m-2 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4"
+              />
+
+            </div>
+            <div className='w-full mb-4'>
+              {/* Province */}
+              <TextField
+              sx={textFieldStyle}
+                required
+                {...register('province')}
+                label="Province"
+                id="province"
+                InputProps={{
+                  readOnly: isReadOnly,
+                }}
+                defaultValue={props.existedRes?.province}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-1/2 bg-white-700 border-white-600 dark:placeholder-white-400 m-2 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+              
+            {/* country */}
             <TextField
-              required
-              {...register('province')}
-              label="Province"
-              id="province"
-              InputProps={{
-                readOnly: isReadOnly,
-              }}
-              defaultValue={props.existedRes?.province}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-            
-          {/* country */}
-          <TextField
-          required
-              {...register('country')}
-              label="Country"
-              id="country"
-              InputProps={{
-                readOnly: isReadOnly,
-              }}
-              defaultValue={props.existedRes?.country}
-              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
+            sx={textFieldStyle}
+            required
+                {...register('country')}
+                label="Country"
+                id="country"
+                InputProps={{
+                  readOnly: isReadOnly,
+                }}
+                defaultValue={props.existedRes?.country}
+                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-1/2 bg-white-700 border-white-600 dark:placeholder-white-400 m-2 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+
+            </div>
 
         {/* type */}
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
         <FormLabel id="modal-modal-title">Types *</FormLabel>
           <RadioGroup 
           defaultValue={props.existedRes?.type}>
@@ -240,11 +262,11 @@ const ReservationModal = (props: any) => {
               
             </div>
             {/* Date and Time */}
-            <div>
+            <div className='mb-4'>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
                     label="Date & Time *"
-                    renderInput={(props) => <TextField
+                    renderInput={(props) => <TextField fullWidth
                       {...props}/>}
                     value={props.selectedDate}
                     minDate={dayjs().add(1, 'day')}
@@ -258,6 +280,7 @@ const ReservationModal = (props: any) => {
             <div>
               <div>
               <TextField
+              sx={textFieldStyle}
                 {...register("description", { value: props.existedRes?.description})}
                 label="Description"
                 id="description"

@@ -17,6 +17,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import { makeStyles } from "@mui/styles";
+import { title } from "process";
 
 const useStyles = makeStyles({
   img: {
@@ -37,19 +38,21 @@ const useStyles = makeStyles({
   prosidebar: {
     width: "100%",
     height: "800px",
-    backgroundColor: "black"
+    backgroundColor: "black",
   },
 });
 
 const Item = ({ title, to, icon, selected, setSelected }: any) => {
   const classes = useStyles();
+  console.log("selected prop in Item:", selected);
+
   // const theme = useTheme();
   // const colors = tokens(theme.palette.mode);
   return (
     <MenuItem
       className={classes.menuitem}
-      active={selected === title}
       onClick={() => setSelected(title)}
+      active={selected === title}
       icon={icon}
     >
       <Typography>{title}</Typography>
@@ -64,8 +67,9 @@ const AdminSidebar = () => {
   const theme = useTheme();
   // const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
+  const [selected, setSelected] = useState();
   const dispatch = useAppDispatch();
+  console.log("selected state in AdminSidebar:", selected); // add this line
 
   return (
     <Box
@@ -80,10 +84,17 @@ const AdminSidebar = () => {
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
+          color: "#3CB045 !important",
         },
         "& .pro-menu-item.active": {
-          color: "#6870fa !important",
+          backgroundColor: "#3CB045 !important",
+          borderRadius: "10px",
+          color: "black",
+        },
+        "& .pro-menu-item.active: hover": {
+          backgroundColor: "white !important",
+          borderRadius: "10px",
+          color: "black",
         },
       }}
     >
@@ -97,12 +108,9 @@ const AdminSidebar = () => {
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={
-              {
-                // display: flex,
-                // margin: "10px 0px 10px 0px",
-              }
-            }
+            style={{
+              margin: "10px 0px 10px 0px",
+            }}
           >
             {!isCollapsed && (
               <Box
@@ -113,13 +121,15 @@ const AdminSidebar = () => {
                 position="relative"
                 flexDirection="row"
               >
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                <IconButton
+                  color="success"
+                  onClick={() => setIsCollapsed(!isCollapsed)}
+                >
                   <MenuOutlinedIcon />
                 </IconButton>
               </Box>
             )}
           </MenuItem>
-
           {/* {!isCollapsed && (
             <Box mb="25px">
               <Box textAlign="center">
@@ -136,14 +146,13 @@ const AdminSidebar = () => {
               </Box>
             </Box>
           )} */}
-
           <Box paddingLeft={isCollapsed ? undefined : ""}>
             <Item
               title="Dashboard"
-              to="/admin"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              to="/admin"
             />
             <Item
               title="Employees"

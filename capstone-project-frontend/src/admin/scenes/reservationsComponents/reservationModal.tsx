@@ -7,9 +7,17 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../../api/axios';
-import ICustomer from '../../../types/user';
 import EditIcon from '@mui/icons-material/Edit';
 import IReservationForm from '../../../types/reservation';
+
+interface ICustomer {
+  id: number;
+  first_name: string;
+  last_name: string;
+  profile:string;
+  phone_number: string;
+  email: string;
+}
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -28,28 +36,20 @@ const ReservationModal = (props: any) => {
   const queryClient = useQueryClient();
 	const [error, setError] = useState(null);
   const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
-  // const [isReadOnly, setIsReadOnly] = React.useState(true);
-  const [isReadOnly, setIsReadOnly] = React.useState(props.isNew===true ? false : true);
-  // const [dateTime, setDateTime] = React.useState<Dayjs | null>(props.selectedDate);
+  const [isReadOnly, setIsReadOnly] = React.useState(false);
   const [dateTime, setDateTime] = React.useState<Dayjs | null>(null);
-  const [province, setProvince] = React.useState(null);
+  const [province, setProvince] = React.useState(props.existedRes?.province);
   
-  // const [dateTime, setDateTime] = React.useState<Date>(new Date(props.selectedDate));
-
-  /* useEffect(() => {
-    if (dateTime) {
-      props.setSelectedDate(dateTime.toISOString().slice(0, 16));
-      // props.setSelectedDate(dayjs(dateTime.$d));
-      console.log('in useEffect(): ',props.selectedDate);
-    }
-  }, [dateTime, props]); */
+  useEffect(()=> {
+    setIsReadOnly(!props.isNew);
+  }, [props.isNew, props]);
 
   const makeReset = () => {
+    props.setExistedRes(null); 
     props.setSelectedDate(null);
     props.setOpen(false);
     props.setIsNew(false);
     props.setCustomer(null);
-    props.setExistedRes(null); 
     setIsReadOnly(true);
     setDateTime(null);
     setProvince(null);
@@ -63,13 +63,6 @@ const ReservationModal = (props: any) => {
       reset
     } = useForm<IReservationForm>({
       mode: 'onChange',
-      resetOptions: {
-        keepDirtyValues: true,
-      },
-      defaultValues: {
-        user_id: props.customer?.id,
-        type: props.existedRes?.type,
-      }
     });
 
     const createRes = async (data: IReservationForm) => {
@@ -86,8 +79,6 @@ const ReservationModal = (props: any) => {
     const { isLoading, mutate } = useMutation(props.isNew ? createRes: updateRes, {
       
       onSuccess: (data) => {
-        console.log(props.isNew);
-        console.log(data);
         const message = 'success';
         alert(message);
       },
@@ -100,13 +91,13 @@ const ReservationModal = (props: any) => {
     });
 
   const handleChange = (e:SelectChangeEvent<any>) => {
-    console.log(JSON.parse(e.target.value));
       props.setCustomer(JSON.parse(e.target.value));
     };
 
-  const handleProvinceChange = (e:SelectChangeEvent<any>) => {
-    setProvince(e.target.value);
-  }
+  const handleEditClick = () => {
+    props.setIsNew(false);
+    setIsReadOnly(false);
+  };
 
   const onSubmit = async (data: any) => {
     if(props.isNew) {
@@ -122,11 +113,10 @@ const ReservationModal = (props: any) => {
         date: props.selectedDate,
         user_id: props.customer.id,
       }
-      console.log('update res: ', updateRes);
       mutate(updateRes);
     }
     makeReset();
-    // window.location.reload();
+    window.location.reload();
   };
   return (
     <Modal
@@ -139,29 +129,24 @@ const ReservationModal = (props: any) => {
     >
         <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={style}>
-        {props.isNew===false? <EditIcon onClick={()=>{/* props.setIsNew(); */ console.log('isNew: ', props.isNew); setIsReadOnly(false)}}/>:null}
-        
-        <FormControl>
-      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        {props.isNew === false ? <EditIcon onClick={handleEditClick}/>:null}
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        {props.isNew === true ? <>
           <InputLabel id="demo-simple-select-standard-label">Customer List</InputLabel>
           <Select
-            {...register('user_id', {value: customer?.id, required: true})}
+            {...register('id', {value: props.customer?.id, required: true})}
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
             onChange={handleChange}
-            // value={customer?.id}
-            // defaultValue={props.extestedRes?.user_id}
-            // defaultValue={customer?.id}
-            defaultValue={JSON.stringify(customer)}
-            
-          //   (event: SelectChangeEvent<any>, child: ReactNode) => void
-            label="Age"
-            inputProps={{ readOnly: isReadOnly }}
+            defaultValue={props.customer ? JSON.stringify(props.customer) : ''}
+            label="Customer"
           >
             {props.customers.map((customer:ICustomer) => (
               <MenuItem key={customer.id} value={JSON.stringify(customer)}>{customer.first_name} {customer.last_name}</MenuItem>
               ))}
           </Select>
+
+        </>: null}
           <div>
             <div>
             <Avatar alt={props.customer?.last_name} src={props.customer?.profile} />
@@ -217,22 +202,18 @@ const ReservationModal = (props: any) => {
               className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
             {/* Province */}
-            <Select
-            required
-            {...register('province')}
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            onChange={handleProvinceChange}
-            defaultValue={props.existedRes?.province}
-            value={province}
-          //   (event: SelectChangeEvent<any>, child: ReactNode) => void
-            label="Province"
-            inputProps={{ readOnly: isReadOnly }}
-          >
-            {provinces.map((province: string) => (
-              <MenuItem key={province} value={province}>{province}</MenuItem>
-              ))}
-          </Select>
+            <TextField
+              required
+              {...register('province')}
+              label="Province"
+              id="province"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              defaultValue={props.existedRes?.province}
+              className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-full bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            
           {/* country */}
           <TextField
           required
@@ -301,7 +282,6 @@ const ReservationModal = (props: any) => {
             </div>
           </div>
       </Typography>
-          </FormControl>
     </Box>
         </form>
     </Modal>

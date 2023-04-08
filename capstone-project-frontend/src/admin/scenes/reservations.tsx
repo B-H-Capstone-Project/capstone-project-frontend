@@ -17,23 +17,17 @@ import { tokens } from "../theme";
 import axios from "../../api/axios";
 import ReservationModal from "./reservationsComponents/reservationModal";
 interface ICustomer {
-  user_id: string;
+  id: number;
   first_name: string;
   last_name: string;
   profile:string;
   phone_number: string;
   email: string;
-  address_line1: string;
-  address_line2?: string;
-  postal_code: string;
-  city: string;
-  province: string;
-  country: string;
 }
 
 export interface IReservationWithUser {
-  user_id: number;
   id: number;
+  user_id: number;
   first_name: string;
   last_name: string;
   email: string;
@@ -45,7 +39,6 @@ export interface IReservationWithUser {
   country: string;
   postal_code: string;
   profile: string;
-  reservation_id: number;
   type: string;
   date: Date;
   description: string;
@@ -59,12 +52,11 @@ const Reservations = () => {
   const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>();
-  // const [selectedDate, setSelectedDate] = useState<Dayjs>();
   const [existedRes, setExistedRes] = useState<DateSelectArg>();
   const [isNew, setIsNew] = useState(false);
   const [customer, setCustomer] = useState<ICustomer>();
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {setOpen(true)};
 
   useEffect(() => {
     const fecthAllCustomers = async () => {
@@ -93,31 +85,24 @@ const Reservations = () => {
   .filter((reservation: IReservationWithUser) => reservation.is_confirmed === 1)
   .map((reservation: IReservationWithUser) => ({
     extendedProps: reservation,
-    id: reservation.reservation_id.toString(),
+    id: reservation.id.toString(),
     title: reservation.type,
     start: reservation.date
   }));
 
     const handleDateClick = useCallback((arg: DateClickArg) => {
       setSelectedDate(arg.date.toISOString().slice(0, -8));
-      // setSelectedDate(dayjs(arg.date.toISOString().slice(0, -8)));
     }, []);
 
   const handleEventClick = (selected: any) => {
     setExistedRes(selected.event._def.extendedProps);
     const existedCustomer: ICustomer = {
-      user_id: selected.event._def.extendedProps.id,
+      id: selected.event._def.extendedProps.id,
       first_name: selected.event._def.extendedProps.first_name,
       last_name: selected.event._def.extendedProps.last_name,
       profile:selected.event._def.extendedProps.profile,
       phone_number: selected.event._def.extendedProps.phone_number,
-      email: selected.event._def.extendedProps.email,
-      address_line1: selected.event._def.extendedProps.address_line1,
-      address_line2: selected.event._def.extendedProps.address_line2,
-      postal_code: selected.event._def.extendedProps.postal_code,
-      city: selected.event._def.extendedProps.city,
-      province: selected.event._def.extendedProps.province,
-      country: selected.event._def.extendedProps.country,
+      email: selected.event._def.extendedProps.email
     }
     setCustomer(existedCustomer);
     setSelectedDate(selected.event._def.extendedProps.date.slice(0, -8));

@@ -115,7 +115,7 @@ const Dashboard: any = () => {
     <Box display="flex" height="100%">
       <AdminSidebar />
       <Box display="flex" flexDirection="column" width="100%" height="100%">
-        <Box m="20px" className="content">
+        <Box m="20px 20px 0 20px" className="content">
           <Box display="flex">
             <Title title="Weekly" subtitle="Report" />
           </Box>
@@ -124,7 +124,6 @@ const Dashboard: any = () => {
           <Box
             display="grid"
             gridTemplateColumns="repeat(12, 1fr)"
-            gridAutoRows="140px"
             gap="10px"
             height="100%"
           >
@@ -140,7 +139,7 @@ const Dashboard: any = () => {
                 subtitle="New Employees"
                 increase={`${employeesPercentage} from last week`}
                 icon={
-                  <PersonAddIcon sx={{ color: "#3CB045", fontSize: "26px" }} />
+                  <PersonAddIcon sx={{ color: "#3CB045", fontSize: "2vw" }} />
                 }
               />
             </Box>
@@ -156,7 +155,7 @@ const Dashboard: any = () => {
                 subtitle="New Customers"
                 increase={`${customersPercentage} from last week`}
                 icon={
-                  <PersonAddIcon sx={{ color: "#3CB045", fontSize: "26px" }} />
+                  <PersonAddIcon sx={{ color: "#3CB045", fontSize: "2vw" }} />
                 }
               />
             </Box>
@@ -173,7 +172,7 @@ const Dashboard: any = () => {
                 increase={`${reservationsPercentage} from last week`}
                 icon={
                   <CalendarTodayOutlinedIcon
-                    sx={{ color: "#3CB045", fontSize: "26px" }}
+                    sx={{ color: "#3CB045", fontSize: "2vw" }}
                   />
                 }
               />
@@ -191,13 +190,18 @@ const Dashboard: any = () => {
                 increase={`${pendingReservationsPercentage} from last week`}
                 icon={
                   <CalendarTodayOutlinedIcon
-                    sx={{ color: "#3CB045", fontSize: "26px" }}
+                    sx={{ color: "#3CB045", fontSize: "2vw" }}
                   />
                 }
               />
             </Box>
             {/* Row 3 */}
-            <Box gridColumn="span 8" gridRow="span 2" paddingTop={"50px"}>
+            <Box
+              gridColumn="span 8"
+              gridRow="span 2"
+              paddingTop={"20px"}
+              paddingLeft={"20px"}
+            >
               <Map />
             </Box>
           </Box>
@@ -207,7 +211,7 @@ const Dashboard: any = () => {
   ) : (
     <Box
       style={{
-        backgroundColor: '#EDFAD6',
+        backgroundColor: "#EDFAD6",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -216,7 +220,7 @@ const Dashboard: any = () => {
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: "100%",
-        height: "100%"
+        height: "100%",
       }}
     >
       <ClipLoader color={"black"} size={150} />

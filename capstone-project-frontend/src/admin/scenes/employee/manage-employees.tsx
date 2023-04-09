@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Employees from "./employees";
-import Header from "../../components/Header";
-import AdminSidebar from "../global/admin-sidebar";
-import AdminHeader from "../global/admin-header";
+import Title from "../../components/title";
+import AdminSidebar from "../../components/admin-sidebar";
 
 //modal
 import Box from "@mui/material/Box";
@@ -30,10 +29,9 @@ const ManageEmployees = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", width: "100%" }}>
+      <Box sx={{ display: "flex", width: "100%", height: "800px" }}>
         <AdminSidebar />
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <AdminHeader />
           <Box sx={{ margin: "20px" }}>
             <Box
               sx={{
@@ -43,7 +41,7 @@ const ManageEmployees = () => {
                 gap: "30vw",
               }}
             >
-              <Header title="Manage Employees" subtitle="" />
+              <Title title="Manage Employees" subtitle="" />
               <Box sx={{ display: "flex" }}>
                 <Button
                   onClick={handleOpen}

@@ -35,7 +35,7 @@ const initialState: IAuthState = {
 	status: 'idle',
 };
 
-interface IActionWithPayload {
+export interface IActionWithPayload {
 	type: string;
 	payload?: any;
 	meta?: any;

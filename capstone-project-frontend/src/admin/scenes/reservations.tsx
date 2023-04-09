@@ -12,7 +12,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import Header from "../components/Header";
+import Title from "../components/title";
 import { tokens } from "../theme";
 import axios from "../../api/axios";
 import ReservationModal from "./reservationsComponents/reservationModal";
@@ -114,7 +114,7 @@ const Reservations = () => {
   return (
     <>
     <Box m="20px">
-      <Header title="Reservations" subtitle="Manage Reservations" />
+      <Title title="Reservations" subtitle="Manage Reservations" />
 
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}

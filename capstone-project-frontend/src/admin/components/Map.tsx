@@ -1,9 +1,163 @@
 import { useState, useEffect } from "react";
-import { GoogleMap, InfoWindow, MarkerF  } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
+import axios from "axios";
 
-const containerStyle = {
-  width: "1200px",
-  height: "400px",
+const mapContainerStyle = {
+  width: "80vw",
+  height: "60vh",
+  borderRadius: '20px',
+};
+interface MarkerProps {
+  address: string;
+  lat: number;
+  lng: number;
+}
+
+interface MarkerDataProps {
+  address: string;
+  lat: number;
+  lng: number;
+}
+
+const markerOptions: any = {
+  icon: {
+    path: "M-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0",
+    fillColor: "green",
+    fillOpacity: 0.8,
+    strokeColor: "white",
+    strokeWeight: 2,
+    scale: 0.5,
+  },
+};
+
+const options = {
+  disableDefaultUI: true,
+  zoomControl: true,
+  styles: [
+    {
+      featureType: "administrative",
+      elementType: "all",
+      stylers: [
+        {
+          saturation: "-100",
+        },
+      ],
+    },
+    {
+      featureType: "administrative.province",
+      elementType: "all",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "landscape",
+      elementType: "all",
+      stylers: [
+        {
+          saturation: -100,
+        },
+        {
+          lightness: 65,
+        },
+        {
+          visibility: "on",
+        },
+      ],
+    },
+    {
+      featureType: "poi",
+      elementType: "all",
+      stylers: [
+        {
+          saturation: -100,
+        },
+        {
+          lightness: "50",
+        },
+        {
+          visibility: "simplified",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "all",
+      stylers: [
+        {
+          saturation: "-100",
+        },
+      ],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "all",
+      stylers: [
+        {
+          visibility: "simplified",
+        },
+      ],
+    },
+    {
+      featureType: "road.arterial",
+      elementType: "all",
+      stylers: [
+        {
+          lightness: "30",
+        },
+      ],
+    },
+    {
+      featureType: "road.local",
+      elementType: "all",
+      stylers: [
+        {
+          lightness: "40",
+        },
+      ],
+    },
+    {
+      featureType: "transit",
+      elementType: "all",
+      stylers: [
+        {
+          saturation: -100,
+        },
+        {
+          visibility: "simplified",
+        },
+      ],
+    },
+    {
+      featureType: "water",
+      elementType: "geometry",
+      stylers: [
+        {
+          hue: "#ffff00",
+        },
+        {
+          lightness: -25,
+        },
+        {
+          saturation: -97,
+        },
+      ],
+    },
+    {
+      featureType: "water",
+      elementType: "labels",
+      stylers: [
+        {
+          lightness: -25,
+        },
+        {
+          saturation: -100,
+        },
+      ],
+    },
+  ],
 };
 
 const center = {
@@ -11,66 +165,10 @@ const center = {
   lng: -114.0719,
 };
 
-const markers = [
-  {
-    id: 1,
-    name: "Hyunju, 천재 천재 천재 천재 천재 천재",
-    position: { lat: 51.048110, lng: -114.082490 },
-  },
-  {
-    id: 2,
-    name: "SAIT",
-    position: { lat: 51.066670, lng: -114.089890 },
-  },
-  {
-    id: 3,
-    name: "Dom, 바보 바보 바보 바보 바보 바보",
-    position: { lat: 51.049550, lng: -114.079340 },
-  },
-];
-
-
-// const { googleApiKey } = require('./config')
-// const axios = require('axios')
-
-// const geocodingQuery = (address:any, city:any) => {
-  
-//   const [user, setUser] = useState([]);
-//   useEffect(() => {
-//     const fetchNewEmployees = async () => {
-//       try {
-//         // New Employees
-//         const resEmployee = await axios.get(
-//           "http://localhost:8080/users/"
-//         );
-//         setUser(resEmployee.data.users);
-//         const employeeCount = resEmployee.data.users.length;
-//       } catch (err) {
-//         console.log(err);
-//       }
-//     };
-//   }, []);
-
-//   const geocoderQuery = encodeURIComponent(${address} ${city}.replace(/ /g, '+'))
-//   return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${geocoderQuery}&key=${googleApiKey}`)
-//     .then(res => res.data)
-//     .then(json => {
-//       if (json.results.length === 0) {
-//         return null
-//       }
-//       let lat = json.results['0'].geometry.location.lat
-//       let lng = json.results['0'].geometry.location.lng
-//       return {lat, lng}
-//     })
-// }
-
-// module.exports = geocodingQuery
-
 function Map() {
-  const image =
-    "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
-
   const [activeMarker, setActiveMarker] = useState(null);
+  // const [addresses, setAddresses] = useState([]);
+  const [reservations, setReservations] = useState([]);
 
   const handleActiveMarker = (marker: any) => {
     if (marker === activeMarker) {
@@ -79,70 +177,98 @@ function Map() {
     setActiveMarker(marker);
   };
 
-  const handleOnLoad = (map: any) => {
-    const bounds = new google.maps.LatLngBounds();
-    markers.forEach(({ position }) => bounds.extend(position));
-    map.fitBounds(bounds);
-  };
+  useEffect(() => {
+    const fetchAllAddresses = async () => {
+      // try {
+      // const res = await axios.get(// "http://localhost:8080/reservations/address");
+      // const res = await axios.get("http://localhost:8080/reservations/map");
+      // setAddresses(res.data);
+      // setAddresses(res.data.newAddresses);
+      // console.log(JSON.stringify(res.data));
+      // console.log(JSON.stringify(res.data.newAddresses));
+      // } catch (err) {
+      // console.log(err);
+      // }
 
-  // const { isLoaded } = useJsApiLoader({
-  //   id: "google-map-script",
-  //   googleMapsApiKey: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
-  // });
+      try {
+        const res = await axios.get("http://localhost:8080/reservations/map");
+        setReservations(res.data.reservations);
+        // console.log("--------------reservations data for google maps----------------------");
+        // console.log(JSON.stringify(res.data.reservations));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAllAddresses();
+  }, []);
 
-  // const [map, setMap] = React.useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<MarkerProps[]>([]);
 
-  // const onLoad = React.useCallback<any>(function callback(
-  //   map: google.maps.Map
-  // ) {
-  //   const bounds = new window.google.maps.LatLngBounds(center);
-  //   map.fitBounds(bounds);
+  useEffect(() => {
+    const newAddresses = reservations.map(
+      (address: any) =>
+        `${address.address_line1}, ${address.city}, ${address.province} ${address.postal_code}, ${address.country}`
+    );
+    // console.log("frontend: " + newAddresses);
+    const promises = newAddresses.map((address) =>
+      axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
+        params: {
+          address: address,
+          key: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
+        },
+      })
+    );
 
-  //   setMap(map);
-  // },
-  // []);
+    Promise.all(promises)
+      .then((responses) => {
+        const results: any = responses.map(
+          (response) => response.data.results[0]
+        );
+        // console.log("frontend results: " + JSON.stringify(results));
 
-  // const onUnmount = React.useCallback(function callback(map: google.maps.Map) {
-  //   setMap(null);
-  // }, []);
+        const newMarkers: any = results.map((result: any) => ({
+          id: result.id,
+          lat: result.geometry.location.lat,
+          lng: result.geometry.location.lng,
+          address: result.formatted_address,
+          name: `${result.first_name} ${result.last_name}`,
+          type: result.type,
+          description: result.description,
+          date: result.date,
+        }));
 
-  //   return isLoaded ? (
-  //     <GoogleMap
-  //       mapContainerStyle={containerStyle}
-  //       center={center}
-  //       zoom={10}
-  //       onLoad={onLoad}
-  //       onUnmount={onUnmount}
-  //     ></GoogleMap>
-  //   ) : null;
-  // }
+        // console.log("newMarkers: " + JSON.stringify(newMarkers));
+        setMarkers(newMarkers);
+      })
+      .catch((err) => console.log(err));
+    // }, [addresses]);
+  }, [reservations]);
 
   return (
-    <GoogleMap
-      onLoad={handleOnLoad}
-      onClick={() => setActiveMarker(null)}
-      // mapContainerStyle={{ width: "100vw", height: "100vh" }}
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
-    >
-      {markers.map(({ id, name, position }) => (
-
-        <MarkerF 
-          key={id}
-          position={position}
-          onClick={() => handleActiveMarker(id)}
-        >
-          {activeMarker === id ? (
-            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-              <div>{name}</div>
-            </InfoWindow>
-          ) : null}
-        </MarkerF>
-      ))}
-    </GoogleMap>
+      <GoogleMap
+        onClick={() => setActiveMarker(null)}
+        mapContainerStyle={mapContainerStyle}
+        // mapContainerClassName={classes.mapContainer}
+        zoom={11}
+        center={center}
+        options={options}
+      >
+        {markers.map((marker: any) => (
+          <MarkerF
+            key={marker.address}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            options={markerOptions}
+          >
+            {activeMarker === marker.id ? (
+              <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                <div>hello</div>
+                <div>{marker.name}</div>
+              </InfoWindow>
+            ) : null}
+          </MarkerF>
+        ))}
+      </GoogleMap>
   );
 }
 
-// export default React.memo(Map);
 export default Map;

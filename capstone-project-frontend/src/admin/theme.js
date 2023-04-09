@@ -18,6 +18,7 @@ export const tokens = (mode) => ({
           900: "#141414",
         },
         primary: {
+          0: "#FFFFFF",
           100: "#d0d1d5",
           200: "#a1a4ab",
           300: "#727681",
@@ -64,6 +65,7 @@ export const tokens = (mode) => ({
       }
     : {
         grey: {
+          0: "##000000",
           100: "#141414",
           200: "#292929",
           300: "#3d3d3d",
@@ -75,6 +77,7 @@ export const tokens = (mode) => ({
           900: "#e0e0e0",
         },
         primary: {
+          0: "#FFFFFF",
           100: "#040509",
           200: "#080b12",
           300: "#0c101b",

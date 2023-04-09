@@ -7,10 +7,10 @@ export interface IReservation {
   is_confirmed: number;
   created_date: string;
   address_line1: string;
-	address_line2: string;
-	postal_code: string;
-	province: string;
-	country: string;
+  address_line2: string | undefined;
+  postal_code: string;
+  province: string;
+  country: string;
   city: string;
 }
 
@@ -19,9 +19,9 @@ export interface IReservationInput {
   date?: string;
   description: string;
   address_line1: string;
-	address_line2: string;
-	postal_code: string;
-	province: string;
-	country: string;
+  address_line2: string | undefined;
+  postal_code: string;
+  province: string;
+  country: string;
   city: string;
 }

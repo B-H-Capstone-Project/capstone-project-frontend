@@ -94,10 +94,6 @@ export const LoggedInRouter = () => {
 							element={route.component}
 						/>
 					))}
-					<Route
-						path='*'
-						element={<NotFound />}
-					/>
 					{token?.role === 1 &&
 						adminRoutes.map((route) => (
 							<Route
@@ -114,8 +110,16 @@ export const LoggedInRouter = () => {
 								element={route.component}
 							/>
 						))}
+					<Route
+						path='our-work/:id'
+						element={<OurWork />}
+					/>
+					<Route
+						path='*'
+						element={<NotFound />}
+					/>
 				</Routes>
-        <Footer />
+				<Footer />
 			</Router>
 		</div>
 	);

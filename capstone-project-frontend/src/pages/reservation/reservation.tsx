@@ -30,7 +30,6 @@ import { boolean } from 'yup';
 const steps = ['Pending', 'Confirmed', 'Review your service'];
 
 export const Reservation = () => {
-	const [open, setOpen] = useState(false);
 	const { data: userData } = useMe();
 	const { loading, data: reservationsData } = useReservation();
 	const newReservationStatus =

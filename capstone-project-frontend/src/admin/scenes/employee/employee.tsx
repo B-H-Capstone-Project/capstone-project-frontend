@@ -53,10 +53,10 @@ const useStyles = makeStyles({
   },
 });
 
-interface ICustomer {
-  // id: string;
+interface IEmployee {
   email: string;
   password: string;
+  confirm_password: string;
   first_name: string;
   last_name: string;
   phone_number: string;
@@ -92,23 +92,29 @@ export default function Employee({ employeeprop }: any) {
     getValues,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm({
+  } = useForm<IEmployee>({
+    // mode: "onChange",
+    // defaultValues: {
+    //   first_name: employeeprop.first_name,
+    //   last_name: employeeprop.last_name,
+    //   phone_number: employeeprop.phone_number,
+    //   password: employeeprop.password,
+    //   confirm_password: employeeprop.password,
+    //   address_line1: employeeprop.address_line1,
+    //   address_line2: employeeprop.address_line2,
+    //   postal_code: employeeprop.postal_code,
+    //   city: employeeprop.city,
+    //   province: employeeprop.province,
+    //   country: employeeprop.country,
+    //   role: employeeprop.role,
+    //   is_active: employeeprop.is_active,
+    // },
     mode: "onChange",
-    defaultValues: {
-      first_name: employeeprop.first_name,
-      last_name: employeeprop.last_name,
-      phone_number: employeeprop.phone_number,
-      password: employeeprop.password,
-      confirm_password: employeeprop.password,
-      address_line1: employeeprop.address_line1,
-      address_line2: employeeprop.address_line2,
-      postal_code: employeeprop.postal_code,
-      city: employeeprop.city,
-      province: employeeprop.province,
-      country: employeeprop.country,
-      role: employeeprop.role,
-      is_active: employeeprop.is_active,
+    resetOptions: {
+      keepDirtyValues: true,
     },
+    defaultValues: async () => await axios.get(`/user/${employeeId}`),
+  
   });
 
   const { isLoading, mutate } = useMutation(
@@ -377,16 +383,30 @@ export default function Employee({ employeeprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              {...register("password")}
-            />
+              {...register("password", {
+                required: true,
+                minLength: 10,
+              })}
+              error={errors.password?.type === "minLength"}
+              helperText={errors.password?.type === "minLength" ? "Password must be more than 8 chars." : null}
+            />  
             <TextField
               required
               id="outlined-required"
               label="Confirm Password"
+              {...register("confirm_password", {
+                required: true,
+                validate: (value) => value === getValues("password"),
+              })}
+              placeholder="••••••••"
               sx={{
                 margin: "0.5rem",
                 width: "300px",
               }}
+              error={errors.confirm_password &&
+                errors.confirm_password.type === "validate" }
+              helperText={errors.confirm_password &&
+                errors.confirm_password.type === "validate" ? "Passwords do not match." : null}
             />
             <TextField
               required
@@ -435,7 +455,6 @@ export default function Employee({ employeeprop }: any) {
               {...register("address_line1")}
             />
             <TextField
-              required
               id="outlined-required"
               label="Address Line2"
               sx={{

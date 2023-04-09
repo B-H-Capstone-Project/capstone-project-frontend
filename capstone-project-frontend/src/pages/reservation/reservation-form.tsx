@@ -31,6 +31,8 @@ function ReservationForm() {
 	const currentDay = dayjs().format();
 	//days
 	const [day, setDay] = useState<Dayjs | null>(dayjs(currentDay));
+  //error
+  const [error, setError] = useState(null);
 	const queryClient = useQueryClient();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const userId = isAuth.userToken?.id;
@@ -51,11 +53,11 @@ function ReservationForm() {
 		},
 		{
 			onSuccess: (data) => {
-				const message = 'success';
 				navigate('/reservation');
 			},
-			onError: () => {
-				alert('there was an error');
+			onError: (error: any) => {
+        setError(error.response.data.message);
+        alert(error.response.data.message);
 			},
 			onSettled: () => {
 				queryClient.invalidateQueries('create');
@@ -298,6 +300,7 @@ function ReservationForm() {
 								<FormError errorMessage={"It is over the limit of words"} />
 							)}
 						</div>
+            {error && <FormError errorMessage={error} />}
 						{/* Submit Button */}
 						<div className='flex flex-col justify-center items-center'>
 							<button

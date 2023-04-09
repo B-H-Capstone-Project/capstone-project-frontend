@@ -91,14 +91,14 @@ export const SignIn = () => {
 				className='m-0 p-0 w-full md:flex-co -mt-20 flex justify-center items-center sm:mt-10'
 				style={{ height: '100vh' }}>
 				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1'>
-					<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-500'>
+					<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-600'>
 						Sign In
 					</h1>
 					<p className='text-sm font-light text-gray-500 dark:text-gray-400 mt-5 mb-5'>
 						Don't have an account?{' '}
 						<Link
 							to='/signup'
-							className='font-medium text-primary-600 hover:underline text-lime-500'>
+							className='font-medium text-primary-600 hover:underline text-lime-600'>
 							Sign Up
 						</Link>
 					</p>

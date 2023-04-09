@@ -96,7 +96,7 @@ export const EditProfile = () => {
 					style={{ height: '140vh' }}>
 					<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-10'>
 						<div className='mb-3'>
-							<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
+							<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-600 sm:mb-1'>
 								Edit Profile
 							</h1>
 						</div>

@@ -44,7 +44,7 @@ export const ContactUs = () => {
             minWidth: 300
 					}}>
 					<div className=''>
-						<div className='text-3xl mb-5'>
+						<div className='text-3xl mb-5 text-lime-600 font-bold'>
 							<h1>CONTACT</h1>
 						</div>
 						<h2 className='mb-5'>

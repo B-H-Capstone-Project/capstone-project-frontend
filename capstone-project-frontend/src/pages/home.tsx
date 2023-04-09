@@ -1,15 +1,12 @@
 /** @format */
 
 import React, { useState } from 'react';
-import { AnimatePresence, Variants, motion } from 'framer-motion';
+import { Variants, motion } from 'framer-motion';
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Link } from 'react-router-dom';
 import { imgData } from './galleryImg';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import GoogleIcon from '@mui/icons-material/Google';
+
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 
@@ -48,6 +45,20 @@ const cardVariants: Variants = {
 	},
 };
 
+const reviewCardVariants: Variants = {
+	offscreen: {
+		y: 400,
+	},
+	onscreen: {
+		y: 50,
+		transition: {
+			type: 'spring',
+			bounce: 0.4,
+			duration: 1,
+		},
+	},
+};
+
 const bossHossClients = [
 	{
 		id: 1,
@@ -81,7 +92,33 @@ const bossHossClients = [
 	{ id: 12, img: 'https://bossandhoss.com/wp-content/uploads/2015/09/5.png' },
 ];
 
-//
+interface IReview {
+	name: string;
+	img: string;
+	review: string;
+}
+//reviewers
+const reviews: IReview[] = [
+	{
+		name: 'June & Ken. Single family home',
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/jandk-150x150.jpg',
+		review:
+			'We hired Boss & Hoss for our first home and was extremely happy with the results and how quickly they finished. In total now we have installed over 3 properties and we’re extremely happy with the quality workmanship and continued service. Happy customers for over 10 years now ',
+	},
+	{
+		name: 'Johnny Merhi. Single family home',
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/johnny-150x150.jpg',
+		review:
+			'This is noew our 4th year of doing business with Boss & Hoss. The owner is extremly pleasant to work with and provides fantastic service. Out grass is always green on our side thanks to boss & hoss! Thanks Hussein!',
+	},
+	{
+		name: 'Alex Rusinek. Single family home',
+		img: 'https://bossandhoss.com/wp-content/uploads/2015/09/alex-150x150.jpg',
+		review:
+			'After searching for many weeks, we have found the perfect match. Hussein was couteous and informative and the pricing was more than fare. The job was done as promised and on schedule. We have been with Boss & Hoss for 2 years now and planning to install another home soon.',
+	},
+];
+
 const box = {
 	entry: (isBack: boolean) => ({
 		x: isBack ? -200 : 200,
@@ -104,15 +141,6 @@ export const Home = () => {
 	const [visible, setVisible] = useState(1);
 	const [back, setBack] = useState(false);
 
-	console.log(token);
-	const nextPlease = () => {
-		setBack(false);
-		setVisible((prev) => (prev === 10 ? 10 : prev + 1));
-	};
-	const prevPlease = () => {
-		setBack(true);
-		setVisible((prev) => (prev === 1 ? 1 : prev - 1));
-	};
 	return (
 		<div>
 			<div className='w-full flex px-5 xl:px-0 mx-auto h-screen md:flex-col'>
@@ -289,121 +317,71 @@ export const Home = () => {
 					</div>
 				</div>
 			</div>
-			<div className='h-1/2 bg-zinc-900 flex justify-center flex-col items-center'>
-				<div className='p-20 md:p-0 sm:p-0'>
-					<h2 className='text-lime-300 text-center m-5 text-5xl font-bold sm:text-2xl'>
-						Our Clients
-					</h2>
-					<div className='grid grid-rows-4 grid-flow-col'>
-						{bossHossClients.map((client) => (
-							<div key={client.id}>
-								<img src={`${client.img}`} />
-							</div>
-						))}
-					</div>
+			<div className='h-1/2 p-20 md:p-0 sm:p-0 bg-zinc-900 flex justify-center flex-col items-center'>
+				<h2 className='text-lime-300 text-center m-5 text-5xl font-bold sm:text-2xl'>
+					Our Clients
+				</h2>
+				<div className='grid grid-rows-4 grid-flow-col'>
+					{bossHossClients.map((client) => (
+						<div key={client.id}>
+							<img src={`${client.img}`} />
+						</div>
+					))}
 				</div>
 			</div>
-			<div className='h-screen w-full'>
-				<div className='h-1/2 flex justify-center items-center flex-col md:h-full sm:m-5'>
-					<div className='flex justify-center items-center w-full'>
-						<ArrowBackIosIcon
-							onClick={prevPlease}
-							sx={{
-								padding: '10px',
-								fontSize: '5vw',
-								position: 'absolute',
-								cursor: 'pointer',
-								zIndex: 2,
-								left: '10px',
-							}}
-						/>
-						<AnimatePresence>
-							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) =>
-								i === visible ? (
-									<motion.div
-										className='flex justify-center items-center w-1/2 absolute bg-lime-300 rounded-md p-8 md:w-2/3 md:flex-col'
-										custom={false}
-										key={visible}
-										variants={box}
-										initial='entry'
-										animate='center'
-										exit='exit'
-										transition={{
-											x: { type: 'spring', stiffness: 300, damping: 30 },
-											opacity: { duration: 0.2 },
-										}}>
-										<div className='basis-2/3 mr-10 md:order-last md:mt-10 md:mr-5'>
-											<h3 className='text-3xl font-bold text-center sm:text-md'>
-												“
-											</h3>
-											<p className='mb-10 sm:text-sm'>
-												We hired Boss & Hoss for our first home and was
-												extremely happy with the results and how quickly they
-												finished. In total now we have installed over 3
-												properties and we’re extremely happy with the quality
-												workmanship and continued service. Happy customers for
-												over 10 years now
-											</p>
-											<p className='font-bold mb-3'>June & Ken.</p>
-											<p>Customer</p>
-										</div>
-										<img
-											className='basis-1/3 rounded-full'
-											src='https://bossandhoss.com/wp-content/uploads/2015/09/jandk-150x150.jpg'
-										/>
-									</motion.div>
-								) : null
-							)}
-						</AnimatePresence>
-						<ArrowForwardIosIcon
-							onClick={nextPlease}
-							sx={{
-								padding: '10px',
-								fontSize: '5vw',
-								position: 'absolute',
-								cursor: 'pointer',
-								zIndex: 2,
-								right: '10px',
-							}}
-						/>
-					</div>
+			<div className='h-screen bg-zinc-800 flex justify-center items-center flex-col sm:h-2/3'>
+				<div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
+					<h3 className='font-bold text-center mb-10  text-3xl md:text-md sm:text-sm'>
+						“
+					</h3>
+					<p className='mb-10 text-center sm:m-2  text-2xl md:text-md sm:text-sm'>
+						Best irrigation company we have worked with, gets the job done right
+						on budget and has fantastic service.
+					</p>
+					<p className='mb-3 text-center  text-2xl md:text-md sm:text-sm'>
+						CIDEX.
+					</p>
 				</div>
-				<div className='h-screen bg-zinc-800 flex justify-center items-center flex-col sm:h-2/3'>
-					<div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
-						<h3 className='font-bold text-center mb-10  text-3xl md:text-md sm:text-sm'>
-							“
-						</h3>
-						<p className='mb-10 text-center sm:m-2  text-3xl md:text-md sm:text-sm'>
-							Best irrigation company we have worked with, gets the job done
-							right on budget and has fantastic service.
-						</p>
-						<p className='mb-3 text-center  text-3xl md:text-md sm:text-sm'>
-							CIDEX.
-						</p>
-					</div>
-					<div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
-						<h3 className='font-bold text-center mb-10  text-3xl md:text-md sm:text-sm'>
-							“
-						</h3>
-						<p className='mb-10 text-center sm:m-2  text-3xl md:text-md sm:text-sm'>
-							Boss & Hoss has installed 10+ zone for our high rise condos and
-							has been servicing our buildings and we are extremely happy with
-							the quality of work and professionalism they bring.
-						</p>
-						<p className='mb-3 text-center  text-3xl md:text-md sm:text-sm'>
-							SK Consulting.
-						</p>
-					</div>
+				<div className='text-white p-20 w-1/2 md:w-full sm:p-0'>
+					<h3 className='font-bold text-center mb-10  text-3xl md:text-md sm:text-sm'>
+						“
+					</h3>
+					<p className='mb-10 text-center sm:m-2  text-2xl md:text-md sm:text-sm'>
+						Boss & Hoss has installed 10+ zone for our high rise condos and has
+						been servicing our buildings and we are extremely happy with the
+						quality of work and professionalism they bring.
+					</p>
+					<p className='mb-3 text-center  text-2xl md:text-md sm:text-sm'>
+						SK Consulting.
+					</p>
 				</div>
-				<div className='w-full text-white h-1/2 bg-zinc-900 flex flex-col items-center justify-between sm:h-1/3'>
-					<div className='h-1/2 flex items-end'>
-						<InstagramIcon sx={{ marginRight: '3vw' }} />
-						<GoogleIcon />
+			</div>
+			<div className='h-screen'>
+				{reviews.map((i) => (
+					<div className='w-full'>
+						<motion.div
+							className='flex flex-col justify-center items-center m-5 sm:text-xs sm:m-2'
+							initial='offscreen'
+							whileInView='onscreen'
+							viewport={{ once: true, amount: 0.8 }}>
+							<motion.div
+								className='h-1/4 bg-lime-300 rounded-md w-1/2 md:w-full'
+								variants={reviewCardVariants}>
+								<h3 className='text-2xl font-bold text-center mt-2 sm:mt-0'>
+									“
+								</h3>
+								<p className='m-2'>{i.review}</p>
+								<div className='flex justify-center items-end mb-5 sm:mb-2'>
+									<img
+										className='w-10 rounded-full mr-5'
+										src={i.img}
+									/>
+									<p>{i.name}</p>
+								</div>
+							</motion.div>
+						</motion.div>
 					</div>
-					<footer className='flex justify-center items-center mb-10 sm:mb-1 sm:text-sm'>
-						<p>@ Boss & Hoss Coporation. All Right Reserved</p>
-					</footer>
-				</div>
+				))}
 			</div>
 		</div>
 	);

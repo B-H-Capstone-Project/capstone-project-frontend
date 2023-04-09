@@ -14,7 +14,6 @@ import {
 	ListItemButton,
 	ListItemText,
 	Collapse,
-	Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -164,18 +163,9 @@ export const Header = () => {
 					</Box>
 					{!isAuth.isLoggedIn ? (
 						<Link to='signin'>
-							<Button
-								variant='contained'
-								size='large'
-								sx={{
-									backgroundColor: 'black',
-									'&:hover': {
-										backgroundColor: '#424242',
-									},
-								}}
-								component='label'>
+              <button className='btn'> 
 								SIGNIN
-							</Button>
+							</button>
 						</Link>
 					) : (
 						<>
@@ -187,8 +177,12 @@ export const Header = () => {
 										path: '/edit-profile',
 									},
 									{
-										name: 'Reservation',
+										name: 'Dashboard',
 										path: '/reservation',
+									},
+                  {
+										name: 'Reservation',
+										path: '/reservation-form',
 									},
 								]}
 							/>

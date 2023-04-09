@@ -5,20 +5,30 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
 // client
-import { Home } from "../pages/home";
-import { Header } from "../components/header";
-import { NotFound } from "../pages/404";
-import { ContactUs } from "../pages/contactUs";
-import { OurWork } from "../pages/our-work";
-import { Reservation } from "../pages/reservation";
+import { Home } from '../pages/home';
+import { Header } from '../components/header';
+import { NotFound } from '../pages/404';
+import { ContactUs } from '../pages/contactUs';
+import { OurWork } from '../pages/our-work';
 
-import Dashboard from "../admin/scenes/dashboard";
-import ManageCustomers from "../admin/scenes/customer/manage-customers";
-import ManageEmployees from "../admin/scenes/employee/manage-employees";
-import { ColorModeContext, useMode } from "../admin/theme";
-import { EditProfile } from "../pages/user/edit-profile";
-import { SignIn } from "../pages/signin";
-import ReservationForm from "../pages/reservation-form";
+import Dashboard from '../admin/scenes/dashboard';
+import ManageCustomers from '../admin/scenes/customer/manage-customers';
+import ManageEmployees from '../admin/scenes/employee/manage-employees';
+import Reservations from '../admin/scenes/reservations';
+import Invoices from '../admin/scenes/invoices';
+import Contacts from '../admin/scenes/contacts';
+import Bar from '../admin/scenes/bar';
+import Form from '../admin/scenes/form';
+import Pie from '../admin/scenes/pie';
+import Line from '../admin/scenes/line';
+import FAQ from '../admin/scenes/faq';
+import Geography from '../admin/scenes/geography';
+import { EditProfile } from '../pages/user/edit-profile';
+import { SignIn } from '../pages/signin';
+
+import ReservationForm from '../pages/reservation/reservation-form';
+import { Reservation } from '../pages/reservation/reservation';
+import { Footer } from '../components/footer';
 
 //customer routes
 const clientRoutes = [
@@ -60,40 +70,48 @@ const adminRoutes = [
 ];
 
 export const LoggedInRouter = () => {
-  const isAuth = useSelector((state: RootState) => state.auth);
-  const token = isAuth.userToken;
-
-  return (
-    <div>
-      <Router>
-        <Header />
-        <Routes>
-          {clientRoutes.map((route) => (
-            <Route
-              key={route.path}
-              path={`${route.path}`}
-              element={route.component}
-            />
-          ))}
-          <Route path="*" element={<NotFound />} />
-          {token?.role === 1 &&
-            adminRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={`${route.path}`}
-                element={route.component}
-              />
-            ))}
-          {token?.role === 2 &&
-            adminRoutes.map((route) => (
-              <Route
-                key={route.path}
-                path={`${route.path}`}
-                element={route.component}
-              />
-            ))}
-        </Routes>
-      </Router>
-    </div>
-  );
+	const isAuth = useSelector((state: RootState) => state.auth);
+	const token = isAuth.userToken;
+	console.log(token);
+	return (
+		<div>
+			<Router>
+				<Header />
+				<Routes>
+					{clientRoutes.map((route) => (
+						<Route
+							key={route.path}
+							path={`${route.path}`}
+							element={route.component}
+						/>
+					))}
+					{token?.role === 1 &&
+						adminRoutes.map((route) => (
+							<Route
+								key={route.path}
+								path={`${route.path}`}
+								element={route.component}
+							/>
+						))}
+					{token?.role === 2 &&
+						adminRoutes.map((route) => (
+							<Route
+								key={route.path}
+								path={`${route.path}`}
+								element={route.component}
+							/>
+						))}
+					<Route
+						path='our-work/:id'
+						element={<OurWork />}
+					/>
+					<Route
+						path='*'
+						element={<NotFound />}
+					/>
+				</Routes>
+				<Footer />
+			</Router>
+		</div>
+	);
 };

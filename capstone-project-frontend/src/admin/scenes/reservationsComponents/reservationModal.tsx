@@ -10,6 +10,7 @@ import axios from '../../../api/axios';
 import EditIcon from '@mui/icons-material/Edit';
 import IReservationForm from '../../../types/reservation';
 import { ThemeProvider } from '@mui/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ICustomer {
   id: number;
@@ -83,7 +84,10 @@ const ReservationModal = (props: any) => {
       const { data: response } = await axios.put(`reservation/${props.existedRes?.reservation_id}`, data);
       return response.data;
     };
-    
+
+    const deleteRes = useMutation(() => {
+      return axios.delete(`reservation/${props.existedRes?.reservation_id}`);
+    });
 
     const { isLoading, mutate } = useMutation(props.isNew ? createRes: updateRes, {
       
@@ -108,6 +112,15 @@ const ReservationModal = (props: any) => {
     setIsReadOnly(false);
   };
 
+  const handleDelete = () => {
+    if (window.confirm(`Are you sure you want to delete this reservation?`)) {
+      deleteRes.mutate();
+      alert('success');
+      makeReset();
+      window.location.reload();
+    }
+  }
+
   const onSubmit = async (data: any) => {
     if(props.isNew) {
       const newRes = {
@@ -127,6 +140,14 @@ const ReservationModal = (props: any) => {
     makeReset();
     window.location.reload();
   };
+
+  const EditDeleteIcons = () => {
+    return <>
+    <EditIcon onClick={handleEditClick}/>
+    <DeleteIcon onClick={handleDelete} />
+
+    </>
+  }
   return (
     <Modal
         open={props.open}
@@ -138,7 +159,7 @@ const ReservationModal = (props: any) => {
     >
         <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={style}>
-        {props.isNew === false ? <EditIcon onClick={handleEditClick}/>:null}
+        {props.isNew === false ? EditDeleteIcons(): null}
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
         {props.isNew === true ? <>
           <InputLabel id="demo-simple-select-standard-label">Customer List</InputLabel>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import axios from "axios";
+import env from "ts-react-dotenv";
 
 const mapContainerStyle = {
   width: "80vw",
@@ -215,6 +216,7 @@ function Map() {
         params: {
           address: address,
           key: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
+          // key: process.env.GOOGLE_MAPS_API_KEY
         },
       })
     );

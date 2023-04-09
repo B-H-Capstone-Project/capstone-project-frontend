@@ -18,7 +18,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-
+import { SelectChangeEvent } from "@mui/material";
 //update
 import { useMutation, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
@@ -70,6 +70,22 @@ interface IEmployee {
   is_active: boolean;
 }
 
+const provinces = [
+  "AB",
+  "BC",
+  "NB",
+  "NL",
+  "NS",
+  "NT",
+  "NU",
+  "MB",
+  "ON",
+  "PE",
+  "QC",
+  "SK",
+  "YT",
+];
+
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -83,6 +99,8 @@ const modalStyle = {
 };
 
 export default function Employee({ employeeprop }: any) {
+  const [province, setProvince] = useState(employeeprop.existedRes?.province);
+
   const classes = useStyles();
   const queryClient = useQueryClient();
   const employeeId = employeeprop.id;
@@ -93,29 +111,16 @@ export default function Employee({ employeeprop }: any) {
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<IEmployee>({
-    // mode: "onChange",
-    // defaultValues: {
-    //   first_name: employeeprop.first_name,
-    //   last_name: employeeprop.last_name,
-    //   phone_number: employeeprop.phone_number,
-    //   password: employeeprop.password,
-    //   confirm_password: employeeprop.password,
-    //   address_line1: employeeprop.address_line1,
-    //   address_line2: employeeprop.address_line2,
-    //   postal_code: employeeprop.postal_code,
-    //   city: employeeprop.city,
-    //   province: employeeprop.province,
-    //   country: employeeprop.country,
-    //   role: employeeprop.role,
-    //   is_active: employeeprop.is_active,
-    // },
     mode: "onChange",
     resetOptions: {
       keepDirtyValues: true,
     },
     defaultValues: async () => await axios.get(`/user/${employeeId}`),
-  
   });
+
+  const handleProvinceChange = (e: SelectChangeEvent<any>) => {
+    setProvince(e.target.value);
+  };
 
   const { isLoading, mutate } = useMutation(
     async (updateEmployee) => {
@@ -388,8 +393,12 @@ export default function Employee({ employeeprop }: any) {
                 minLength: 10,
               })}
               error={errors.password?.type === "minLength"}
-              helperText={errors.password?.type === "minLength" ? "Password must be more than 8 chars." : null}
-            />  
+              helperText={
+                errors.password?.type === "minLength"
+                  ? "Password must be more than 8 chars."
+                  : null
+              }
+            />
             <TextField
               required
               id="outlined-required"
@@ -403,10 +412,16 @@ export default function Employee({ employeeprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              error={errors.confirm_password &&
-                errors.confirm_password.type === "validate" }
-              helperText={errors.confirm_password &&
-                errors.confirm_password.type === "validate" ? "Passwords do not match." : null}
+              error={
+                errors.confirm_password &&
+                errors.confirm_password.type === "validate"
+              }
+              helperText={
+                errors.confirm_password &&
+                errors.confirm_password.type === "validate"
+                  ? "Passwords do not match."
+                  : null
+              }
             />
             <TextField
               required
@@ -475,17 +490,28 @@ export default function Employee({ employeeprop }: any) {
               placeholder={employeeprop.city}
               {...register("city")}
             />
-            <TextField
+
+            <Select
               required
-              id="outlined-required"
+              {...register("province")}
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={province}
               label="Province"
+              placeholder={employeeprop.province}
+              onChange={handleProvinceChange}
               sx={{
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={employeeprop.province}
-              {...register("province")}
-            />
+            >
+              {provinces.map((province: string) => (
+                <MenuItem key={province} value={province}>
+                  {province}
+                </MenuItem>
+              ))}
+            </Select>
+
             <TextField
               required
               id="outlined-required"

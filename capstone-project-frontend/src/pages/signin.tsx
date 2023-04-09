@@ -3,7 +3,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/hook';
 import { IActionWithPayload, IToken, signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';

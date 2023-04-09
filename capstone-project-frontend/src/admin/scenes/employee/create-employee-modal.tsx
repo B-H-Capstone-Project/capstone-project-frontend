@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import axios from "../../../api/axios";
+import { useMutation, useQueryClient } from "react-query";
 import {
   Box,
   InputLabel,
@@ -8,11 +12,8 @@ import {
   FormControl,
   TextField,
   Button,
+  SelectChangeEvent,
 } from "@mui/material";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import axios from "../../../api/axios";
-import { useMutation, useQueryClient } from "react-query";
 
 const style = {
   position: "absolute",
@@ -26,10 +27,10 @@ const style = {
   p: 4,
 };
 
-interface ICustomer {
-  // id: string;
+interface IEmployee {
   email: string;
   password: string;
+  confirm_password: string;
   first_name: string;
   last_name: string;
   phone_number: string;
@@ -43,6 +44,22 @@ interface ICustomer {
   is_active: boolean;
 }
 
+const provinces = [
+  "AB",
+  "BC",
+  "NB",
+  "NL",
+  "NS",
+  "NT",
+  "NU",
+  "MB",
+  "ON",
+  "PE",
+  "QC",
+  "SK",
+  "YT",
+];
+
 const signUp = async (data: any) => {
   const { data: response } = await axios.post("auth/signup", data);
   return response.data;
@@ -51,13 +68,19 @@ const signUp = async (data: any) => {
 const CustomerModal = (props: any) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [province, setProvince] = useState();
+
+  const handleProvinceChange = (e: SelectChangeEvent<any>) => {
+    setProvince(e.target.value);
+  };
+
   const queryClient = useQueryClient();
   const {
     register,
     getValues,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm<ICustomer>({
+  } = useForm<IEmployee>({
     mode: "onChange",
     defaultValues: {
       role: 3,
@@ -80,7 +103,7 @@ const CustomerModal = (props: any) => {
     },
   });
 
-  const onSubmit = (data: ICustomer) => {
+  const onSubmit = (data: IEmployee) => {
     const newUser = {
       ...data,
     };
@@ -126,16 +149,39 @@ const CustomerModal = (props: any) => {
               width: "300px",
             }}
             placeholder="••••••••"
-            {...register("password")}
+            {...register("password", {
+              required: true,
+              minLength: 10,
+            })}
+            error={errors.password?.type === "minLength"}
+            helperText={
+              errors.password?.type === "minLength"
+                ? "Password must be more than 8 chars."
+                : null
+            }
           />
           <TextField
             required
             id="outlined-required"
             label="Confirm Password"
+            {...register("confirm_password", {
+              required: true,
+              validate: (value) => value === getValues("password"),
+            })}
             sx={{
               margin: "0.5rem",
               width: "300px",
             }}
+            error={
+              errors.confirm_password &&
+              errors.confirm_password.type === "validate"
+            }
+            helperText={
+              errors.confirm_password &&
+              errors.confirm_password.type === "validate"
+                ? "Passwords do not match."
+                : null
+            }
           />
           <TextField
             required
@@ -180,7 +226,6 @@ const CustomerModal = (props: any) => {
             {...register("address_line1")}
           />
           <TextField
-            required
             id="outlined-required"
             label="Address Line2"
             sx={{
@@ -199,16 +244,25 @@ const CustomerModal = (props: any) => {
             }}
             {...register("city")}
           />
-          <TextField
+          <Select
             required
-            id="outlined-required"
+            {...register("province")}
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={province}
             label="Province"
+            onChange={handleProvinceChange}
             sx={{
               margin: "0.5rem",
               width: "300px",
             }}
-            {...register("province")}
-          />
+          >
+            {provinces.map((province: string) => (
+              <MenuItem key={province} value={province}>
+                {province}
+              </MenuItem>
+            ))}
+          </Select>
           <TextField
             required
             id="outlined-required"
@@ -235,11 +289,8 @@ const CustomerModal = (props: any) => {
               width: "300px",
             }}
           >
-            <InputLabel >Role</InputLabel>
-            <Select
-              required
-              {...register("role")}
-            >
+            <InputLabel>Role</InputLabel>
+            <Select required {...register("role")}>
               <MenuItem value={1}>Admin</MenuItem>
               <MenuItem value={2}>Employee</MenuItem>
             </Select>
@@ -250,11 +301,8 @@ const CustomerModal = (props: any) => {
               width: "300px",
             }}
           >
-            <InputLabel >Active</InputLabel>
-            <Select
-              required
-              {...register("is_active")}
-            >
+            <InputLabel>Active</InputLabel>
+            <Select required {...register("is_active")}>
               <MenuItem value={1}>Active</MenuItem>
               <MenuItem value={2}>In Active</MenuItem>
             </Select>

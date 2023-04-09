@@ -5,13 +5,12 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/hook';
-import { IToken, signIn } from '../redux/reducer/authSlice';
+import { IActionWithPayload, IToken, signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 import { FormError } from '../components/form-error';
 import bcrypt from 'bcryptjs';
 import jwtDecode from 'jwt-decode';
-
 export interface ISignInForm {
 	email: string;
 	password: string;
@@ -38,7 +37,7 @@ export const SignIn = () => {
 		const { email, password } = getValues();
 		// Hash the password using the salt
 		//const hashedPassword = bcrypt.hashSync(password, salt);
-		const result = await dispatch(signIn({ email: email, password: password }));
+		const result:IActionWithPayload = await dispatch(signIn({ email: email, password: password }));
 		if (!result.error) {
 			const decodedToken: IToken = jwtDecode(result.payload.token);
 			if (decodedToken.role === 3) {

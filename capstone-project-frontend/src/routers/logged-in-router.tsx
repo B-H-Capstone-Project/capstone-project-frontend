@@ -14,15 +14,7 @@ import { OurWork } from '../pages/our-work';
 import Dashboard from '../admin/scenes/dashboard';
 import ManageCustomers from '../admin/scenes/customer/manage-customers';
 import ManageEmployees from '../admin/scenes/employee/manage-employees';
-import Reservations from '../admin/scenes/reservations';
-import Invoices from '../admin/scenes/invoices';
-import Contacts from '../admin/scenes/contacts';
-import Bar from '../admin/scenes/bar';
-import Form from '../admin/scenes/form';
-import Pie from '../admin/scenes/pie';
-import Line from '../admin/scenes/line';
-import FAQ from '../admin/scenes/faq';
-import Geography from '../admin/scenes/geography';
+import AdminReservations from '../admin/scenes/reservations';
 import { EditProfile } from '../pages/user/edit-profile';
 import { SignIn } from '../pages/signin';
 
@@ -67,6 +59,7 @@ const adminRoutes = [
   { path: "/admin", component: <Dashboard /> },
   { path: "/admin/customers", component: <ManageCustomers /> },
   { path: "/admin/employees", component: <ManageEmployees /> },
+  { path: "/admin/reservations", component: <AdminReservations /> },
 ];
 
 export const LoggedInRouter = () => {

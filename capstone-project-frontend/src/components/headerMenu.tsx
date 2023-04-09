@@ -61,7 +61,7 @@ export const HeaderMenu = ({ title = '', list }: IHeaderMenu) => {
 						TransitionComponent={Fade}>
 						{list.map((i) => (
 							<MenuItem onClick={handleClose}>
-								<NavLink to={i.path}>{i.name}</NavLink>
+								<Link to={i.path}>{i.name}</Link>
 							</MenuItem>
 						))}
 						<MenuItem onClick={() => dispatch(signOut())}>Sign Out</MenuItem>

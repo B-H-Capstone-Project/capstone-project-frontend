@@ -54,7 +54,7 @@ const reviewCardVariants: Variants = {
 		transition: {
 			type: 'spring',
 			bounce: 0.4,
-			duration: 0.8,
+			duration: 1,
 		},
 	},
 };
@@ -360,17 +360,17 @@ export const Home = () => {
 				{reviews.map((i) => (
 					<div className='w-full'>
 						<motion.div
-							className='flex flex-col justify-center items-center m-10 sm:text-xs sm:m-2'
+							className='flex flex-col justify-center items-center m-5 sm:text-xs sm:m-2'
 							initial='offscreen'
 							whileInView='onscreen'
 							viewport={{ once: true, amount: 0.8 }}>
 							<motion.div
-								className='h-1/4 bg-lime-300 rounded-md w-1/3 md:w-full'
+								className='h-1/4 bg-lime-300 rounded-md w-1/2 md:w-full'
 								variants={reviewCardVariants}>
-								<h3 className='text-2xl font-bold text-center mt-5 sm:mt-0'>
+								<h3 className='text-2xl font-bold text-center mt-2 sm:mt-0'>
 									“
 								</h3>
-								<p className='m-5 sm:m-2'>{i.review}</p>
+								<p className='m-2'>{i.review}</p>
 								<div className='flex justify-center items-end mb-5 sm:mb-2'>
 									<img
 										className='w-10 rounded-full mr-5'

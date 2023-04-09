@@ -200,8 +200,7 @@ const Dashboard: any = () => {
             <Box
               gridColumn="span 8"
               gridRow="span 2"
-              paddingTop={"20px"}
-              paddingLeft={"20px"}
+              padding={"20px"}
             >
               <Map />
             </Box>

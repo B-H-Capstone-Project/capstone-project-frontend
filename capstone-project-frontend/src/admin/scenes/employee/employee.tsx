@@ -248,7 +248,7 @@ export default function Employee({ employeeprop }: any) {
             </TableCell>
             <TableCell
               sx={{
-                width: "210px",
+                width: "200px",
                 margin: "0",
                 padding: "2px",
                 border: "none",

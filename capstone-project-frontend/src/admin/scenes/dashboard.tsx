@@ -16,7 +16,6 @@ import AdminSidebar from "../components/admin-sidebar";
 // Google Maps
 import Map from "../components/Map";
 import { useJsApiLoader } from "@react-google-maps/api";
-import { Loading } from "../../components/loading";
 
 const Dashboard: any = () => {
   const [loading, setLoading] = useState<any>();

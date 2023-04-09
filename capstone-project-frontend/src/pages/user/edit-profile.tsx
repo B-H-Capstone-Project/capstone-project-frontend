@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../api/axios';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import { useMe } from '../../hooks/useMe';
 import { FormError } from '../../components/form-error';
 import { Helmet } from 'react-helmet-async';
 import { Loading } from '../../components/loading';
+import { useNavigate } from 'react-router-dom';
 
 interface IForm {
 	first_name: string;
@@ -28,6 +29,7 @@ interface IForm {
 
 export const EditProfile = () => {
 	const queryClient = useQueryClient();
+  const [error, setError] = useState(null);
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const { loading, data } = useMe();
 	const userId = isAuth.userToken?.id;
@@ -43,17 +45,18 @@ export const EditProfile = () => {
 		},
 		defaultValues: async () => await axios.get(`/user/${userId}`),
 	});
-	console.log(data);
+	const navigate = useNavigate();
 	const { isLoading, mutate } = useMutation(
 		async (updateProfile: IForm) => {
-			console.log(updateProfile);
 			return (await axios.put(`/user/${userId}`, updateProfile)).data;
 		},
 		{
 			onSuccess: (data) => {
 				const message = 'success';
+        navigate('/reservation');
 			},
-			onError: () => {
+			onError: (error: any) => {
+        setError(error.response.data.message);
 				alert('there was an error');
 			},
 			onSettled: () => {
@@ -288,6 +291,7 @@ export const EditProfile = () => {
 									/>
 								</div>
 							</div>
+              {error && <FormError errorMessage={error} />}
 							<div className='flex justify-center mb-5 mt-5'>
 								<button
 									type='submit'

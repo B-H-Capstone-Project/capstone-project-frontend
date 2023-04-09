@@ -18,6 +18,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import { SelectChangeEvent } from "@mui/material";
 
 // update
 import { useMutation, useQueryClient } from "react-query";
@@ -70,6 +71,22 @@ interface ICustomer {
   is_active: boolean;
 }
 
+const provinces = [
+  "AB",
+  "BC",
+  "NB",
+  "NL",
+  "NS",
+  "NT",
+  "NU",
+  "MB",
+  "ON",
+  "PE",
+  "QC",
+  "SK",
+  "YT",
+];
+
 const modalStyle = {
   position: "absolute",
   top: "50%",
@@ -83,6 +100,8 @@ const modalStyle = {
 };
 
 export default function Customer({ customerprop }: any) {
+  const [province, setProvince] = useState(customerprop.existedRes?.province);
+
   const classes = useStyles();
   const queryClient = useQueryClient();
   const customerId = customerprop.id;
@@ -93,28 +112,16 @@ export default function Customer({ customerprop }: any) {
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<ICustomer>({
-    // mode: "onChange",
-    // defaultValues: {
-    //   first_name: customerprop.first_name,
-    //   last_name: customerprop.last_name,
-    //   phone_number: customerprop.phone_number,
-    //   password: customerprop.password,
-    //   confirm_password: customerprop.password,
-    //   address_line1: customerprop.address_line1,
-    //   address_line2: customerprop.address_line2,
-    //   postal_code: customerprop.postal_code,
-    //   city: customerprop.city,
-    //   province: customerprop.province,
-    //   country: customerprop.country,
-    //   role: customerprop.role,
-    //   is_active: customerprop.is_active,
-    // },
     mode: "onChange",
     resetOptions: {
       keepDirtyValues: true,
     },
     defaultValues: async () => await axios.get(`/user/${customerId}`),
   });
+
+  const handleProvinceChange = (e: SelectChangeEvent<any>) => {
+    setProvince(e.target.value);
+  };
 
   const { isLoading, mutate } = useMutation(
     async (updateCustomer) => {
@@ -242,7 +249,7 @@ export default function Customer({ customerprop }: any) {
             </TableCell>
             <TableCell
               sx={{
-                width: "210px",
+                width: "200px",
                 margin: "0",
                 padding: "2px",
                 border: "none",
@@ -387,9 +394,13 @@ export default function Customer({ customerprop }: any) {
                 minLength: 10,
               })}
               error={errors.password?.type === "minLength"}
-              helperText={errors.password?.type === "minLength" ? "Password must be more than 8 chars." : null}
-            />  
-     
+              helperText={
+                errors.password?.type === "minLength"
+                  ? "Password must be more than 8 chars."
+                  : null
+              }
+            />
+
             <TextField
               required
               id="outlined-required"
@@ -403,10 +414,16 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              error={errors.confirm_password &&
-                errors.confirm_password.type === "validate" }
-              helperText={errors.confirm_password &&
-                errors.confirm_password.type === "validate" ? "Passwords do not match." : null}
+              error={
+                errors.confirm_password &&
+                errors.confirm_password.type === "validate"
+              }
+              helperText={
+                errors.confirm_password &&
+                errors.confirm_password.type === "validate"
+                  ? "Passwords do not match."
+                  : null
+              }
             />
             <TextField
               required
@@ -475,17 +492,27 @@ export default function Customer({ customerprop }: any) {
               placeholder={customerprop.city}
               {...register("city")}
             />
-            <TextField
+
+            <Select
               required
-              id="outlined-required"
+              {...register("province")}
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={province}
               label="Province"
+              placeholder={customerprop.province}
+              onChange={handleProvinceChange}
               sx={{
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.province}
-              {...register("province")}
-            />
+            >
+              {provinces.map((province: string) => (
+                <MenuItem key={province} value={province}>
+                  {province}
+                </MenuItem>
+              ))}
+            </Select>
             <TextField
               required
               id="outlined-required"

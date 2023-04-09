@@ -18,7 +18,7 @@ export default function Customers({customers}:any) {
             <TableCell sx={{width: "200px"}}>Email</TableCell>
             <TableCell sx={{width: "130px", margin: "0", padding: "2px", paddingBottom: "0"}}>Name</TableCell>
             <TableCell sx={{width: "100px", margin: "0", padding: "2px", paddingBottom: "0"}}>Phone</TableCell>
-            <TableCell sx={{width: "210px", margin: "0", padding: "2px", paddingBottom: "0"}}>Address</TableCell>
+            <TableCell sx={{width: "200px", margin: "0", padding: "2px", paddingBottom: "0"}}>Address</TableCell>
             <TableCell sx={{width: "80px", margin: "0", padding: "2px", paddingBottom: "0"}}>City</TableCell>
             <TableCell sx={{width: "70px", margin: "0", padding: "2px", paddingBottom: "0"}}>Province</TableCell>
             <TableCell sx={{width: "80px", margin: "0", padding: "2px", paddingBottom: "0"}}>Postal Code</TableCell>

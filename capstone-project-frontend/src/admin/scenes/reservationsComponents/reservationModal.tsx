@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 import { useMutation, useQueryClient } from "react-query";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ import {
   createTheme,
   Button,
   FormControlLabel,
-  FormLabel,
   InputLabel,
   MenuItem,
   Modal,
@@ -23,10 +22,13 @@ import {
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import EditIcon from "@mui/icons-material/Edit";
-import { ThemeProvider } from "@mui/styles";
-import DeleteIcon from "@mui/icons-material/Delete";
 
+// Icon
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 interface ICustomer {
   id: number;
   first_name: string;
@@ -49,9 +51,6 @@ const style = {
   overflow: "scroll",
 };
 
-const theme = createTheme({
-  spacing: 10,
-});
 
 const provinces = [
   "AB",
@@ -156,6 +155,10 @@ const ReservationModal = (props: any) => {
     }
   };
 
+  const handleProvinceChange = (e: SelectChangeEvent<any>) => {
+    setProvince(e.target.value);
+  };
+
   const onSubmit = async (data: any) => {
     if (props.isNew) {
       const newRes = {
@@ -196,20 +199,45 @@ const ReservationModal = (props: any) => {
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={style}>
+          {/* Edit Icon */}
           <Box
             sx={{
               float: "right",
               paddingRight: "5px",
-                cursor: 'poiner',
-                hover: 'grey'
+              cursor: "poiner",
+              hover: "grey",
             }}
           >
             {props.isNew === false ? EditDeleteIcons() : null}
           </Box>
+
+          {/* Profile Avatar */}
+          <Box
+            sx={{
+              display: "flex",
+              paddingBottom: "10px",
+              paddingRight: "10px",
+              float: "right"
+            }}
+          >
+            <Avatar
+              sx={{
+                width: "80px",
+                height: "80px",
+                margin: "0 0 0 0.5rem",
+              }}
+              alt={props.customer?.last_name}
+              src={props.customer?.profile}
+            />
+          </Box>
+
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {props.isNew === true ? (
               <>
-                <InputLabel id="demo-simple-select-standard-label">
+                <InputLabel
+                  id="demo-simple-select-standard-label"
+                  sx={{ margin: "0 0 0 0.9rem", color:'grey', fontSize:'13px' }}
+                >
                   Customer List
                 </InputLabel>
                 <Select
@@ -219,6 +247,7 @@ const ReservationModal = (props: any) => {
                   })}
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
+                  sx={{ margin: "0.5rem", width: "300px" }}
                   onChange={handleChange}
                   defaultValue={
                     props.customer ? JSON.stringify(props.customer) : ""
@@ -226,291 +255,284 @@ const ReservationModal = (props: any) => {
                   label="Customer"
                   className="w-1/2 mb-2"
                 >
+                
                   {props.customers.map((customer: ICustomer) => (
                     <MenuItem
                       key={customer.id}
                       value={JSON.stringify(customer)}
                     >
-                      <TextField
-                        id="outlined-required"
-                        label="First Name"
-                        margin="normal"
-                        sx={{
-                          margin: "0.5rem",
-                          width: "300px",
-                        }}
-                        defaultValue={customer.first_name}
-                      />
-                      <TextField
-                        id="outlined-required"
-                        label="First Name"
-                        margin="normal"
-                        sx={{
-                          margin: "0.5rem",
-                          width: "300px",
-                        }}
-                        defaultValue={customer.last_name}
-                      />
+                      {customer.first_name} {customer.last_name}
                     </MenuItem>
                   ))}
                 </Select>
+                <br/>
               </>
             ) : null}
-            <Box>
-              <Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    paddingBottom: "20px",
-                    paddingLeft: "5px",
-                  }}
-                >
-                  <Avatar
-                    sx={{
-                      width: "80px",
-                      height: "80px",
-                    }}
-                    alt={props.customer?.last_name}
-                    src={props.customer?.profile}
-                  />
+
+            {/* Customer Information Name & Email & Phone */}
+              {props.customer ? (
+                <Box sx={{
+                  width: "617px",
+                  margin: "0.5rem",
+                  padding: "0.5rem 0 0.5rem 0.5rem",
+                  border: "lightgrey solid 1px",
+                  borderRadius: "5px"
+                }}>
+                  <span>
+                  <PersonIcon /> {props.customer?.first_name} {props.customer?.last_name}
+                  </span>
+                  <br/>
+                  <span>
+                    <EmailIcon /> {props.customer?.email}</span>
+                  <br/>
+                  <span><PhoneAndroidIcon /> {props.customer?.phone_number}</span>
+                  <br/>
                 </Box>
-                <TextField
-                  id="outlined-required"
-                  label="First Name"
-                  margin="normal"
-                  sx={{
-                    margin: "0.5rem",
-                    width: "300px",
-                  }}
-                  defaultValue={props.customer?.first_name}
-                />
-                <TextField
-                  id="outlined-required"
-                  label="Last Name"
-                  margin="normal"
-                  sx={{
-                    margin: "0.5rem",
-                    width: "300px",
-                  }}
-                  defaultValue={props.customer?.last_name}
-                />
-                <TextField
-                  required
-                  id="outlined-required"
-                  label="Email"
-                  sx={{
-                    margin: "0.5rem",
-                    width: "300px",
-                  }}
-                  defaultValue={props.customer?.email}
-                />
-                <TextField
-                  required
-                  id="outlined-required"
-                  label="Phone Number"
-                  sx={{
-                    margin: "0.5rem",
-                    width: "300px",
-                  }}
-                  defaultValue={props.customer?.phone_number}
-                />
-              </Box>
-
-              {/* AddressLine 1 & 2 */}
-              <TextField
-                required
-                {...register("address_line1", { required: "This is required" })}
-                label="Address Line1"
-                id="address_line1"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                sx={{
-                  margin: "0.5rem",
-                  width: "300px",
-                }}
-                defaultValue={props.existedRes?.address_line1}
-              />
-              <TextField
-                {...register("address_line2")}
-                label="Address Line2"
-                id="address_line1"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                sx={{
-                  margin: "0.5rem",
-                  width: "300px",
-                }}
-                defaultValue={props.existedRes?.address_line2}
-              />
-
-              {/* Postal Code & City */}
-              <TextField
-                required
-                {...register("postal_code", { required: true })}
-                label="Postal Code"
-                id="postal_code"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                defaultValue={props.existedRes?.postal_code}
-                sx={{
-                  margin: "0.5rem",
-                  width: "300px",
-                }}
-              />
-              <TextField
-                required
-                {...register("city")}
-                label="City"
-                id="city"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                defaultValue={props.existedRes?.city}
-                sx={{
-                  margin: "0.5rem",
-                  width: "300px",
-                }}
-              />
-
-              {/* Province & Country */}
-              <TextField
-                sx={{
-                  margin: "0.5rem",
-                  width: "300px",
-                }}
-                required
-                {...register("province")}
-                label="Province"
-                id="province"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                defaultValue={props.existedRes?.province}
-              />
-              <TextField
-                sx={{
-                  margin: "0.5rem",
-                  width: "300px",
-                }}
-                required
-                {...register("country")}
-                label="Country"
-                id="country"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                defaultValue={props.existedRes?.country}
-              />
-
-              {/* Type */}
-              <Box
-                sx={{
-                  margin: "0.5rem",
-                }}
-              >
-                <InputLabel sx={{ fontSize: "12px", paddingLeft: "10px" }}>
-                  Types *
-                </InputLabel>
-                <RadioGroup
-                  defaultValue={props.existedRes?.type}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    paddingLeft: "10px",
-                    paddingBottom: "5px",
-                  }}
-                >
-                  <FormControlLabel
-                    {...register("type", { required: "This is required" })}
-                    value="Residential"
-                    control={<Radio />}
-                    label="Residential"
-                    disabled={isReadOnly}
+              ) : (
+                <>
+                  <TextField
+                    id="outlined-required"
+                    label="First Name"
+                    margin="normal"
+                    sx={{
+                      margin: "0.5rem",
+                      width: "300px",
+                    }}
+                    defaultValue={props.customer?.first_name}
                   />
-                  <FormControlLabel
-                    {...register("type", { required: "This is required" })}
-                    value="Commercial"
-                    control={<Radio />}
-                    label="Commercial"
-                    disabled={isReadOnly}
+                  <TextField
+                    id="outlined-required"
+                    label="Last Name"
+                    margin="normal"
+                    sx={{
+                      margin: "0.5rem",
+                      width: "300px",
+                    }}
+                    defaultValue={props.customer?.last_name}
                   />
-                  <FormControlLabel
-                    {...register("type", { required: "This is required" })}
-                    value="Service"
-                    control={<Radio />}
-                    label="Service"
-                    disabled={isReadOnly}
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Email"
+                    sx={{
+                      margin: "0.5rem",
+                      width: "300px",
+                    }}
+                    defaultValue={props.customer?.email}
                   />
-                  <FormControlLabel
-                    {...register("type", { required: "This is required" })}
-                    value="Outdoor Lighting"
-                    control={<Radio />}
-                    label="Outdoor Lighting"
-                    disabled={isReadOnly}
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Phone Number"
+                    sx={{
+                      margin: "0.5rem",
+                      width: "300px",
+                    }}
+                    defaultValue={props.customer?.phone_number}
                   />
-                </RadioGroup>
-              </Box>
+                </>
+              )}
 
-              {/* Date and Time */}
-              <Box
-                sx={{
-                  margin: "0.5rem",
-                  width: "617px",
-                }}
-              >
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label="Date & Time *"
-                    renderInput={(props) => <TextField fullWidth {...props} />}
-                    value={props.selectedDate}
-                    minDate={dayjs().add(1, "day")}
-                    readOnly={isReadOnly}
-                    onChange={(chosenDay: any) =>
-                      props.setSelectedDate(chosenDay)
-                    }
-                  />
-                </LocalizationProvider>
-              </Box>
+            {/* AddressLine 1 & 2 */}
+            <TextField
+              required
+              {...register("address_line1", { required: "This is required" })}
+              label="Address Line1"
+              id="address_line1"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              sx={{
+                margin: "0.5rem",
+                width: "300px",
+              }}
+              defaultValue={props.existedRes?.address_line1}
+            />
+            <TextField
+              {...register("address_line2")}
+              label="Address Line2"
+              id="address_line1"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              sx={{
+                margin: "0.5rem",
+                width: "300px",
+              }}
+              defaultValue={props.existedRes?.address_line2}
+            />
 
-              {/* Description */}
-              <TextField
-                sx={{
-                  margin: "0.5rem 0.5rem 0 0.5rem",
-                  width: "617px",
-                }}
-                {...register("description", {
-                  value: props.existedRes?.description,
-                })}
-                label="Description"
-                id="description"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                multiline
-                rows={4}
-                defaultValue={props.existedRes?.description}
-              />
-              <Box
+            {/* Postal Code & City */}
+            <TextField
+              required
+              {...register("postal_code", { required: true })}
+              label="Postal Code"
+              id="postal_code"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              defaultValue={props.existedRes?.postal_code}
+              sx={{
+                margin: "0.5rem",
+                width: "300px",
+              }}
+            />
+            <TextField
+              required
+              {...register("city")}
+              label="City"
+              id="city"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              defaultValue={props.existedRes?.city}
+              sx={{
+                margin: "0.5rem",
+                width: "300px",
+              }}
+            />
+
+            {/* Province & Country */}
+            <Select
+              {...register("province")}
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              sx={{
+                margin: "0.5rem",
+                width: "300px",
+              }}
+              onChange={handleProvinceChange}
+              value={province}
+              label="Province"
+              inputProps={{ readOnly: isReadOnly }}
+              defaultValue={props.existedRes?.province}
+            >
+              {provinces.map((province: string) => (
+                <MenuItem key={province} value={province}>
+                  {province}
+                </MenuItem>
+              ))}
+            </Select>
+            <TextField
+              sx={{
+                margin: "0.5rem",
+                width: "300px",
+              }}
+              required
+              {...register("country")}
+              label="Country"
+              id="country"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              defaultValue={props.existedRes?.country}
+            />
+
+            {/* Type */}
+            <Box
+              sx={{
+                margin: "0.5rem",
+              }}
+            >
+              <InputLabel sx={{ fontSize: "12px", paddingLeft: "10px" }}>
+                Types *
+              </InputLabel>
+              <RadioGroup
+                defaultValue={props.existedRes?.type}
                 sx={{
                   display: "flex",
-                  justifyContent: "center",
+                  flexDirection: "row",
+                  paddingLeft: "10px",
+                  paddingBottom: "5px",
                 }}
               >
-                <Button
-                  type="submit"
-                  sx={{
-                    marginTop: "1rem",
-                    width: "100px",
-                    backgroundColor: "black",
-                    color: "white",
-                  }}
-                >
-                  SUBMIT
-                </Button>
-              </Box>
+                <FormControlLabel
+                  {...register("type", { required: "This is required" })}
+                  value="Residential"
+                  control={<Radio />}
+                  label="Residential"
+                  disabled={isReadOnly}
+                />
+                <FormControlLabel
+                  {...register("type", { required: "This is required" })}
+                  value="Commercial"
+                  control={<Radio />}
+                  label="Commercial"
+                  disabled={isReadOnly}
+                />
+                <FormControlLabel
+                  {...register("type", { required: "This is required" })}
+                  value="Service"
+                  control={<Radio />}
+                  label="Service"
+                  disabled={isReadOnly}
+                />
+                <FormControlLabel
+                  {...register("type", { required: "This is required" })}
+                  value="Outdoor Lighting"
+                  control={<Radio />}
+                  label="Outdoor Lighting"
+                  disabled={isReadOnly}
+                />
+              </RadioGroup>
+            </Box>
+
+            {/* Date and Time */}
+            <Box
+              sx={{
+                margin: "0.5rem",
+                width: "617px",
+              }}
+            >
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  label="Date & Time *"
+                  renderInput={(props) => <TextField fullWidth {...props} />}
+                  value={props.selectedDate}
+                  minDate={dayjs().add(1, "day")}
+                  readOnly={isReadOnly}
+                  onChange={(chosenDay: any) =>
+                    props.setSelectedDate(chosenDay)
+                  }
+                />
+              </LocalizationProvider>
+            </Box>
+
+            {/* Description */}
+            <TextField
+              sx={{
+                margin: "0.5rem 0.5rem 0 0.5rem",
+                width: "617px",
+              }}
+              {...register("description", {
+                value: props.existedRes?.description,
+              })}
+              label="Description"
+              id="description"
+              InputProps={{
+                readOnly: isReadOnly,
+              }}
+              multiline
+              rows={4}
+              defaultValue={props.existedRes?.description}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                type="submit"
+                sx={{
+                  marginTop: "1rem",
+                  width: "100px",
+                  backgroundColor: "black",
+                  color: "white",
+                }}
+              >
+                SUBMIT
+              </Button>
             </Box>
           </Typography>
         </Box>

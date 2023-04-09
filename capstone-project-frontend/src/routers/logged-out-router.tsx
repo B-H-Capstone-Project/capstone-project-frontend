@@ -32,11 +32,7 @@ export const LoggedOutRouter = () => {
 						element={<SignIn />}
 					/>
 					<Route
-						path='/reset-password'
-						element={<ResetPassword />}
-					/>
-					<Route
-						path='/forgot-password'
+						path='/forgot-password/'
 						element={<ForgotPassword />}
 					/>
 					<Route

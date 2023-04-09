@@ -53,13 +53,18 @@ export const SignIn = () => {
 			}
 		}
 	};
-	//google
+/* 	//google
 	const handleCallbackResponse = (res: any) => {
-		sessionStorage.setItem('token', res.credential);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:8080/auth/signin/google');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+      console.log('Signed in as: ' + xhr.responseText);
+    };
+    xhr.send(JSON.stringify({token: res.credential}));
+    xhr.send('idtoken=' + res.credential);
 		console.log(res);
-		navigate('/');
-		// eslint-disable-next-line no-restricted-globals
-		location.reload();
 	};
 
 	useEffect(() => {
@@ -77,7 +82,7 @@ export const SignIn = () => {
      });
 
 		google.accounts.id.prompt();
-	}, []);
+	}, []); */
 	return (
 		<>
 			<Helmet>
@@ -144,9 +149,9 @@ export const SignIn = () => {
 								Forgot your password?
 							</Link>
 						</div>
-						<div className='w-full flex items-center justify-center'>
+{/* 						<div className='w-full flex items-center justify-center'>
 							<div id='signinDiv'></div>
-						</div>
+						</div> */}
 					</form>
 				</div>
 			</div>

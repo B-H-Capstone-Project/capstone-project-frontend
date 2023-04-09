@@ -1,16 +1,24 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import { useForm,  } from 'react-hook-form';
 import axios from '../../api/axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { FormError } from '../../components/form-error';
 
 interface IResetPassword {
   email: string;
 }
+
+
+const forgotPassword = async (data: IResetPassword) => {
+	const { data: response } = await axios.post(`/reset-password`, data);
+	return response.data;
+};
+
 
 export const ForgotPassword = () => {
   const {
@@ -21,31 +29,24 @@ export const ForgotPassword = () => {
 	} = useForm<IResetPassword>({
     mode: 'onChange'
   });
+  const [ status, setStatus ] = useState(''); 
 	const isAuth = useSelector((state: RootState) => state.auth);
-	const userId = isAuth.userToken?.id;
 	const queryClient = useQueryClient();
   
-	const { isLoading, mutate } = useMutation(
-		async (email: string) => {
-      console.log(email);
-			return (await axios.post(`/reset-password/${userId}`, email)).data;
+  const { isLoading, mutate } = useMutation(forgotPassword, {
+		onSuccess: (data) => {
+      setStatus('Reset email has sent, check your email that you wrote. ');
 		},
-		{
-			onSuccess: (data) => {
-				const message = 'success';
-        alert('success');
-			},
-			onError: () => {
-				alert('there was an error');
-			},
-			onSettled: () => {
-				queryClient.invalidateQueries('create');
-			},
-		}
-	);
+		onError: (error: any) => {
+      setStatus('It is something wrong, please try again.');
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries('create');
+		},
+	});
 
 	const onSubmit = async (data: IResetPassword) => {
-		mutate(data.email); 
+		mutate(data); 
 	};
 	return (
     <div className='h-screen flex justify-center mt-20'>
@@ -70,6 +71,7 @@ export const ForgotPassword = () => {
 							/>
           <button className='btn mt-5 mb-2'>SEND EMAIL</button>
         </form>
+        <FormError errorMessage={status} />
 			</Box>
 		</Container>
     </div>

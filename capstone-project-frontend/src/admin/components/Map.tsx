@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
-import axios from "axios";
-import env from "ts-react-dotenv";
+import axios from "../../api/axios";
 
 const mapContainerStyle = {
   width: "80vw",
@@ -14,11 +13,11 @@ interface MarkerProps {
   lng: number;
 }
 
-interface MarkerDataProps {
-  address: string;
-  lat: number;
-  lng: number;
-}
+// interface MarkerDataProps {
+//   address: string;
+//   lat: number;
+//   lng: number;
+// }
 
 const markerOptions: any = {
   icon: {
@@ -167,6 +166,7 @@ const center = {
 };
 
 function Map() {
+  const [loading, setLoading] = useState<any>("...loading");
   const [activeMarker, setActiveMarker] = useState(null);
   // const [addresses, setAddresses] = useState([]);
   const [reservations, setReservations] = useState([]);
@@ -192,13 +192,12 @@ function Map() {
       // }
 
       try {
-        const res = await axios.get("http://localhost:8080/reservations/map");
+        const res = await axios.get("/reservations/map");
         setReservations(res.data.reservations);
-        // console.log("--------------reservations data for google maps----------------------");
-        // console.log(JSON.stringify(res.data.reservations));
       } catch (err) {
         console.log(err);
       }
+      setLoading(true);
     };
     fetchAllAddresses();
   }, []);
@@ -246,7 +245,7 @@ function Map() {
     // }, [addresses]);
   }, [reservations]);
 
-  return (
+  return loading && (
       <GoogleMap
         onClick={() => setActiveMarker(null)}
         mapContainerStyle={mapContainerStyle}

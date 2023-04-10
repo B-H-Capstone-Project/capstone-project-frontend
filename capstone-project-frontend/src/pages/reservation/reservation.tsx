@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useMe } from '../../hooks/useMe';
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import { ClipLoader } from 'react-spinners';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useReservation } from '../../hooks/useReservation';
 import { IReservation } from '../../types/reservation.dto';
 import Paper from '@mui/material/Paper';
@@ -37,7 +37,7 @@ export const Reservation = () => {
 	return (
 		<>
 			{loading ? (
-        <Loading />
+				<Loading />
 			) : (
 				<Container
 					maxWidth='md'
@@ -94,7 +94,7 @@ export const Reservation = () => {
 							</Box>
 							{/** No Reservation */}
 							{/** all reservation is finished*/}
-							{!reservationsData || newReservationStatus === 3 ? (
+							{reservationsData?.length === 0 || newReservationStatus === 3 ? (
 								<Box
 									className='w-1/2 flex mr-5 justify-center items-center md:w-full md:h-full'
 									component={'div'}
@@ -137,15 +137,10 @@ export const Reservation = () => {
 										<div className='flex justify-between'>
 											<Typography variant='h6'>
 												{newReservation?.type}
-											</Typography>
-											<Typography
-												className='mr-10'
-												variant='subtitle1'
-												sx={{
-													color: 'text.secondary',
-												}}>
-												{newReservationStatus === 0 ? 'Pending' : 'Confirmed'}
-											</Typography>
+											</Typography>{' '}
+											<Link to='/reservation-form'>
+												<AddCircleIcon />
+											</Link>
 										</div>
 										<div className='w-full'>
 											<Typography

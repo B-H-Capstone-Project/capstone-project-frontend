@@ -47,7 +47,7 @@ const cardVariants: Variants = {
 
 const reviewCardVariants: Variants = {
 	offscreen: {
-		y: 400,
+		y: 200,
 	},
 	onscreen: {
 		y: 50,
@@ -356,16 +356,16 @@ export const Home = () => {
 					</p>
 				</div>
 			</div>
-			<div className='h-screen'>
+			<div className='h-screen p-5'>
 				{reviews.map((i) => (
-					<div className='w-full'>
+					<div className='w-full h-1/3'>
 						<motion.div
-							className='flex flex-col justify-center items-center m-5 sm:text-xs sm:m-2'
+							className='flex flex-col justify-center items-center sm:text-xs sm:m-2'
 							initial='offscreen'
 							whileInView='onscreen'
 							viewport={{ once: true, amount: 0.8 }}>
 							<motion.div
-								className='h-1/4 bg-lime-600 rounded-md w-1/2 md:w-full'
+								className='bg-lime-600 rounded-md max-w-lg sm:w-full'
 								variants={reviewCardVariants}>
 								<h3 className='text-2xl font-bold text-center mt-2 sm:mt-0'>
 									“

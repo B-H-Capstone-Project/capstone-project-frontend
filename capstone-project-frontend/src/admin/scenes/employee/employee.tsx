@@ -2,7 +2,7 @@ import { useState } from "react";
 // icon
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
-import axios from "axios";
+import axios from "../../../api/axios";
 
 //modal
 import Box from "@mui/material/Box";
@@ -126,7 +126,7 @@ export default function Employee({ employeeprop }: any) {
     async (updateEmployee) => {
       return (
         await axios.put(
-          `http://localhost:8080/user/${employeeId}`,
+          `/user/${employeeId}`,
           updateEmployee
         )
       ).data;
@@ -164,7 +164,7 @@ export default function Employee({ employeeprop }: any) {
     console.log(e);
     e.preventDefault();
     try {
-      axios.delete(`http://localhost:8080/user/${employeeprop.id}`, {
+      axios.delete(`/user/${employeeprop.id}`, {
         data: { userId: employeeprop.id },
       });
       const message = "success";

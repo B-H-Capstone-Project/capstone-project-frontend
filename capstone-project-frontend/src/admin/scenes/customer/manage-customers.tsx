@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../../api/axios";
 import Customers from "./customers";
 import Title from "../../components/title";
 import AdminSidebar from "../../components/admin-sidebar";
@@ -18,7 +18,7 @@ const ManageCustomers = () => {
   useEffect(() => {
     const fetchAllCustomers = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/users/customer");
+        const res = await axios.get("/users/customer");
         setCustomers(res.data.users);
       } catch (err) {
         console.log(err);

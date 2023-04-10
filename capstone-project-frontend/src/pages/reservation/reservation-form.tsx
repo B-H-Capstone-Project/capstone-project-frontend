@@ -119,13 +119,16 @@ function ReservationForm() {
 			<Helmet>
 				<title>Reservation | BOSS&HOSS</title>
 			</Helmet>
-			<div
-				className='relative p-10'
-				style={{ height: '120vh' }}>
-				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-xl shadow dark:border py-8 px-10 m-10 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-0'>
-					<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-600 sm:mb-1'>
-						Request Reservation
-					</h1>
+      <div
+					className='relative w-full flex justify-center items-center'
+					style={{ height: '120vh' }}
+          >
+					<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-10'>
+						<div className='mb-3'>
+							<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-600 sm:mb-1'>
+								Request Reservation
+							</h1>
+						</div>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						{/* Address */}
 						<div className='p-5 flex items-start'></div>

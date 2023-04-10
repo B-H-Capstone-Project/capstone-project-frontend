@@ -50,6 +50,8 @@ const Reservations = () => {
   const [existedRes, setExistedRes] = useState<DateSelectArg>();
   const [isNew, setIsNew] = useState(false);
   const [customer, setCustomer] = useState<ICustomer>();
+  const [province, setProvince] = useState<string | null>(null);
+  const [type, setType] = useState<string | null>(null);
 
   const handleOpen = () => {
     setOpen(true);
@@ -102,9 +104,15 @@ const Reservations = () => {
       phone_number: selected.event._def.extendedProps.phone_number,
       email: selected.event._def.extendedProps.email,
     };
+    setProvince(selected.event._def.extendedProps.province);
+    setType(selected.event._def.extendedProps.type);
     setCustomer(existedCustomer);
     setSelectedDate(selected.event._def.extendedProps.date.slice(0, -8));
     handleOpen();
+  };
+
+  const handleDayCellDidMount = (info: any) => {
+    info.el.style.cursor = 'pointer';
   };
 
   return (
@@ -143,6 +151,7 @@ const Reservations = () => {
                   dateClick={handleDateClick}
                   eventClick={handleEventClick}
                   events={eventsOnCalendar}
+                  dayCellDidMount={handleDayCellDidMount} 
                 />
               </Box>
             </Box>
@@ -161,6 +170,10 @@ const Reservations = () => {
         setExistedRes={setExistedRes}
         customer={customer}
         setCustomer={setCustomer}
+        type={type}
+        province={province}
+        setType={setType}
+        setProvince={setProvince}
       />
     </>
   );

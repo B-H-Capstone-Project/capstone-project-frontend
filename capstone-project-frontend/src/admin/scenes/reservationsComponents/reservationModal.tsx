@@ -93,13 +93,12 @@ const ReservationModal = (props: any) => {
   const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
   const [isReadOnly, setIsReadOnly] = React.useState(false);
   const [dateTime, setDateTime] = React.useState<Dayjs | null>(null);
-  const [province, setProvince] = React.useState(props.isNew ? null: props.existedRes?.province);
   const classes = useStyles();
-  const [type, setType] = React.useState(props.isNew ? null: props.existedRes?.type);
   
   useEffect(()=> {
     setIsReadOnly(!props.isNew);
   }, [props.isNew, props]);
+
 
   const makeReset = () => {
     props.setExistedRes(null);
@@ -109,8 +108,8 @@ const ReservationModal = (props: any) => {
     props.setCustomer(null);
     setIsReadOnly(true);
     setDateTime(null);
-    setProvince(null);
-    setType(null);
+    props.setProvince(null);
+    props.setType(null);
     reset();
   };
   const {
@@ -164,13 +163,13 @@ const ReservationModal = (props: any) => {
   };
 
   const handleEditClick = () => {
-    setType(props.existedRes?.type);
+    props.setType(props.existedRes?.type);
     props.setIsNew(false);
     setIsReadOnly(false);
   };
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setType((event.target as HTMLInputElement).value);
+    props.setType((event.target as HTMLInputElement).value);
   }
 
   const handleDelete = () => {
@@ -183,7 +182,7 @@ const ReservationModal = (props: any) => {
   };
 
   const handleProvinceChange = (e: SelectChangeEvent<any>) => {
-    setProvince(e.target.value);
+    props.setProvince(e.target.value);
   };
 
   const onSubmit = async (data: any) => {
@@ -192,7 +191,7 @@ const ReservationModal = (props: any) => {
         ...data,
         date: props.selectedDate,
         user_id: props.customer.id,
-        type
+        type: props.type
       }
       mutate(newRes);
     } else {
@@ -200,7 +199,7 @@ const ReservationModal = (props: any) => {
         ...data,
         date: props.selectedDate,
         user_id: props.customer.id,
-        type
+        type: props.type
       }
       mutate(updateRes);
     }
@@ -428,10 +427,10 @@ const ReservationModal = (props: any) => {
                 width: "300px",
               }}
               onChange={handleProvinceChange}
-              value={province}
+              value={props.province}
               label="Province"
               inputProps={{ readOnly: isReadOnly }}
-              defaultValue={props.existedRes?.province}
+              defaultValue={props.province}
             >
               {provinces.map((province: string) => (
                 <MenuItem key={province} value={province}>
@@ -466,7 +465,7 @@ const ReservationModal = (props: any) => {
               <RadioGroup
                 onChange={handleRadioChange}
                 defaultValue={props.existedRes?.type}
-                value={type}
+                value={props.type}
                 sx={{
                   display: "flex",
                   flexDirection: "row",

@@ -111,6 +111,10 @@ const Reservations = () => {
 
   };
 
+  const handleDayCellDidMount = (info: any) => {
+    info.el.style.cursor = 'pointer';
+  };
+
   return (
     <>
     <Box m="20px">
@@ -176,14 +180,13 @@ const Reservations = () => {
             selectMirror={true}
             dayMaxEvents={true}
             select={(selected)=> {
-              // when click new reservation
               setIsNew(true);
               handleOpen()}}
             dateClick={handleDateClick}
             eventClick={handleEventClick}
             // eventsSet={(events:IReservation) => setCurrentEvents(events)}
             events={eventsOnCalendar}
-            
+            dayCellDidMount={handleDayCellDidMount} 
             // eventSources={currentEvents}
           />
         </Box>

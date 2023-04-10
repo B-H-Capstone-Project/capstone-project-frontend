@@ -1,15 +1,14 @@
 import { Avatar, Box, createTheme, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Modal, Radio, RadioGroup, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-// import { DateField } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../../api/axios';
 import EditIcon from '@mui/icons-material/Edit';
 import IReservationForm from '../../../types/reservation';
-import { ThemeProvider } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ICustomer {
@@ -20,6 +19,24 @@ interface ICustomer {
   phone_number: string;
   email: string;
 }
+
+const useStyles = makeStyles({
+  icon_edit: {
+    color: "black",
+    cursor: "pointer",
+    "&:icon_edit": {
+      color: "#757575",
+    },
+  },
+  icon_delete: {
+    marginLeft: "10px",
+    color: "black",
+    cursor: "pointer",
+    "&:icon_delete": {
+      color: "#757575",
+    },
+  },
+});
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -36,19 +53,17 @@ const textFieldStyle = {
   mb: 1
 }
 
-const theme = createTheme({
-  spacing: 10,
-});
-
 const provinces = ['AB','BC','NB','NL','NS','NT','NU','MB','ON','PE','QC','SK','YT'];
 
 const ReservationModal = (props: any) => {
   const queryClient = useQueryClient();
-	const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
   const [isReadOnly, setIsReadOnly] = React.useState(false);
   const [dateTime, setDateTime] = React.useState<Dayjs | null>(null);
-  const [province, setProvince] = React.useState(props.existedRes?.province);
+  const [province, setProvince] = React.useState(props.isNew ? null: props.existedRes?.province);
+  const classes = useStyles();
+  const [type, setType] = React.useState(props.isNew ? null: props.existedRes?.type);
   
   useEffect(()=> {
     setIsReadOnly(!props.isNew);
@@ -63,6 +78,7 @@ const ReservationModal = (props: any) => {
     setIsReadOnly(true);
     setDateTime(null);
     setProvince(null);
+    setType(null);
     reset();
 }
   const {
@@ -72,7 +88,7 @@ const ReservationModal = (props: any) => {
       handleSubmit,
       reset
     } = useForm<IReservationForm>({
-      mode: 'onChange',
+      mode: 'onBlur',
     });
 
     const createRes = async (data: IReservationForm) => {
@@ -107,10 +123,18 @@ const ReservationModal = (props: any) => {
       props.setCustomer(JSON.parse(e.target.value));
     };
 
+    const handleProvinceChange = (e:SelectChangeEvent<any>) => {
+      setProvince(e.target.value);
+    }
   const handleEditClick = () => {
+    setType(props.existedRes?.type);
     props.setIsNew(false);
     setIsReadOnly(false);
   };
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setType((event.target as HTMLInputElement).value);
+  }
 
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete this reservation?`)) {
@@ -127,6 +151,7 @@ const ReservationModal = (props: any) => {
         ...data,
         date: props.selectedDate,
         user_id: props.customer.id,
+        type
       }
       mutate(newRes);
     } else {
@@ -134,6 +159,7 @@ const ReservationModal = (props: any) => {
         ...data,
         date: props.selectedDate,
         user_id: props.customer.id,
+        type
       }
       mutate(updateRes);
     }
@@ -143,9 +169,8 @@ const ReservationModal = (props: any) => {
 
   const EditDeleteIcons = () => {
     return <>
-    <EditIcon onClick={handleEditClick}/>
-    <DeleteIcon onClick={handleDelete} />
-
+    <EditIcon onClick={handleEditClick} className={classes.icon_edit}/>
+    <DeleteIcon onClick={handleDelete} className={classes.icon_delete}/>
     </>
   }
   return (
@@ -162,10 +187,11 @@ const ReservationModal = (props: any) => {
         {props.isNew === false ? EditDeleteIcons(): null}
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
         {props.isNew === true ? <>
-          <InputLabel id="demo-simple-select-standard-label">Customer List</InputLabel>
+          <InputLabel id="customer-select-label">Customer List</InputLabel>
           <Select
+            required
             {...register('id', {value: props.customer?.id, required: true})}
-            labelId="demo-simple-select-standard-label"
+            labelId="customer-select-label"
             id="demo-simple-select-standard"
             onChange={handleChange}
             defaultValue={props.customer ? JSON.stringify(props.customer) : ''}
@@ -241,19 +267,22 @@ const ReservationModal = (props: any) => {
             </div>
             <div className='w-full mb-4'>
               {/* Province */}
-              <TextField
-              sx={textFieldStyle}
-                required
-                {...register('province')}
-                label="Province"
-                id="province"
-                InputProps={{
-                  readOnly: isReadOnly,
-                }}
-                defaultValue={props.existedRes?.province}
-                className="bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 block w-1/2 bg-white-700 border-white-600 dark:placeholder-white-400 m-2 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-              
+              <InputLabel id="province-select-label">Province</InputLabel>
+              <Select
+              required
+              {...register('province')}
+              labelId="province-select-label"
+              id="demo-simple-select-standard"
+              onChange={handleProvinceChange}
+              value={province}
+              label="Province"
+              inputProps={{ readOnly: isReadOnly }}
+              defaultValue={props.existedRes?.province}
+              >
+              {provinces.map((province: string) => (
+                <MenuItem key={province} value={province}>{province}</MenuItem>
+              ))}
+          </Select>              
             {/* country */}
             <TextField
             sx={textFieldStyle}
@@ -274,14 +303,15 @@ const ReservationModal = (props: any) => {
         <div className="flex flex-col mb-4">
         <FormLabel id="modal-modal-title">Types *</FormLabel>
           <RadioGroup 
+          onChange={handleRadioChange}
+          value={type}
           defaultValue={props.existedRes?.type}>
-            <FormControlLabel {...register("type", {required: "This is required"})} value="Residential" control={<Radio />} label="Residential" disabled={isReadOnly}/>
-            <FormControlLabel {...register("type", {required: "This is required"})} value="Commercial" control={<Radio />} label="Commercial" disabled={isReadOnly}/>
-            <FormControlLabel {...register("type", {required: "This is required"})} value="Service" control={<Radio />} label="Service" disabled={isReadOnly}/>
-            <FormControlLabel {...register("type", {required: "This is required"})} value="Outdoor Lighting" control={<Radio />} label="Outdoor Lighting" disabled={isReadOnly}/>
-          </RadioGroup>
-              
-            </div>
+            <FormControlLabel value="Residential" control={<Radio />} label="Residential" disabled={isReadOnly}/>
+            <FormControlLabel value="Commercial" control={<Radio />} label="Commercial" disabled={isReadOnly}/>
+            <FormControlLabel value="Service" control={<Radio />} label="Service" disabled={isReadOnly}/>
+            <FormControlLabel value="Outdoor Lighting" control={<Radio />} label="Outdoor Lighting" disabled={isReadOnly}/>
+          </RadioGroup>           
+          </div>
             {/* Date and Time */}
             <div className='mb-4'>
               <LocalizationProvider dateAdapter={AdapterDayjs}>

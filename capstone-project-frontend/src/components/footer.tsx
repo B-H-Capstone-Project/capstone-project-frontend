@@ -1,6 +1,7 @@
 /** @format */
 import InstagramIcon from '@mui/icons-material/Instagram';
 import GoogleIcon from '@mui/icons-material/Google';
+import React from 'react';
 
 
 export const Footer = () => {
@@ -11,7 +12,7 @@ export const Footer = () => {
 				<GoogleIcon />
 			</div>
 			<footer className='basis-1/2 flex justify-center items-end mb-10 text-sm'>
-				<p>@ Boss & Hoss Coporation. All Right Reserved</p>
+				<p>@ Boss & Hoss Corporation. All Right Reserved</p>
 			</footer>
 		</div>
 	);

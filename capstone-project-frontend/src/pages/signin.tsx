@@ -3,15 +3,13 @@
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/hook';
-import { IToken, signIn } from '../redux/reducer/authSlice';
+import { IActionWithPayload, IToken, signIn } from '../redux/reducer/authSlice';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
 import { FormError } from '../components/form-error';
 import bcrypt from 'bcryptjs';
 import jwtDecode from 'jwt-decode';
-
 export interface ISignInForm {
 	email: string;
 	password: string;
@@ -38,7 +36,7 @@ export const SignIn = () => {
 		const { email, password } = getValues();
 		// Hash the password using the salt
 		//const hashedPassword = bcrypt.hashSync(password, salt);
-		const result = await dispatch(signIn({ email: email, password: password }));
+		const result:IActionWithPayload = await dispatch(signIn({ email: email, password: password }));
 		if (!result.error) {
 			const decodedToken: IToken = jwtDecode(result.payload.token);
 			if (decodedToken.role === 3) {
@@ -53,13 +51,18 @@ export const SignIn = () => {
 			}
 		}
 	};
-	//google
+/* 	//google
 	const handleCallbackResponse = (res: any) => {
-		sessionStorage.setItem('token', res.credential);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:8080/auth/signin/google');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+      console.log('Signed in as: ' + xhr.responseText);
+    };
+    xhr.send(JSON.stringify({token: res.credential}));
+    xhr.send('idtoken=' + res.credential);
 		console.log(res);
-		navigate('/');
-		// eslint-disable-next-line no-restricted-globals
-		location.reload();
 	};
 
 	useEffect(() => {
@@ -77,7 +80,7 @@ export const SignIn = () => {
      });
 
 		google.accounts.id.prompt();
-	}, []);
+	}, []); */
 	return (
 		<>
 			<Helmet>
@@ -87,14 +90,14 @@ export const SignIn = () => {
 				className='m-0 p-0 w-full md:flex-co -mt-20 flex justify-center items-center sm:mt-10'
 				style={{ height: '100vh' }}>
 				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1'>
-					<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-500'>
+					<h1 className='text-xl font-bold leading-tight tracking-tight text-black-100 md:text-2xl text-lime-600'>
 						Sign In
 					</h1>
 					<p className='text-sm font-light text-gray-500 dark:text-gray-400 mt-5 mb-5'>
 						Don't have an account?{' '}
 						<Link
 							to='/signup'
-							className='font-medium text-primary-600 hover:underline text-lime-500'>
+							className='font-medium text-primary-600 hover:underline text-lime-600'>
 							Sign Up
 						</Link>
 					</p>
@@ -144,9 +147,9 @@ export const SignIn = () => {
 								Forgot your password?
 							</Link>
 						</div>
-						<div className='w-full flex items-center justify-center'>
+{/* 						<div className='w-full flex items-center justify-center'>
 							<div id='signinDiv'></div>
-						</div>
+						</div> */}
 					</form>
 				</div>
 			</div>

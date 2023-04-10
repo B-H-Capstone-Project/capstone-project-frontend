@@ -1,11 +1,11 @@
 /** @format */
 
 export interface meQuery {
-  user: meQuery_me;
+	user: meQuery_me;
 }
 export interface meQuery_me {
 	id: number;
-  created_date: string;
+	created_date: string;
 	email: string;
 	password: string;
 	first_name: string;
@@ -17,7 +17,7 @@ export interface meQuery_me {
 	province: string;
 	country: string;
 	profile: string;
-  city: string;
+	city: string;
 	is_active: number;
 	role: number;
   is_verified: number;

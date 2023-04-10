@@ -1,14 +1,10 @@
 /** @format */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useMe } from '../../hooks/useMe';
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
-import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
-import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined';
+import { ClipLoader } from 'react-spinners';
 import { useReservation } from '../../hooks/useReservation';
 import { IReservation } from '../../types/reservation.dto';
 import Paper from '@mui/material/Paper';
@@ -25,12 +21,10 @@ import {
 } from '@mui/material';
 import { ReservationTableRow } from '../../components/reservation-row';
 import { Loading } from '../../components/loading';
-import { boolean } from 'yup';
 
 const steps = ['Pending', 'Confirmed', 'Review your service'];
 
 export const Reservation = () => {
-	const [open, setOpen] = useState(false);
 	const { data: userData } = useMe();
 	const { loading, data: reservationsData } = useReservation();
 	const newReservationStatus =
@@ -43,7 +37,7 @@ export const Reservation = () => {
 	return (
 		<>
 			{loading ? (
-				<Loading />
+        <Loading />
 			) : (
 				<Container
 					maxWidth='md'

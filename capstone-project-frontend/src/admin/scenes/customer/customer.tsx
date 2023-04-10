@@ -18,6 +18,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import { SelectChangeEvent } from "@mui/material";
 
 // update
 import { useMutation, useQueryClient } from "react-query";
@@ -54,12 +55,12 @@ const useStyles = makeStyles({
 });
 
 interface ICustomer {
-  // id: string;
-  email: string;
-  password: string;
   first_name: string;
   last_name: string;
   phone_number: string;
+  email: string;
+  password: string;
+  confirm_password: string;
   address_line1: string;
   address_line2?: string;
   postal_code: string;
@@ -69,6 +70,22 @@ interface ICustomer {
   role: number;
   is_active: boolean;
 }
+
+const provinces = [
+  "AB",
+  "BC",
+  "NB",
+  "NL",
+  "NS",
+  "NT",
+  "NU",
+  "MB",
+  "ON",
+  "PE",
+  "QC",
+  "SK",
+  "YT",
+];
 
 const modalStyle = {
   position: "absolute",
@@ -83,6 +100,8 @@ const modalStyle = {
 };
 
 export default function Customer({ customerprop }: any) {
+  const [province, setProvince] = useState(customerprop.existedRes?.province);
+
   const classes = useStyles();
   const queryClient = useQueryClient();
   const customerId = customerprop.id;
@@ -92,24 +111,17 @@ export default function Customer({ customerprop }: any) {
     getValues,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm({
+  } = useForm<ICustomer>({
     mode: "onChange",
-    defaultValues: {
-      first_name: customerprop.first_name,
-      last_name: customerprop.last_name,
-      phone_number: customerprop.phone_number,
-      password: customerprop.password,
-      confirm_password: customerprop.password,
-      address_line1: customerprop.address_line1,
-      address_line2: customerprop.address_line2,
-      postal_code: customerprop.postal_code,
-      city: customerprop.city,
-      province: customerprop.province,
-      country: customerprop.country,
-      role: customerprop.role,
-      is_active: customerprop.is_active,
+    resetOptions: {
+      keepDirtyValues: true,
     },
+    defaultValues: async () => await axios.get(`/user/${customerId}`),
   });
+
+  const handleProvinceChange = (e: SelectChangeEvent<any>) => {
+    setProvince(e.target.value);
+  };
 
   const { isLoading, mutate } = useMutation(
     async (updateCustomer) => {
@@ -237,7 +249,7 @@ export default function Customer({ customerprop }: any) {
             </TableCell>
             <TableCell
               sx={{
-                width: "210px",
+                width: "200px",
                 margin: "0",
                 padding: "2px",
                 border: "none",
@@ -323,10 +335,7 @@ export default function Customer({ customerprop }: any) {
                   margin: "0",
                 }}
               >
-                <EditIcon
-                  className={classes.icon_edit}
-                  onClick={handleOpen}
-                />
+                <EditIcon className={classes.icon_edit} onClick={handleOpen} />
                 <ClearIcon
                   fontSize="large"
                   className={classes.icon_delete}
@@ -380,16 +389,41 @@ export default function Customer({ customerprop }: any) {
                 margin: "0.5rem",
                 width: "300px",
               }}
-              {...register("password")}
+              {...register("password", {
+                required: true,
+                minLength: 10,
+              })}
+              error={errors.password?.type === "minLength"}
+              helperText={
+                errors.password?.type === "minLength"
+                  ? "Password must be more than 8 chars."
+                  : null
+              }
             />
+
             <TextField
               required
               id="outlined-required"
               label="Confirm Password"
+              {...register("confirm_password", {
+                required: true,
+                validate: (value) => value === getValues("password"),
+              })}
+              placeholder="••••••••"
               sx={{
                 margin: "0.5rem",
                 width: "300px",
               }}
+              error={
+                errors.confirm_password &&
+                errors.confirm_password.type === "validate"
+              }
+              helperText={
+                errors.confirm_password &&
+                errors.confirm_password.type === "validate"
+                  ? "Passwords do not match."
+                  : null
+              }
             />
             <TextField
               required
@@ -438,7 +472,6 @@ export default function Customer({ customerprop }: any) {
               {...register("address_line1")}
             />
             <TextField
-              required
               id="outlined-required"
               label="Address Line2"
               sx={{
@@ -459,17 +492,27 @@ export default function Customer({ customerprop }: any) {
               placeholder={customerprop.city}
               {...register("city")}
             />
-            <TextField
+
+            <Select
               required
-              id="outlined-required"
+              {...register("province")}
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={province}
               label="Province"
+              placeholder={customerprop.province}
+              onChange={handleProvinceChange}
               sx={{
                 margin: "0.5rem",
                 width: "300px",
               }}
-              placeholder={customerprop.province}
-              {...register("province")}
-            />
+            >
+              {provinces.map((province: string) => (
+                <MenuItem key={province} value={province}>
+                  {province}
+                </MenuItem>
+              ))}
+            </Select>
             <TextField
               required
               id="outlined-required"
@@ -519,7 +562,6 @@ export default function Customer({ customerprop }: any) {
               <MenuItem value={1}>Active</MenuItem>
               <MenuItem value={2}>In Active</MenuItem>
             </Select>
-
             <Typography align="center">
               <Button
                 sx={{

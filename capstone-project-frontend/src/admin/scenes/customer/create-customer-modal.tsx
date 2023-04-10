@@ -7,6 +7,7 @@ import {
   Typography,
   FormControl,
   TextField,
+  SelectChangeEvent,
   Button,
 } from "@mui/material";
 import { useState } from "react";
@@ -27,9 +28,9 @@ const modalStyle = {
 };
 
 interface ICustomer {
-  // id: string;
   email: string;
   password: string;
+  confirm_password: string;
   first_name: string;
   last_name: string;
   phone_number: string;
@@ -43,6 +44,22 @@ interface ICustomer {
   is_active: boolean;
 }
 
+const provinces = [
+  "AB",
+  "BC",
+  "NB",
+  "NL",
+  "NS",
+  "NT",
+  "NU",
+  "MB",
+  "ON",
+  "PE",
+  "QC",
+  "SK",
+  "YT",
+];
+
 const signUp = async (data: any) => {
   const { data: response } = await axios.post("auth/signup", data);
   return response.data;
@@ -51,6 +68,12 @@ const signUp = async (data: any) => {
 const CustomerModal = (props: any) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [province, setProvince] = useState();
+
+  const handleProvinceChange = (e: SelectChangeEvent<any>) => {
+    setProvince(e.target.value);
+  };
+
   const queryClient = useQueryClient();
   const {
     register,
@@ -58,7 +81,7 @@ const CustomerModal = (props: any) => {
     formState: { errors, isValid },
     handleSubmit,
   } = useForm<ICustomer>({
-    mode: "onChange", 
+    mode: "onChange",
     defaultValues: {
       role: 3,
     },
@@ -88,7 +111,12 @@ const CustomerModal = (props: any) => {
   };
 
   return (
-    <Modal open={props.open} onClose={():void => {props.setOpen(false)}}>
+    <Modal
+      open={props.open}
+      onClose={(): void => {
+        props.setOpen(false);
+      }}
+    >
       <Box sx={modalStyle}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Typography
@@ -121,7 +149,16 @@ const CustomerModal = (props: any) => {
               width: "300px",
             }}
             placeholder="••••••••"
-            {...register("password")}
+            {...register("password", {
+              required: true,
+              minLength: 10,
+            })}
+            error={errors.password?.type === "minLength"}
+            helperText={
+              errors.password?.type === "minLength"
+                ? "Password must be more than 8 chars."
+                : null
+            }
           />
           <TextField
             required
@@ -131,6 +168,20 @@ const CustomerModal = (props: any) => {
               margin: "0.5rem",
               width: "300px",
             }}
+            {...register("confirm_password", {
+              required: true,
+              validate: (value) => value === getValues("password"),
+            })}
+            error={
+              errors.confirm_password &&
+              errors.confirm_password.type === "validate"
+            }
+            helperText={
+              errors.confirm_password &&
+              errors.confirm_password.type === "validate"
+                ? "Passwords do not match."
+                : null
+            }
           />
           <TextField
             required
@@ -175,7 +226,6 @@ const CustomerModal = (props: any) => {
             {...register("address_line1")}
           />
           <TextField
-            required
             id="outlined-required"
             label="Address Line2"
             sx={{
@@ -194,7 +244,28 @@ const CustomerModal = (props: any) => {
             }}
             {...register("city")}
           />
-          <TextField
+
+          <Select
+            required
+            {...register("province")}
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={province}
+            label="Province"
+            onChange={handleProvinceChange}
+            sx={{
+              margin: "0.5rem",
+              width: "300px",
+            }}
+          >
+            {provinces.map((province: string) => (
+              <MenuItem key={province} value={province}>
+                {province}
+              </MenuItem>
+            ))}
+          </Select>
+
+          {/* <TextField
             required
             id="outlined-required"
             label="Province"
@@ -203,7 +274,7 @@ const CustomerModal = (props: any) => {
               width: "300px",
             }}
             {...register("province")}
-          />
+          /> */}
           <TextField
             required
             id="outlined-required"
@@ -225,15 +296,15 @@ const CustomerModal = (props: any) => {
             {...register("country")}
           />
 
-              <TextField
-              id="outlined-required"
-              label="Role"
-              sx={{
-                margin: "0.5rem",
-                width: "300px",
-              }}
-              defaultValue="Customer"
-            />
+          <TextField
+            id="outlined-required"
+            label="Role"
+            sx={{
+              margin: "0.5rem",
+              width: "300px",
+            }}
+            defaultValue="Customer"
+          />
           <FormControl
             sx={{
               margin: "0.5rem",

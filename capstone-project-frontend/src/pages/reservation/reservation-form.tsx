@@ -31,6 +31,8 @@ function ReservationForm() {
 	const currentDay = dayjs().format();
 	//days
 	const [day, setDay] = useState<Dayjs | null>(dayjs(currentDay));
+  //error
+  const [error, setError] = useState(null);
 	const queryClient = useQueryClient();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const userId = isAuth.userToken?.id;
@@ -51,11 +53,11 @@ function ReservationForm() {
 		},
 		{
 			onSuccess: (data) => {
-				const message = 'success';
 				navigate('/reservation');
 			},
-			onError: () => {
-				alert('there was an error');
+			onError: (error: any) => {
+        setError(error.response.data.message);
+        alert(error.response.data.message);
 			},
 			onSettled: () => {
 				queryClient.invalidateQueries('create');
@@ -121,7 +123,7 @@ function ReservationForm() {
 				className='relative p-10'
 				style={{ height: '120vh' }}>
 				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-xl shadow dark:border py-8 px-10 m-10 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-0'>
-					<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
+					<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-600 sm:mb-1'>
 						Request Reservation
 					</h1>
 					<form onSubmit={handleSubmit(onSubmit)}>
@@ -298,6 +300,7 @@ function ReservationForm() {
 								<FormError errorMessage={"It is over the limit of words"} />
 							)}
 						</div>
+            {error && <FormError errorMessage={error} />}
 						{/* Submit Button */}
 						<div className='flex flex-col justify-center items-center'>
 							<button

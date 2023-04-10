@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from '../../api/axios';
+
 import { Box, useTheme } from "@mui/material";
-import { tokens } from "../theme";
 
 // Icon
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -24,9 +24,6 @@ const Dashboard: any = () => {
     googleMapsApiKey: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
   });
 
-  const theme: any = useTheme();
-  const colors: any = tokens(theme.palette.mode);
-
   const [employees, setEmployees] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [reservations, setReservations] = useState([]);
@@ -48,40 +45,40 @@ const Dashboard: any = () => {
     try {
       // New Employees
       const resEmployee = await axios.get(
-        "http://localhost:8080/users/newemployee"
+        "/users/newemployee",
       );
       setEmployees(resEmployee.data.users);
       const employeeCount = resEmployee.data.users.length;
       setEmployeeCount(employeeCount);
       // % New Employees
       const resEmployeesPercentage = await axios.get(
-        "http://localhost:8080/users/newemployee/percentage"
+        "/users/newemployee/percentage"
       );
       setEmployeesPercentage(resEmployeesPercentage.data.employeesPercentage);
 
       // New Customers
       const resCustomer = await axios.get(
-        "http://localhost:8080/users/newcustomer"
+        "/users/newcustomer"
       );
       setCustomers(resCustomer.data.users);
       const customerCount = resCustomer.data.users.length;
       setCustomerCount(customerCount);
       // % New Customers
       const resCustomersPercentage = await axios.get(
-        "http://localhost:8080/users/newcustomer/percentage"
+        "/users/newcustomer/percentage"
       );
       setCustomersPercentage(resCustomersPercentage.data.customersPercentage);
 
       // New Reservations
       const resReservation = await axios.get(
-        "http://localhost:8080/newreservations"
+        "/newreservations"
       );
       setReservations(resCustomer.data.reservations);
       const reservationCount = resReservation.data.reservations.length;
       setReservationCount(reservationCount);
       // % New Reservation
       const resReservationPercentage = await axios.get(
-        "http://localhost:8080/newreservations/percentage"
+        "/newreservations/percentage"
       );
       setReservationsPercentage(
         resReservationPercentage.data.reservationPercentage
@@ -89,7 +86,7 @@ const Dashboard: any = () => {
 
       // Pending Reservations
       const resPendingReservation = await axios.get(
-        "http://localhost:8080/newpendingreservations"
+        "/newpendingreservations"
       );
       setPendingReservations(resPendingReservation.data.reservations);
       const pendingReservationCount =
@@ -97,7 +94,7 @@ const Dashboard: any = () => {
       setPendingReservationCount(pendingReservationCount);
       // % Pending Reservations
       const resPendingReservationPercentage = await axios.get(
-        "http://localhost:8080/newpendingreservations/percentage"
+        "/newpendingreservations/percentage"
       );
       setPendingReservationsPercentage(
         resPendingReservationPercentage.data.reservationPercentage

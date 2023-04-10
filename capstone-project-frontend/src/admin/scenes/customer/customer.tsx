@@ -2,7 +2,7 @@ import { useState } from "react";
 // icon
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
-import axios from "axios";
+import axios from "../../../api/axios";
 
 // modal
 import Box from "@mui/material/Box";
@@ -127,7 +127,7 @@ export default function Customer({ customerprop }: any) {
     async (updateCustomer) => {
       return (
         await axios.put(
-          `http://localhost:8080/user/${customerId}`,
+          `/user/${customerId}`,
           updateCustomer
         )
       ).data;
@@ -165,7 +165,7 @@ export default function Customer({ customerprop }: any) {
     console.log(e);
     e.preventDefault();
     try {
-      axios.delete(`http://localhost:8080/user/${customerprop.id}`, {
+      axios.delete(`/user/${customerprop.id}`, {
         data: { userId: customerprop.id },
       });
       const message = "success";

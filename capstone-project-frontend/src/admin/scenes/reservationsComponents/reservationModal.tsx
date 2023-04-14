@@ -199,6 +199,7 @@ const ReservationModal = (props: any) => {
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={style}>
+          <Box sx={{paddingBottom: "80px"}}>
           {/* Edit Icon */}
           <Box
             sx={{
@@ -230,6 +231,8 @@ const ReservationModal = (props: any) => {
               src={props.customer?.profile}
             />
           </Box>
+          </Box>
+          
 
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {props.isNew === true ? (

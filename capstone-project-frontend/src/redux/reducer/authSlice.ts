@@ -52,7 +52,6 @@ export const signIn = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 			};
-      console.log(password);
 			return await axios
 				.post(
 					'/auth/signin',
@@ -101,8 +100,8 @@ export const authSlice = createSlice({
 				state.status = 'succeeded';
 				state.isLoggedIn = true;
 				state.success = true;
-        state.loading = false;
-        state.userToken = jwt_decode(action.payload.token);
+				state.loading = false;
+				state.userToken = jwt_decode(action.payload.token);
 			})
 			.addCase(signIn.rejected, (state, action: IActionWithPayload) => {
 				state.status = 'failed';

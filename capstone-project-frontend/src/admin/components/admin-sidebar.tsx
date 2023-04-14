@@ -67,9 +67,9 @@ const AdminSidebar = () => {
   const theme = useTheme();
   // const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(null);
   const dispatch = useAppDispatch();
-  console.log("selected state in AdminSidebar:", selected); // add this line
+  console.log("selected state in AdminSidebar:", selected);
 
   return (
     <Box
@@ -164,9 +164,9 @@ const AdminSidebar = () => {
             <Item
               title="Customers"
               to="/admin/customers"
-              icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              icon={<PeopleOutlinedIcon />}
             />
             <Item
               title="Reservations"

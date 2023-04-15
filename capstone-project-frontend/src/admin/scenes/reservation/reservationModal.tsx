@@ -132,14 +132,14 @@ const ReservationModal = (props: any) => {
 
   const updateRes = async (data: IReservationForm) => {
     const { data: response } = await axios.put(
-      `reservation/${props.existedRes?.reservation_id}`,
+      `reservation/${props.existedRes?.id}`,
       data
     );
     return response.data;
   };
 
   const deleteRes = useMutation(() => {
-    return axios.delete(`reservation/${props.existedRes?.reservation_id}`);
+    return axios.delete(`reservation/${props.existedRes?.id}`);
   });
 
   const { isLoading, mutate } = useMutation(

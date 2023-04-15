@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 
 // Calendar
 import FullCalendar, { EventInput, DateSelectArg } from "@fullcalendar/react";
@@ -10,9 +10,9 @@ import listPlugin from "@fullcalendar/list";
 import { Box, useTheme } from "@mui/material";
 
 // Components
-import Title from "../components/title";
-import ReservationModal from "./reservationsComponents/reservationModal";
-import AdminSidebar from "../components/admin-sidebar";
+import Title from "../../components/title";
+import ReservationModal from "./reservationModal";
+import AdminSidebar from "../../components/admin-sidebar";
 interface ICustomer {
   id: number;
   first_name: string;
@@ -60,7 +60,7 @@ const Reservations = () => {
   useEffect(() => {
     const fecthAllCustomers = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/users/customer");
+        const res = await axios.get("/users/customer");
         setCustomers(res.data.users);
       } catch (err) {
         console.log(err);
@@ -69,7 +69,7 @@ const Reservations = () => {
 
     const fetchAllReservations = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/reservationsUsers");
+        const res = await axios.get("/reservationsUsers");
         setReservations(res.data.reservations);
       } catch (err) {
         console.log(err);
@@ -81,7 +81,7 @@ const Reservations = () => {
 
   const eventsOnCalendar: EventInput[] = reservations
     .filter(
-      (reservation: IReservationWithUser) => reservation.is_confirmed === 1
+      (reservation: IReservationWithUser) => reservation.is_confirmed === 2
     )
     .map((reservation: IReservationWithUser) => ({
       extendedProps: reservation,
@@ -97,7 +97,7 @@ const Reservations = () => {
   const handleEventClick = (selected: any) => {
     setExistedRes(selected.event._def.extendedProps);
     const existedCustomer: ICustomer = {
-      id: selected.event._def.extendedProps.id,
+      id: selected.event._def.extendedProps.user_id,
       first_name: selected.event._def.extendedProps.first_name,
       last_name: selected.event._def.extendedProps.last_name,
       profile: selected.event._def.extendedProps.profile,
@@ -121,7 +121,7 @@ const Reservations = () => {
         <AdminSidebar />
         <Box sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
           <Box m="20px">
-            <Title title="Reservations" subtitle="Manage Reservations" />
+            <Title title="Confirmed Reservations" subtitle=" Reservations" />
             <Box display="flex" justifyContent="space-between">
               {/* CALENDAR */}
               <Box flex="1 1 100%" ml="15px">

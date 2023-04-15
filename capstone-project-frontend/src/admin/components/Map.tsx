@@ -1,23 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
-import axios from "../../api/axios";
+import { Box, Typography } from "@mui/material";
 
 const mapContainerStyle = {
   width: "80vw",
   height: "60vh",
-  borderRadius: '20px',
+  borderRadius: "20px",
 };
-interface MarkerProps {
-  address: string;
-  lat: number;
-  lng: number;
-}
-
-// interface MarkerDataProps {
-//   address: string;
-//   lat: number;
-//   lng: number;
-// }
 
 const markerOptions: any = {
   icon: {
@@ -165,11 +154,67 @@ const center = {
   lng: -114.0719,
 };
 
+const markers = [
+  {
+    id: 1,
+    name: "Hyunju Lee",
+    type: "Outdoor Lighting",
+    date: "2023-04-14",
+    position: { lat: 51.04811, lng: -114.08249 },
+  },
+  {
+    id: 2,
+    name: "Seoyoung Hwang",
+    type: "Commercial",
+    date: "2023-04-15",
+    position: { lat: 51.06667, lng: -114.08989 },
+  },
+  {
+    id: 3,
+    name: "Dominik Bueckert",
+    type: "Service",
+    date: "2023-04-16",
+    position: { lat: 51.04955, lng: -114.07934 },
+  },
+  {
+    id: 4,
+    name: "Bob Johnson",
+    type: "Outdoor Lighting",
+    date: "2023-04-13",
+    position: { lat: 51.01487, lng: -114.15087 },
+  },
+  {
+    id: 5,
+    name: "Lisa Chen",
+    type: "Commerical",
+    date: "2023-04-19",
+    position: { lat: 51.00288, lng: -114.12909 },
+  },
+  {
+    id: 6,
+    name: "Lisa Chen",
+    type: "Service",
+    date: "2023-04-20",
+    position: { lat: 51.0525958, lng: -114.0413707 },
+  },
+  {
+    id: 7,
+    name: "Kelly Wu",
+    type: "Service",
+    date: "2023-05-01",
+    position: { lat: 51.0145152, lng: -114.1801356 },
+  },
+  {
+    id: 8,
+    name: "Bob Johnson",
+    type: "Commercial",
+    date: "2023-05-02",
+    position: { lat: 51.0214941, lng: -114.1429146},
+  },
+];
+
 function Map() {
-  const [loading, setLoading] = useState<any>("...loading");
   const [activeMarker, setActiveMarker] = useState(null);
-  // const [addresses, setAddresses] = useState([]);
-  const [reservations, setReservations] = useState([]);
 
   const handleActiveMarker = (marker: any) => {
     if (marker === activeMarker) {
@@ -178,97 +223,48 @@ function Map() {
     setActiveMarker(marker);
   };
 
-  useEffect(() => {
-    const fetchAllAddresses = async () => {
-      // try {
-      // const res = await axios.get(// "http://localhost:8080/reservations/address");
-      // const res = await axios.get("http://localhost:8080/reservations/map");
-      // setAddresses(res.data);
-      // setAddresses(res.data.newAddresses);
-      // console.log(JSON.stringify(res.data));
-      // console.log(JSON.stringify(res.data.newAddresses));
-      // } catch (err) {
-      // console.log(err);
-      // }
+  const handleCloseInfoWindow = () => {
+    setActiveMarker(null);
+  };
 
-      try {
-        const res = await axios.get("/reservations/map");
-        setReservations(res.data.reservations);
-      } catch (err) {
-        console.log(err);
-      }
-      setLoading(true);
-    };
-    fetchAllAddresses();
-  }, []);
+  const handleOnLoad = (map: any) => {
+    const bounds = new google.maps.LatLngBounds();
+    markers.forEach(({ position }) => bounds.extend(position));
+    map.fitBounds(bounds);
+  };
 
-  const [markers, setMarkers] = useState<MarkerProps[]>([]);
-
-  useEffect(() => {
-    const newAddresses = reservations.map(
-      (address: any) =>
-        `${address.address_line1}, ${address.city}, ${address.province} ${address.postal_code}, ${address.country}`
-    );
-    // console.log("frontend: " + newAddresses);
-    const promises = newAddresses.map((address) =>
-      axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
-        params: {
-          address: address,
-          key: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
-          // key: process.env.GOOGLE_MAPS_API_KEY
-        },
-      })
-    );
-
-    Promise.all(promises)
-      .then((responses) => {
-        const results: any = responses.map(
-          (response) => response.data.results[0]
-        );
-        // console.log("frontend results: " + JSON.stringify(results));
-
-        const newMarkers: any = results.map((result: any) => ({
-          id: result.id,
-          lat: result.geometry.location.lat,
-          lng: result.geometry.location.lng,
-          address: result.formatted_address,
-          name: `${result.first_name} ${result.last_name}`,
-          type: result.type,
-          description: result.description,
-          date: result.date,
-        }));
-
-        // console.log("newMarkers: " + JSON.stringify(newMarkers));
-        setMarkers(newMarkers);
-      })
-      .catch((err) => console.log(err));
-    // }, [addresses]);
-  }, [reservations]);
-
-  return loading && (
+  return (
+    <>
       <GoogleMap
-        onClick={() => setActiveMarker(null)}
+        onLoad={handleOnLoad}
         mapContainerStyle={mapContainerStyle}
-        // mapContainerClassName={classes.mapContainer}
-        zoom={11}
         center={center}
+        zoom={10}
         options={options}
       >
-        {markers.map((marker: any) => (
+        {markers.map(({ id, name, type, date, position }) => (
           <MarkerF
-            key={marker.address}
-            position={{ lat: marker.lat, lng: marker.lng }}
+            key={id}
             options={markerOptions}
+            position={position}
+            onClick={() => handleActiveMarker(id)}
           >
-            {activeMarker === marker.id ? (
-              <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                <div>hello</div>
-                <div>{marker.name}</div>
+            {activeMarker === id && (
+              <InfoWindow onCloseClick={handleCloseInfoWindow}>
+                <Box
+                >
+                  <Typography sx={{
+                    fontWeight: "bold"
+                  }}>{name}</Typography>
+                  <Typography>{date}</Typography>
+                  <Typography>{type}</Typography>
+                </Box>
               </InfoWindow>
-            ) : null}
+            )}
           </MarkerF>
         ))}
       </GoogleMap>
+    </>
   );
 }
 

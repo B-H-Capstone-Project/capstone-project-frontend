@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
 const queryClient = new QueryClient();
 
 root.render(
-	<React.StrictMode>
+	// <React.StrictMode>
 		<HelmetProvider>
 			<Provider store={store}>
 				<QueryClientProvider client={queryClient}>
@@ -25,5 +25,5 @@ root.render(
 				</QueryClientProvider>
 			</Provider>
 		</HelmetProvider>
-	</React.StrictMode>
+	// </React.StrictMode>
 );

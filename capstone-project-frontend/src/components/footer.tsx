@@ -12,7 +12,7 @@ export const Footer = () => {
 				<GoogleIcon />
 			</div>
 			<footer className='basis-1/2 flex justify-center items-end mb-10 text-sm'>
-				<p>@ Boss & Hoss Corporation. All Right Reserved</p>
+				<p>@ Boss & Hoss Corporation. All Rights Reserved</p>
 			</footer>
 		</div>
 	);

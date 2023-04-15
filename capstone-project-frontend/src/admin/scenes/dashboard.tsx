@@ -21,7 +21,7 @@ const Dashboard: any = () => {
   const [loading, setLoading] = useState<any>();
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDa4ZNjAcA6NEACcDSrpXbt2IY7Bz6cNI4",
+    googleMapsApiKey: "AIzaSyDBTpy59fn81H-9o6k4SYJru8MCZP-da_w",
   });
 
   const [employees, setEmployees] = useState([]);

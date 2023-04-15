@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
+import { Box, Typography } from "@mui/material";
 
 const mapContainerStyle = {
   width: "80vw",
@@ -177,19 +178,39 @@ const markers = [
   },
   {
     id: 4,
-    name: "Seoyoung Hwang",
-    type: "Service",
-    date: "2023-04-16",
-    position: { lat: 51.014870, lng: -114.150870 },
+    name: "Bob Johnson",
+    type: "Outdoor Lighting",
+    date: "2023-04-13",
+    position: { lat: 51.01487, lng: -114.15087 },
   },
   {
     id: 5,
     name: "Lisa Chen",
+    type: "Commerical",
+    date: "2023-04-19",
+    position: { lat: 51.00288, lng: -114.12909 },
+  },
+  {
+    id: 6,
+    name: "Lisa Chen",
     type: "Service",
-    date: "2023-04-16",
-    position: { lat: 51.002880, lng: -114.129090 },
-  }
-
+    date: "2023-04-20",
+    position: { lat: 51.0525958, lng: -114.0413707 },
+  },
+  {
+    id: 7,
+    name: "Kelly Wu",
+    type: "Service",
+    date: "2023-05-01",
+    position: { lat: 51.0145152, lng: -114.1801356 },
+  },
+  {
+    id: 8,
+    name: "Bob Johnson",
+    type: "Commercial",
+    date: "2023-05-02",
+    position: { lat: 51.0214941, lng: -114.1429146},
+  },
 ];
 
 function Map() {
@@ -216,7 +237,6 @@ function Map() {
     <>
       <GoogleMap
         onLoad={handleOnLoad}
-        // onClick={() => setActiveMarker(null)}
         mapContainerStyle={mapContainerStyle}
         center={center}
         zoom={10}
@@ -230,17 +250,15 @@ function Map() {
             onClick={() => handleActiveMarker(id)}
           >
             {activeMarker === id && (
-              // <InfoWindow onCloseClick={() => setActiveMarker(null)}>
               <InfoWindow onCloseClick={handleCloseInfoWindow}>
-                <>
-                  <span><strong>{name}</strong></span>
-                  <br />
-
-                  <span>{date}</span>
-                  <br />
-                  <span>{type}</span>
-                  <br />
-                </>
+                <Box
+                >
+                  <Typography sx={{
+                    fontWeight: "bold"
+                  }}>{name}</Typography>
+                  <Typography>{date}</Typography>
+                  <Typography>{type}</Typography>
+                </Box>
               </InfoWindow>
             )}
           </MarkerF>

@@ -14,7 +14,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-// import ScheduleIcon from '@mui/icons-material/Schedule';
+import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
 
 import { makeStyles } from "@mui/styles";
 
@@ -155,14 +155,14 @@ const AdminSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
+            <Item
               title="Reservations Status"
               to="/admin/reservations-status"
-              icon={<ScheduleIcon />}
+              icon={<ScheduleSendIcon />}
               selected={selected}
               setSelected={setSelected}
               // className={classes.reservationsStatus}
-            /> */}
+            />
             <Item
               title="Sign Out"
               onClick={() => dispatch(signOut())}

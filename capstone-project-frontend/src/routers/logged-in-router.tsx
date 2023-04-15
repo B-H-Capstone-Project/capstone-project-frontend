@@ -14,13 +14,14 @@ import { OurWork } from '../pages/our-work';
 import Dashboard from '../admin/scenes/dashboard';
 import ManageCustomers from '../admin/scenes/customer/manage-customers';
 import ManageEmployees from '../admin/scenes/employee/manage-employees';
-import AdminReservations from '../admin/scenes/reservations';
+import AdminReservations from '../admin/scenes/reservation/reservations';
 import { EditProfile } from '../pages/user/edit-profile';
 import { SignIn } from '../pages/signin';
 
 import ReservationForm from '../pages/reservation/reservation-form';
 import { Reservation } from '../pages/reservation/reservation';
 import { Footer } from '../components/footer';
+import ManageReservationsStatus from "../admin/scenes/reservation/manage-reservations-status";
 
 //customer routes
 const clientRoutes = [
@@ -60,6 +61,7 @@ const adminRoutes = [
   { path: "/admin/customers", component: <ManageCustomers /> },
   { path: "/admin/employees", component: <ManageEmployees /> },
   { path: "/admin/reservations", component: <AdminReservations /> },
+  { path: "/admin/reservations-status", component: <ManageReservationsStatus /> },
 ];
 
 export const LoggedInRouter = () => {

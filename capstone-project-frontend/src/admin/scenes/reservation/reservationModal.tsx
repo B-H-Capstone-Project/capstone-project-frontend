@@ -124,7 +124,7 @@ const ReservationModal = (props: any) => {
 
   const createRes = async (data: IReservationForm) => {
     const { data: response } = await axios.post(
-      `reservation/${props.customer?.id}`,
+      `reservation/admin/${props.customer?.id}`,
       data
     );
     return response.data;
@@ -476,10 +476,10 @@ const ReservationModal = (props: any) => {
                   paddingBottom: "5px",
                 }}
               >
-                <FormControlLabel value="Residential" control={<Radio />} label="Residential" disabled={isReadOnly}/>
-                <FormControlLabel value="Commercial" control={<Radio />} label="Commercial" disabled={isReadOnly}/>
-                <FormControlLabel value="Service" control={<Radio />} label="Service" disabled={isReadOnly}/>
-                <FormControlLabel value="Outdoor Lighting" control={<Radio />} label="Outdoor Lighting" disabled={isReadOnly}/>
+                <FormControlLabel value="Residential" control={<Radio required={true}/>} label="Residential" disabled={isReadOnly}/>
+                <FormControlLabel value="Commercial" control={<Radio required={true}/>} label="Commercial" disabled={isReadOnly}/>
+                <FormControlLabel value="Service" control={<Radio required={true}/>} label="Service" disabled={isReadOnly}/>
+                <FormControlLabel value="Outdoor Lighting" control={<Radio required={true}/>} label="Outdoor Lighting" disabled={isReadOnly}/>
               </RadioGroup>
             </Box>
 

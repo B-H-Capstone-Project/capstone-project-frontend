@@ -603,10 +603,6 @@ video {
   margin: 0.25rem;
 }
 
-.m-10 {
-  margin: 2.5rem;
-}
-
 .m-2 {
   margin: 0.5rem;
 }
@@ -721,10 +717,6 @@ video {
   height: 33.333333%;
 }
 
-.h-1\/4 {
-  height: 25%;
-}
-
 .h-2\/5 {
   height: 40%;
 }
@@ -791,6 +783,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .flex-1 {

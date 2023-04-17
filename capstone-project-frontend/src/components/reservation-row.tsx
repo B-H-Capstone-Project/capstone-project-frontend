@@ -12,6 +12,7 @@ interface IReservationTableRow {
 	date?: string;
 	description: string;
 	is_confirmed: number;
+  img: string;
 }
 
 export const ReservationTableRow: React.FC<IReservationTableRow> = ({
@@ -19,6 +20,7 @@ export const ReservationTableRow: React.FC<IReservationTableRow> = ({
 	date,
 	description,
 	is_confirmed,
+  img
 }) => {
 	const [open, setOpen] = React.useState(false);
 	console.log(date + '-------------');
@@ -93,7 +95,8 @@ export const ReservationTableRow: React.FC<IReservationTableRow> = ({
 								component='div'>
 								Description
 							</Typography>
-							<div>{description}</div>
+							<TableCell sx={{ width: "70%", textAlign: "center"}}>{description}</TableCell>
+              <TableCell sx={{ width: "30%"}}><img src={img} /></TableCell>
 						</Box>
 					</Collapse>
 				</TableCell>

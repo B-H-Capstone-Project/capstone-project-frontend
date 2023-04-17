@@ -90,7 +90,7 @@ export const authSlice = createSlice({
 			sessionStorage.removeItem('token');
       // eslint-disable-next-line no-restricted-globals
       window.location.replace(
-        "http://localhost:3000"
+        "http://ec2-3-15-148-140.us-east-2.compute.amazonaws.com"
       );
 		},
 	},

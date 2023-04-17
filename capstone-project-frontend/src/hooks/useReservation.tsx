@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { IReservation } from '../types/reservation.dto';
+import { IReservation, IReservationOutput } from '../types/reservation.dto';
 
 
 export const useReservation = () => {
 	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState<IReservation[]>();
+	const [data, setData] = useState<IReservationOutput[]>();
 	const userId = useSelector((state: RootState) => state.auth.userToken?.id);
 	const fetchApi = async () => {
 		try {

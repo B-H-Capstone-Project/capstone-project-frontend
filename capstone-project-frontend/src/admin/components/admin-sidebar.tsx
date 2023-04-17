@@ -3,9 +3,9 @@ import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-// import { tokens } from "../theme";
 import { useAppDispatch } from "../../redux/hook";
 import { signOut } from "../../redux/reducer/authSlice";
+import { useMe } from '../../hooks/useMe';
 
 // icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -14,7 +14,6 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-// import ScheduleIcon from '@mui/icons-material/Schedule';
 
 import { makeStyles } from "@mui/styles";
 
@@ -47,7 +46,6 @@ const useStyles = makeStyles({
 
 const Item = ({ title, to, icon, selected, setSelected }: any) => {
   const classes = useStyles();
-  console.log("selected prop in Item:", selected);
 
   return (
     <MenuItem
@@ -56,7 +54,6 @@ const Item = ({ title, to, icon, selected, setSelected }: any) => {
       active={selected === title}
       icon={icon}
     >
-      {/* <Typography variant="body2" display="block" noWrap={false}>{title}</Typography> */}
       <Typography >{title}</Typography>
       <Link to={to} />
     </MenuItem>
@@ -64,6 +61,7 @@ const Item = ({ title, to, icon, selected, setSelected }: any) => {
 };
 
 const AdminSidebar = () => {
+    const { data } = useMe();
   const classes = useStyles();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState();
@@ -127,6 +125,17 @@ const AdminSidebar = () => {
             )}
           </MenuItem>
           <Box paddingLeft={isCollapsed ? undefined : ""}>
+          {!isCollapsed && 
+            <Box sx={{
+              paddingLeft: "25px",
+              paddingBottom: "10px"
+            }}>
+            <Typography sx={{
+              color: "white"
+            }}>{data?.user.first_name} {data?.user.last_name} | {data?.user.role == 1 ? "Admin" : "Employee" }</Typography>
+        
+            </Box>
+}
             <Item
               title="Dashboard"
               icon={<HomeOutlinedIcon />}

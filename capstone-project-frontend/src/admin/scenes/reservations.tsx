@@ -60,7 +60,7 @@ const Reservations = () => {
   useEffect(() => {
     const fecthAllCustomers = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/users/customer");
+        const res = await axios.get("users/customer");
         setCustomers(res.data.users);
       } catch (err) {
         console.log(err);
@@ -69,7 +69,7 @@ const Reservations = () => {
 
     const fetchAllReservations = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/reservationsUsers");
+        const res = await axios.get("reservationsUsers");
         setReservations(res.data.reservations);
       } catch (err) {
         console.log(err);

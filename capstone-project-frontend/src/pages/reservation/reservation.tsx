@@ -6,7 +6,7 @@ import { useMe } from '../../hooks/useMe';
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useReservation } from '../../hooks/useReservation';
-import { IReservation } from '../../types/reservation.dto';
+import { IReservation, IReservationOutput } from '../../types/reservation.dto';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -210,7 +210,7 @@ export const Reservation = () => {
 											</TableRow>
 										</TableHead>
 										{reservationsData?.length !== 0 &&
-											reservationsData?.map((reservation: IReservation) => (
+											reservationsData?.map((reservation: IReservationOutput) => (
 												<TableBody>
 													<ReservationTableRow
 														key={reservation.id}

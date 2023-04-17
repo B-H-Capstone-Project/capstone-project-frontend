@@ -22,6 +22,7 @@ interface IReservatioForm extends IReservation {
 	commercial: string;
 	service: string;
 	outdoorLighting: string;
+	files: FileList;
 }
 
 function ReservationForm() {
@@ -31,13 +32,15 @@ function ReservationForm() {
 	const currentDay = dayjs().format();
 	//days
 	const [day, setDay] = useState<Dayjs | null>(dayjs(currentDay));
-  //error
-  const [error, setError] = useState(null);
+	//error
+	const [error, setError] = useState(null);
 	const queryClient = useQueryClient();
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const userId = isAuth.userToken?.id;
 	//User Info
 	const { data } = useMe();
+	//multiple images
+	//const [multipleImages, setMultipleImages] = useState<FileList>();
 	const {
 		register,
 		formState: { errors, isValid },
@@ -56,8 +59,8 @@ function ReservationForm() {
 				navigate('/reservation');
 			},
 			onError: (error: any) => {
-        setError(error.response.data.message);
-        alert(error.response.data.message);
+				setError(error.response.data.message);
+				alert(error.response.data.message);
 			},
 			onSettled: () => {
 				queryClient.invalidateQueries('create');
@@ -66,29 +69,37 @@ function ReservationForm() {
 	);
 
 	const onSubmit = async (data: IReservation) => {
-		console.log(data);
-		let serviceType = '';
-		Object.entries(data).filter(([key, value]) => {
-			if (value === 'on') {
-				serviceType = key;
-			}
-		});
-
-		const newReservationData: IReservationInput = {
-			type: serviceType,
-			description: data.description,
-			address_line1: data.address_line1,
-			address_line2: data.address_line2,
-			postal_code: data.postal_code.toUpperCase(),
-			province: data.province,
-			country: data.country,
-			city: data.city,
-			date: moment(day?.toISOString()).format('YYYY-MM-DD hh:mm:ss'),
-		};
-		const newReservation = {
-			...newReservationData,
-		};
-		mutate(newReservation);
+		try {
+			const actualFile = data.files[0];
+			const formBody = new FormData();
+			formBody.append('file', actualFile);
+			const { url: reservationReqImg } = (await axios.post('/uploads', formBody)).data;
+      let serviceType = '';
+			Object.entries(data).filter(([key, value]) => {
+				if (value === 'on') {
+					serviceType = key;
+				}
+			});
+			const newReservationData: IReservationInput = {
+				type: serviceType,
+				description: data.description,
+				address_line1: data.address_line1,
+				address_line2: data.address_line2,
+				postal_code: data.postal_code.toUpperCase(),
+				province: data.province,
+				country: data.country,
+				city: data.city,
+				date: moment(day?.toISOString()).format('YYYY-MM-DD hh:mm:ss'),
+				files: reservationReqImg,
+			};
+			const newReservation = {
+				...newReservationData,
+			};
+			mutate(newReservation);
+      
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleSetValue = () => {
@@ -111,24 +122,25 @@ function ReservationForm() {
 			setValue('country', '');
 		}
 	};
-
-  console.log(errors);
-
+	//multiple images
+	// Functions to preview multiple images
+	const changeMultipleFiles = (newImg: any) => {
+		//setMultipleImages(newImg.target.files[0]);
+	};
 	return (
 		<>
 			<Helmet>
 				<title>Reservation | BOSS&HOSS</title>
 			</Helmet>
-      <div
-					className='relative w-full flex justify-center items-center'
-					style={{ height: '120vh' }}
-          >
-					<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-10'>
-						<div className='mb-3'>
-							<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-600 sm:mb-1'>
-								Request Reservation
-							</h1>
-						</div>
+			<div
+				className='relative w-full flex justify-center items-center'
+				style={{ height: '120vh' }}>
+				<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-10'>
+					<div className='mb-3'>
+						<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-600 sm:mb-1'>
+							Request Reservation
+						</h1>
+					</div>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						{/* Address */}
 						<div className='p-5 flex items-start'></div>
@@ -300,10 +312,20 @@ function ReservationForm() {
 								className='bg-white-50 border border-white-300 text-black-100 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-10 bg-white-700 border-white-600 dark:placeholder-white-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500'
 							/>
 							{errors.description?.type === 'maxLength' && (
-								<FormError errorMessage={"It is over the limit of words"} />
+								<FormError errorMessage={'It is over the limit of words'} />
 							)}
 						</div>
-            {error && <FormError errorMessage={error} />}
+						{/* Image */}
+						<div className='flex flex-col mb-5'>
+							<input
+								type='file'
+								accept='image/*'
+								{...register('files')}
+								onChange={changeMultipleFiles}
+								multiple
+							/>
+						</div>
+						{error && <FormError errorMessage={error} />}
 						{/* Submit Button */}
 						<div className='flex flex-col justify-center items-center'>
 							<button

@@ -47,10 +47,10 @@ const cardVariants: Variants = {
 
 const reviewCardVariants: Variants = {
 	offscreen: {
-		y: 200,
+		y: 100,
 	},
 	onscreen: {
-		y: 50,
+		y: 10,
 		transition: {
 			type: 'spring',
 			bounce: 0.4,

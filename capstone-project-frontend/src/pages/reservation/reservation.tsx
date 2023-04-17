@@ -6,7 +6,7 @@ import { useMe } from '../../hooks/useMe';
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useReservation } from '../../hooks/useReservation';
-import { IReservation, IReservationOutput } from '../../types/reservation.dto';
+import { IReservationOutput } from '../../types/reservation.dto';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -45,6 +45,7 @@ export const Reservation = () => {
 						mb: 4,
 						height: '100vh',
 						marginTop: '5vw',
+            marginBottom: '10vh'
 					}}>
 					<div className='flex w-full h-full flex-col'>
 						<div>
@@ -127,13 +128,13 @@ export const Reservation = () => {
 								</Box>
 							) : (
 								<Box
-									className='w-1/2 flex justify-center items-center flex-col md:w-full'
+									className='w-1/2 flex justify-center items-center flex-col md:w-full sm:hidden'
 									component={'div'}
 									sx={{
 										bgcolor: 'background.paper',
 										borderRadius: '5px',
 									}}>
-									<div className='w-full h-full p-5 '>
+									<div className='w-full h-full p-5'>
 										<div className='flex justify-between'>
 											<Typography variant='h6'>
 												{newReservation?.type}
@@ -172,6 +173,9 @@ export const Reservation = () => {
 													newReservation?.postal_code}
 											</Typography>
 										</div>
+										<div className='h-1/3 w-1/2'>
+											<img src={newReservation?.files} />
+										</div>
 									</div>
 									<Typography
 										variant='subtitle2'
@@ -194,7 +198,7 @@ export const Reservation = () => {
 								</div>
 							) : (
 								<TableContainer
-									sx={{ maxHeight: 400 }}
+									sx={{ maxHeight: 400  }}
 									component={Paper}
 									className='bg-white rounded-md'>
 									<Table
@@ -210,17 +214,20 @@ export const Reservation = () => {
 											</TableRow>
 										</TableHead>
 										{reservationsData?.length !== 0 &&
-											reservationsData?.map((reservation: IReservationOutput) => (
-												<TableBody>
-													<ReservationTableRow
-														key={reservation.id}
-														type={reservation.type}
-														date={reservation.date}
-														description={reservation.description}
-														is_confirmed={reservation.is_confirmed}
-													/>
-												</TableBody>
-											))}
+											reservationsData?.map(
+												(reservation: IReservationOutput) => (
+													<TableBody>
+														<ReservationTableRow
+															key={reservation.id}
+															type={reservation.type}
+															date={reservation.date}
+															description={reservation.description}
+															is_confirmed={reservation.is_confirmed}
+															img={reservation.files}
+														/>
+													</TableBody>
+												)
+											)}
 									</Table>
 								</TableContainer>
 							)}

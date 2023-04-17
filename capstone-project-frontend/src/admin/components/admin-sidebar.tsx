@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { useAppDispatch } from "../../redux/hook";
 import { signOut } from "../../redux/reducer/authSlice";
-import { useMe } from '../../hooks/useMe';
+import { useMe } from "../../hooks/useMe";
 
 // icons
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -14,6 +14,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 
 import { makeStyles } from "@mui/styles";
 
@@ -33,8 +34,8 @@ const useStyles = makeStyles({
     color: "white",
   },
 
-  reservationsStatus : {
-    width: '50px'
+  reservationsStatus: {
+    width: "50px",
   },
 
   prosidebar: {
@@ -54,14 +55,14 @@ const Item = ({ title, to, icon, selected, setSelected }: any) => {
       active={selected === title}
       icon={icon}
     >
-      <Typography >{title}</Typography>
+      <Typography>{title}</Typography>
       <Link to={to} />
     </MenuItem>
   );
 };
 
 const AdminSidebar = () => {
-    const { data } = useMe();
+  const { data } = useMe();
   const classes = useStyles();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState();
@@ -125,17 +126,23 @@ const AdminSidebar = () => {
             )}
           </MenuItem>
           <Box paddingLeft={isCollapsed ? undefined : ""}>
-          {!isCollapsed && 
-            <Box sx={{
-              paddingLeft: "25px",
-              paddingBottom: "10px"
-            }}>
-            <Typography sx={{
-              color: "white"
-            }}>{data?.user.first_name} {data?.user.last_name} | {data?.user.role == 1 ? "Admin" : "Employee" }</Typography>
-        
-            </Box>
-}
+            {!isCollapsed && (
+              <Box
+                sx={{
+                  paddingLeft: "25px",
+                  paddingBottom: "10px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "white",
+                  }}
+                >
+                  {data?.user.first_name} {data?.user.last_name} |{" "}
+                  {data?.user.role == 1 ? "Admin" : "Employee"}
+                </Typography>
+              </Box>
+            )}
             <Item
               title="Dashboard"
               icon={<HomeOutlinedIcon />}
@@ -164,14 +171,13 @@ const AdminSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
+            <Item
               title="Reservations Status"
               to="/admin/reservations-status"
-              icon={<ScheduleIcon />}
+              icon={<ScheduleSendIcon />}
               selected={selected}
               setSelected={setSelected}
-              // className={classes.reservationsStatus}
-            /> */}
+            />
             <Item
               title="Sign Out"
               onClick={() => dispatch(signOut())}

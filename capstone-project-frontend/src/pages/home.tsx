@@ -47,7 +47,7 @@ const cardVariants: Variants = {
 
 const reviewCardVariants: Variants = {
 	offscreen: {
-		y: 400,
+		y: 200,
 	},
 	onscreen: {
 		y: 50,
@@ -158,7 +158,7 @@ export const Home = () => {
 						</div>
 						{!token && (
 							<Link to='/signIn'>
-								<button className='py-1.5 px-5 bg-lime-300 rounded-xl text-xl sm:text-sm'>
+								<button className='py-1.5 px-5 bg-lime-600 rounded-xl text-xl sm:text-sm'>
 									Book a reservation
 									<ArrowForwardIcon
 										sx={{ fontSize: 20, marginRight: -1, marginLeft: 1 }}
@@ -168,7 +168,7 @@ export const Home = () => {
 						)}
 						{token && (
 							<Link to='/reservation'>
-								<button className='py-1.5 px-5 bg-lime-300 rounded-xl text-xl sm:text-sm'>
+								<button className='py-1.5 px-5 bg-lime-600  rounded-xl text-xl sm:text-sm'>
 									Book a reservation
 									<ArrowForwardIcon
 										sx={{ fontSize: 20, marginRight: -1, marginLeft: 1 }}
@@ -214,7 +214,7 @@ export const Home = () => {
 			<div className='h-screen bg-zinc-900 flex md:flex-col'>
 				<div className='flex-1 flex items-center p-20 md:p-10'>
 					<div>
-						<h2 className='text-lime-300 text-5xl font-bold sm:text-2xl'>
+						<h2 className='text-lime-600 text-5xl font-bold sm:text-2xl'>
 							Quality Work Since 2005
 						</h2>
 						<p className='text-white mb-10 text-xl sm:text-sm'>
@@ -252,19 +252,19 @@ export const Home = () => {
 						style={{
 							backgroundImage: `url(${imgData[6].imgSrc})`,
 						}}
-						className='bg-center bg-cover w-3/5 h-4/6 rounded-xl md:h-full shadow-[-40px_40px_0px_0px_rgba(206,250,83)] -mt-8 md:w-2/3 sm:shadow-[-15px_15px_0px_0px_rgba(206,250,83)]'
+						className='bg-center bg-cover w-3/5 h-4/6 rounded-xl md:h-full shadow-[-40px_40px_0px_0px_rgba(101,163,13)] -mt-8 md:w-2/3 sm:shadow-[-15px_15px_0px_0px_rgba(206,250,83)]'
 						variants={cardVariants}></motion.div>
 				</motion.div>
 				<div className='flex-1 w-64 flex justify-center flex-col mr-10 items-center md:order-1 md:w-full md:m-0 md:px-1'>
 					<div className='mb-5 w-full md:mb-2'>
-						<h2 className='text-lime-300 text-5xl font-bold py-5 sm:text-2xl md:mt-10 md:text-center'>
+						<h2 className='text-lime-600 text-5xl font-bold py-5 sm:text-2xl md:mt-10 md:text-center'>
 							Our Services
 						</h2>
 					</div>
 					<div className='grid grid-rows-2 grid-flow-col gap-4 md:m-3 w-full'>
 						<div className='m-1'>
 							<div className='mb-2'>
-								<CheckIcon className='bg-lime-300 rounded p-1' />
+								<CheckIcon className='bg-lime-600 rounded p-1' />
 							</div>
 							<div>
 								<h3 className='text-white text-xl font-bold mb-2 sm:text-sm'>
@@ -277,7 +277,7 @@ export const Home = () => {
 						</div>
 						<div className='m-1'>
 							<div className='mb-2'>
-								<CheckIcon className='bg-lime-300 rounded p-1' />
+								<CheckIcon className='bg-lime-600 rounded p-1' />
 							</div>
 							<div>
 								<h3 className='text-white text-xl font-bold mb-2 sm:text-sm'>
@@ -290,7 +290,7 @@ export const Home = () => {
 						</div>
 						<div className='m-1'>
 							<div className='mb-2'>
-								<CheckIcon className='bg-lime-300 rounded p-1' />
+								<CheckIcon className='bg-lime-600 rounded p-1' />
 							</div>
 							<div>
 								<h3 className='text-white text-xl font-bold mb-2 sm:text-sm'>
@@ -303,7 +303,7 @@ export const Home = () => {
 						</div>
 						<div className='m-1'>
 							<div className='mb-2'>
-								<CheckIcon className='bg-lime-300 rounded p-1' />
+								<CheckIcon className='bg-lime-600 rounded p-1' />
 							</div>
 							<div>
 								<h3 className='text-white text-xl font-bold mb-2 sm:text-sm'>
@@ -318,7 +318,7 @@ export const Home = () => {
 				</div>
 			</div>
 			<div className='h-1/2 p-20 md:p-0 sm:p-0 bg-zinc-900 flex justify-center flex-col items-center'>
-				<h2 className='text-lime-300 text-center m-5 text-5xl font-bold sm:text-2xl'>
+				<h2 className='text-lime-600 text-center m-5 text-5xl font-bold sm:text-2xl'>
 					Our Clients
 				</h2>
 				<div className='grid grid-rows-4 grid-flow-col'>
@@ -356,16 +356,16 @@ export const Home = () => {
 					</p>
 				</div>
 			</div>
-			<div className='h-screen'>
+			<div className='h-screen p-5'>
 				{reviews.map((i) => (
-					<div className='w-full'>
+					<div className='w-full h-1/3'>
 						<motion.div
-							className='flex flex-col justify-center items-center m-5 sm:text-xs sm:m-2'
+							className='flex flex-col justify-center items-center sm:text-xs sm:m-2'
 							initial='offscreen'
 							whileInView='onscreen'
 							viewport={{ once: true, amount: 0.8 }}>
 							<motion.div
-								className='h-1/4 bg-lime-300 rounded-md w-1/2 md:w-full'
+								className='bg-lime-600 rounded-md max-w-lg sm:w-full'
 								variants={reviewCardVariants}>
 								<h3 className='text-2xl font-bold text-center mt-2 sm:mt-0'>
 									“

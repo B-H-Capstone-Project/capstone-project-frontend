@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from '../../api/axios';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import { useMe } from '../../hooks/useMe';
 import { FormError } from '../../components/form-error';
 import { Helmet } from 'react-helmet-async';
 import { Loading } from '../../components/loading';
+import { useNavigate } from 'react-router-dom';
 
 interface IForm {
 	first_name: string;
@@ -28,6 +29,7 @@ interface IForm {
 
 export const EditProfile = () => {
 	const queryClient = useQueryClient();
+  const [error, setError] = useState(null);
 	const isAuth = useSelector((state: RootState) => state.auth);
 	const { loading, data } = useMe();
 	const userId = isAuth.userToken?.id;
@@ -43,17 +45,18 @@ export const EditProfile = () => {
 		},
 		defaultValues: async () => await axios.get(`/user/${userId}`),
 	});
-	console.log(data);
+	const navigate = useNavigate();
 	const { isLoading, mutate } = useMutation(
 		async (updateProfile: IForm) => {
-			console.log(updateProfile);
 			return (await axios.put(`/user/${userId}`, updateProfile)).data;
 		},
 		{
 			onSuccess: (data) => {
 				const message = 'success';
+        navigate('/reservation');
 			},
-			onError: () => {
+			onError: (error: any) => {
+        setError(error.response.data.message);
 				alert('there was an error');
 			},
 			onSettled: () => {
@@ -89,11 +92,11 @@ export const EditProfile = () => {
 				<Loading />
 			) : (
 				<div
-					className='relative w-full'
+					className='relative w-full flex justify-center items-center'
 					style={{ height: '140vh' }}>
 					<div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1 bg-white rounded-lg shadow dark:border py-8 px-10 mt-20 sm:py-2 sm:px-5 sm:w-full sm:rounded-none sm:border-none sm:mt-10'>
 						<div className='mb-3'>
-							<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-500 sm:mb-1'>
+							<h1 className='text-2xl font-bold leading-tight tracking-tight text-black-100 text-lime-600 sm:mb-1'>
 								Edit Profile
 							</h1>
 						</div>
@@ -288,6 +291,7 @@ export const EditProfile = () => {
 									/>
 								</div>
 							</div>
+              {error && <FormError errorMessage={error} />}
 							<div className='flex justify-center mb-5 mt-5'>
 								<button
 									type='submit'

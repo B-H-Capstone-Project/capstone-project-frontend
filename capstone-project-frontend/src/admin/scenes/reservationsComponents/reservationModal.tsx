@@ -29,6 +29,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+import { makeStyles } from "@mui/styles";
 interface ICustomer {
   id: number;
   first_name: string;
@@ -37,6 +38,24 @@ interface ICustomer {
   phone_number: string;
   email: string;
 }
+
+const useStyles = makeStyles({
+  icon_edit: {
+    color: "black",
+    cursor: "pointer",
+    "&:icon_edit": {
+      color: "#757575",
+    },
+  },
+  icon_delete: {
+    marginLeft: "10px",
+    color: "black",
+    cursor: "pointer",
+    "&:icon_delete": {
+      color: "#757575",
+    },
+  },
+});
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -74,11 +93,12 @@ const ReservationModal = (props: any) => {
   const [customer, setCustomer] = React.useState<ICustomer>(props.customer);
   const [isReadOnly, setIsReadOnly] = React.useState(false);
   const [dateTime, setDateTime] = React.useState<Dayjs | null>(null);
-  const [province, setProvince] = React.useState(props.existedRes?.province);
-
-  useEffect(() => {
+  const classes = useStyles();
+  
+  useEffect(()=> {
     setIsReadOnly(!props.isNew);
   }, [props.isNew, props]);
+
 
   const makeReset = () => {
     props.setExistedRes(null);
@@ -88,18 +108,19 @@ const ReservationModal = (props: any) => {
     props.setCustomer(null);
     setIsReadOnly(true);
     setDateTime(null);
-    setProvince(null);
+    props.setProvince(null);
+    props.setType(null);
     reset();
   };
   const {
-    register,
-    getValues,
-    formState: { errors, isValid },
-    handleSubmit,
-    reset,
-  } = useForm<IReservationForm>({
-    mode: "onChange",
-  });
+      register,
+      getValues,
+      formState: { errors, isValid },
+      handleSubmit,
+      reset
+    } = useForm<IReservationForm>({
+      mode: 'onBlur',
+    });
 
   const createRes = async (data: IReservationForm) => {
     const { data: response } = await axios.post(
@@ -142,9 +163,14 @@ const ReservationModal = (props: any) => {
   };
 
   const handleEditClick = () => {
+    props.setType(props.existedRes?.type);
     props.setIsNew(false);
     setIsReadOnly(false);
   };
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.setType((event.target as HTMLInputElement).value);
+  }
 
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete this reservation?`)) {
@@ -156,7 +182,7 @@ const ReservationModal = (props: any) => {
   };
 
   const handleProvinceChange = (e: SelectChangeEvent<any>) => {
-    setProvince(e.target.value);
+    props.setProvince(e.target.value);
   };
 
   const onSubmit = async (data: any) => {
@@ -165,14 +191,16 @@ const ReservationModal = (props: any) => {
         ...data,
         date: props.selectedDate,
         user_id: props.customer.id,
-      };
+        type: props.type
+      }
       mutate(newRes);
     } else {
       const updateRes = {
         ...data,
         date: props.selectedDate,
         user_id: props.customer.id,
-      };
+        type: props.type
+      }
       mutate(updateRes);
     }
     makeReset();
@@ -180,14 +208,11 @@ const ReservationModal = (props: any) => {
   };
 
   const EditDeleteIcons = () => {
-    return (
-      <>
-        <EditIcon onClick={handleEditClick} />
-        <DeleteIcon onClick={handleDelete} />
-      </>
-    );
-  };
-
+    return <>
+      <EditIcon onClick={handleEditClick} className={classes.icon_edit}/>
+      <DeleteIcon onClick={handleDelete} className={classes.icon_delete}/>
+    </>
+  }
   return (
     <Modal
       open={props.open}
@@ -405,10 +430,10 @@ const ReservationModal = (props: any) => {
                 width: "300px",
               }}
               onChange={handleProvinceChange}
-              value={province}
+              value={props.province}
               label="Province"
               inputProps={{ readOnly: isReadOnly }}
-              defaultValue={props.existedRes?.province}
+              defaultValue={props.province}
             >
               {provinces.map((province: string) => (
                 <MenuItem key={province} value={province}>
@@ -441,7 +466,9 @@ const ReservationModal = (props: any) => {
                 Types *
               </InputLabel>
               <RadioGroup
+                onChange={handleRadioChange}
                 defaultValue={props.existedRes?.type}
+                value={props.type}
                 sx={{
                   display: "flex",
                   flexDirection: "row",
@@ -449,34 +476,10 @@ const ReservationModal = (props: any) => {
                   paddingBottom: "5px",
                 }}
               >
-                <FormControlLabel
-                  {...register("type", { required: "This is required" })}
-                  value="Residential"
-                  control={<Radio />}
-                  label="Residential"
-                  disabled={isReadOnly}
-                />
-                <FormControlLabel
-                  {...register("type", { required: "This is required" })}
-                  value="Commercial"
-                  control={<Radio />}
-                  label="Commercial"
-                  disabled={isReadOnly}
-                />
-                <FormControlLabel
-                  {...register("type", { required: "This is required" })}
-                  value="Service"
-                  control={<Radio />}
-                  label="Service"
-                  disabled={isReadOnly}
-                />
-                <FormControlLabel
-                  {...register("type", { required: "This is required" })}
-                  value="Outdoor Lighting"
-                  control={<Radio />}
-                  label="Outdoor Lighting"
-                  disabled={isReadOnly}
-                />
+                <FormControlLabel value="Residential" control={<Radio />} label="Residential" disabled={isReadOnly}/>
+                <FormControlLabel value="Commercial" control={<Radio />} label="Commercial" disabled={isReadOnly}/>
+                <FormControlLabel value="Service" control={<Radio />} label="Service" disabled={isReadOnly}/>
+                <FormControlLabel value="Outdoor Lighting" control={<Radio />} label="Outdoor Lighting" disabled={isReadOnly}/>
               </RadioGroup>
             </Box>
 
